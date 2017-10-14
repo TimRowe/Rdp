@@ -1,0 +1,42 @@
+﻿@{
+    Page.Title = Model != null ? @ResOperate.Update : @ResOperate.Add;
+    Layout = "~/Views/RdpTemplate/Shared/_AdminLteLayout.cshtml";
+}
+@model ErrorModel
+
+<section class="content" style="width: auto">
+    <div class="error-page">
+        <h2 class="headline text-red">@((int)Model.ErrorNo)</h2>
+        <div class="error-content"  style="margin-left: 120px">
+            <br />
+            <br />
+            <h3><i class="fa fa-warning text-yellow"></i>&nbsp;&nbsp; @ResMessage.ErrorMsg:</h3>
+            <h4>
+                @Model.ErrorMsg
+            </h4>
+            <div id="divRedirect" style="display: none"><span id='numDiv'>5</span><a href="@Model.RedirectUrl">s @ResMessage.Later , @ResMessage.RedirectUrl</a></div>
+        </div>
+    </div>
+</section>
+
+<script type="text/javascript">
+        $(function () {
+            if ('@Model.RedirectUrl' != "") {
+                $("#divRedirect").show();
+                var num = 5;
+                var interval = setInterval(function () {
+                    if (num == 0) {
+                        clearInterval(interval);
+                        if (typeof (parent.$) != 'undefined') {
+                            top.location.href = '@Model.RedirectUrl';
+                        }
+                        else {
+                            location.href = '@Model.RedirectUrl';
+                        }
+                    }
+                    numDiv.innerHTML = num--;
+                }, 1000);
+            }
+        });
+</script>
+

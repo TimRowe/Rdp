@@ -1,0 +1,79 @@
+﻿@{
+    Page.Title = (Model != null ? @ResOperate.Update : @ResOperate.Add) + @ResRoleMaster.RoleMaster;
+    Layout = "~/Views/RdpTemplate/Shared/_AdminLteWithEasyuiLayout.cshtml";
+}
+
+@using Resources
+
+<script type="text/javascript">
+
+    function add() {
+        com.mvcSubmit('RoleMaster', 'Add', 'F_Operate');
+    };
+
+    function update() {
+        com.mvcSubmit('RoleMaster', 'Update', 'F_Operate');
+    };
+
+</script>
+
+
+@model OperateRoleMasterModel
+<section class="content">
+    <div class="row" id="OperateForm">
+        <form class="form-horizontal" id="F_Operate">
+            <div class="col-sm-6">
+                @if (Model != null)
+                {
+                    <div class="form-group">
+                        <label class="col-sm-3 control-label">@ResRoleMaster.RoleID</label>
+                        <div class="col-sm-9">
+                            @Html.TextBoxFor(m => m.RoleID, new { @class = "form-control", @readonly = "readonly" })
+                            @Html.ValidationMessageFor(m => m.RoleID)
+                        </div>
+                    </div>
+                }
+                <div class="form-group">
+                    <label class="col-sm-3 control-label">@ResRoleMaster.RoleDesc</label>
+                    <div class="col-sm-9">
+                        @Html.TextBoxFor(m => m.RoleDesc, new { @class = "form-control" })
+                        @Html.ValidationMessageFor(m => m.RoleDesc)
+                    </div>
+                </div>
+            </div>
+
+            <div class="col-sm-6">
+                <div class="form-group">
+                    <label class="col-sm-3 control-label">@ResRoleMaster.StatusFlag</label>
+                    <div class="col-sm-9">
+                        @Html.DropDownListFor(
+                               m => m.StatusFlag,
+                               new DropDownListOption() { RefTable = "Status_Flag", OptionLabel = ResMessage.PleaseChoose },
+                               new Dictionary<string, object>(){
+                                   { "id", "StatusFlag"},
+                                   { "class", "form-control select2"},
+                                   { "data-placeholder",ResMessage.PleaseChoose}
+                               })
+                        @Html.ValidationMessageFor(m => m.StatusFlag)
+                    </div>
+                </div>
+            </div>
+        </form>
+    </div>
+
+    <div class="row">
+        <div class="col-sm-12">
+            <div class="btn-group">
+                @if (Model != null)
+                {
+                    <a id="LB_Update" class="btn btn-default" onclick="update();"><i class="fa fa-edit"></i>@ResOperate.Update</a>
+                }
+                else
+                {
+                    <a id="LB_Add" class="btn btn-default" onclick="add();"><i class="fa fa-plus"></i>@ResOperate.Add</a>
+                    <a id="LB_Reset" class="btn btn-default" onclick="$('#F_Operate').form('clear');"><i class="fa fa-trash"></i>@ResOperate.Reset</a>
+                }
+            </div>
+        </div>
+    </div>
+</section>

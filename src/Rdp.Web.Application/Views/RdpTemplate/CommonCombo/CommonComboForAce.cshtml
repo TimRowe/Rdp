@@ -1,0 +1,27 @@
+﻿@{
+    Page.Title = "在此处显示标题";
+    //Layout = "在此处显示布局页";
+}
+@using Rdp.Web.Framework.Models;
+@model CommonComboModel
+
+
+
+
+@if (@Model != null)
+{
+<select id="@Model.id"  name="@Model.name"  class="@Model.cls" data-placeholder="@Model.placeholder" style="@Model.style" @(Model.disabled? "disabled" : "")  @(Model.multiple? "multiple" : "")  @(Model.required? "required" : "")  @Model.extend>
+        <option value=""></option>
+        @foreach (CommonItemModel item in Model.optionList)
+        {
+            if (!String.IsNullOrEmpty(@Model.value) && @Model.value == @item.id.ToString())
+            {   <option value='@item.id' selected="selected">@item.text</option> }
+            else
+            {
+<option value='@item.id'>@item.text</option> 
+            }
+        }
+</select> 
+}
+
+

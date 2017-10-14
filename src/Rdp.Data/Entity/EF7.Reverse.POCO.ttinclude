@@ -1,0 +1,154 @@
+﻿<#@ template language="C#" debug="true" hostspecific="True" #>
+<#@ import namespace="System.Collections.Generic" #>
+<#@ import namespace="System.Security.Cryptography.X509Certificates" #>
+<#
+fileManager.StartHeader();
+// Copyright (C) Simon Hughes 2012
+// v2.17.1
+#>
+using Microsoft.EntityFrameworkCore;
+using System;
+using System.ComponentModel.DataAnnotations;
+using System.ComponentModel.DataAnnotations.Schema;
+using Rdp.Core.Data;
+
+namespace <#= Namespace #>
+{
+<# 
+
+    if(ElementsToGenerate.HasFlag(Elements.Context)){ 
+    fileManager.StartNewFile(DbContextName + FileExtension); #>
+<# if(!GenerateSeparateFiles) { #>
+    // ************************************************************************
+    // Database context
+<# } #>
+    public <# if(MakeClassesPartial) { #>partial <# } #>class <#=DbContextName#> : <#=DbContextBaseClass#>
+    {
+		
+		protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
+        {
+			//Name=<#=ConnectionStringName#>"
+			optionsBuilder.UseSqlServer(DbHelperSql.DefaultQueryConn);
+			optionsBuilder.UseQueryTrackingBehavior(QueryTrackingBehavior.NoTracking);
+		}
+
+
+		protected override void OnModelCreating(ModelBuilder modelBuilder)
+        {   
+<#
+foreach(Table tbl in from t in tables.Where(t => !t.IsMapping).OrderBy(x => x.NameHumanCase) select t)
+{
+#>
+             modelBuilder.Entity<<#=tbl.NameHumanCase#>>().HasKey(<#=tbl.PrimaryKeyNameHumanCase()#>);
+
+<# } #>
+        }
+
+   }
+<# }
+   
+ if(ElementsToGenerate.HasFlag(Elements.Poco)){
+  #>
+<#
+foreach(Table tbl in from t in tables.Where(t => !t.IsMapping).OrderBy(x => x.NameHumanCase) select t)
+{
+#>
+<# fileManager.StartNewFile(tbl.NameHumanCase + FileExtension); #>
+<#if(IncludeComments){#>    // <#=tbl.Name#>
+<# } #>
+<# if(AddWcfDataAttributes) { #>    [DataContract<#=ExtraWcfDataContractAttributes#>]
+<# } 
+    WritePocoClassAttributes(tbl);#>
+<#if (tbl.ReverseNavigationCtor.Any()){ #>
+    <#= CodeGeneratedAttribute #>
+<# } #>
+	[Table("<#=tbl.Name#>")]
+    public <# if(MakeClassesPartial) { #>partial <# } #>class <#=tbl.NameHumanCase#><#=WritePocoBaseClasses != null ? WritePocoBaseClasses(tbl) : "" #>
+    {
+<# WritePocoBaseClassBody(tbl); #>
+<# int DataMemberOrder = 1;
+foreach(Column col in tbl.Columns.OrderBy(x => x.Ordinal).Where(x => !x.Hidden))
+{
+#>
+<#if(IncludeExtendedPropertyComments == ExtendedPropertyCommentsStyle.InSummaryBlock && !string.IsNullOrEmpty(col.ExtendedProperty)){#>
+
+        ///<summary>
+        /// <#=col.ExtendedProperty#>
+        ///</summary>
+<# } #>
+<# if(AddWcfDataAttributes) { #>        [DataMember(Order = <#=DataMemberOrder++#>, IsRequired = <#=col.IsNullable ? "false" : "true"#>)]
+<# } #>
+        
+		<#=col.Config #>
+		<#= WritePocoColumn(col) #>
+<# if(AddWcfDataAttributes) { #>
+
+<# } } #>
+<#
+if(tbl.ReverseNavigationProperty.Count() > 0)
+{
+#>
+
+
+<#
+foreach(string s in tbl.ReverseNavigationProperty.OrderBy(x => x))
+{
+    foreach (var rnpda in AdditionalReverseNavigationsDataAnnotations) {#>
+        [<#=rnpda #>]
+<# } #>
+        <#=s #>
+<# } } #>
+
+<# 
+if(tbl.Columns.Where(c => c.Default != string.Empty && !c.Hidden).Count() > 0 || tbl.ReverseNavigationCtor.Count() > 0 || MakeClassesPartial) 
+{ 
+#>
+        
+        public <#=tbl.NameHumanCase#>()
+        {
+<#
+foreach(Column col in tbl.Columns.OrderBy(x => x.Ordinal).Where(c => c.Default != string.Empty && !c.Hidden))
+{
+#>
+            <#=col.NameHumanCase #> = <#=col.Default #>;
+<# } #>
+<#
+foreach(string s in tbl.ReverseNavigationCtor)
+{
+#>
+            <#=s #>
+<# } 
+if(MakeClassesPartial) {#>
+            InitializePartial();
+<#}#>        }
+<#if(MakeClassesPartial) {#>
+
+        partial void InitializePartial();
+<#} }#>
+    }
+
+<# } }
+if(ElementsToGenerate.HasFlag(Elements.PocoConfiguration)){
+if(!GenerateSeparateFiles) { #>
+
+    // ************************************************************************
+    // POCO Configuration
+
+<# } #>
+<#
+foreach(Table tbl in tables.Where(t => !t.IsMapping).OrderBy(x => x.NameHumanCase))
+{
+#>
+
+
+   
+    
+
+<# } }
+ #>
+<# fileManager.StartFooter(); #>
+}
+// </auto-generated>
+<# fileManager.EndBlock();
+if(GenerateSeparateFiles)
+    fileManager.Process(); #>

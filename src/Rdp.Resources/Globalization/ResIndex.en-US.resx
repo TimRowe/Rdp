@@ -1,0 +1,246 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<root>
+  <!-- 
+    Microsoft ResX Schema 
+    
+    Version 2.0
+    
+    The primary goals of this format is to allow a simple XML format 
+    that is mostly human readable. The generation and parsing of the 
+    various data types are done through the TypeConverter classes 
+    associated with the data types.
+    
+    Example:
+    
+    ... ado.net/XML headers & schema ...
+    <resheader name="resmimetype">text/microsoft-resx</resheader>
+    <resheader name="version">2.0</resheader>
+    <resheader name="reader">System.Resources.ResXResourceReader, System.Windows.Forms, ...</resheader>
+    <resheader name="writer">System.Resources.ResXResourceWriter, System.Windows.Forms, ...</resheader>
+    <data name="Name1"><value>this is my long string</value><comment>this is a comment</comment></data>
+    <data name="Color1" type="System.Drawing.Color, System.Drawing">Blue</data>
+    <data name="Bitmap1" mimetype="application/x-microsoft.net.object.binary.base64">
+        <value>[base64 mime encoded serialized .NET Framework object]</value>
+    </data>
+    <data name="Icon1" type="System.Drawing.Icon, System.Drawing" mimetype="application/x-microsoft.net.object.bytearray.base64">
+        <value>[base64 mime encoded string representing a byte array form of the .NET Framework object]</value>
+        <comment>This is a comment</comment>
+    </data>
+                
+    There are any number of "resheader" rows that contain simple 
+    name/value pairs.
+    
+    Each data row contains a name, and value. The row also contains a 
+    type or mimetype. Type corresponds to a .NET class that support 
+    text/value conversion through the TypeConverter architecture. 
+    Classes that don't support this are serialized and stored with the 
+    mimetype set.
+    
+    The mimetype is used for serialized objects, and tells the 
+    ResXResourceReader how to depersist the object. This is currently not 
+    extensible. For a given mimetype the value must be set accordingly:
+    
+    Note - application/x-microsoft.net.object.binary.base64 is the format 
+    that the ResXResourceWriter will generate, however the reader can 
+    read any of the formats listed below.
+    
+    mimetype: application/x-microsoft.net.object.binary.base64
+    value   : The object must be serialized with 
+            : System.Runtime.Serialization.Formatters.Binary.BinaryFormatter
+            : and then encoded with base64 encoding.
+    
+    mimetype: application/x-microsoft.net.object.soap.base64
+    value   : The object must be serialized with 
+            : System.Runtime.Serialization.Formatters.Soap.SoapFormatter
+            : and then encoded with base64 encoding.
+
+    mimetype: application/x-microsoft.net.object.bytearray.base64
+    value   : The object must be serialized into a byte array 
+            : using a System.ComponentModel.TypeConverter
+            : and then encoded with base64 encoding.
+    -->
+  <xsd:schema id="root" xmlns="" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:msdata="urn:schemas-microsoft-com:xml-msdata">
+    <xsd:import namespace="http://www.w3.org/XML/1998/namespace" />
+    <xsd:element name="root" msdata:IsDataSet="true">
+      <xsd:complexType>
+        <xsd:choice maxOccurs="unbounded">
+          <xsd:element name="metadata">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" />
+              </xsd:sequence>
+              <xsd:attribute name="name" use="required" type="xsd:string" />
+              <xsd:attribute name="type" type="xsd:string" />
+              <xsd:attribute name="mimetype" type="xsd:string" />
+              <xsd:attribute ref="xml:space" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="assembly">
+            <xsd:complexType>
+              <xsd:attribute name="alias" type="xsd:string" />
+              <xsd:attribute name="name" type="xsd:string" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="data">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" msdata:Ordinal="1" />
+                <xsd:element name="comment" type="xsd:string" minOccurs="0" msdata:Ordinal="2" />
+              </xsd:sequence>
+              <xsd:attribute name="name" type="xsd:string" use="required" msdata:Ordinal="1" />
+              <xsd:attribute name="type" type="xsd:string" msdata:Ordinal="3" />
+              <xsd:attribute name="mimetype" type="xsd:string" msdata:Ordinal="4" />
+              <xsd:attribute ref="xml:space" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="resheader">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" msdata:Ordinal="1" />
+              </xsd:sequence>
+              <xsd:attribute name="name" type="xsd:string" use="required" />
+            </xsd:complexType>
+          </xsd:element>
+        </xsd:choice>
+      </xsd:complexType>
+    </xsd:element>
+  </xsd:schema>
+  <resheader name="resmimetype">
+    <value>text/microsoft-resx</value>
+  </resheader>
+  <resheader name="version">
+    <value>2.0</value>
+  </resheader>
+  <resheader name="reader">
+    <value>System.Resources.ResXResourceReader, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </resheader>
+  <resheader name="writer">
+    <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </resheader>
+  <data name="BackIndex" xml:space="preserve">
+    <value>Index</value>
+  </data>
+  <data name="Cancellation" xml:space="preserve">
+    <value>Cancellation</value>
+  </data>
+  <data name="ControlPanel" xml:space="preserve">
+    <value>Control Panel</value>
+  </data>
+  <data name="CRM" xml:space="preserve">
+    <value>CRM System</value>
+  </data>
+  <data name="Language" xml:space="preserve">
+    <value>Language</value>
+  </data>
+  <data name="Navigation" xml:space="preserve">
+    <value>Navigation</value>
+  </data>
+  <data name="Welcome" xml:space="preserve">
+    <value>Welcome</value>
+  </data>
+  <data name="LoginIndex" xml:space="preserve">
+    <value>Coupon Management System - Login</value>
+  </data>
+  <data name="ChoiceAccount" xml:space="preserve">
+    <value>Choice Account</value>
+  </data>
+  <data name="toDesktopSuccess" xml:space="preserve">
+    <value>Have shortcut on your desktop</value>
+  </data>
+  <data name="toDesktopFail" xml:space="preserve">
+    <value>The current IE security level operation not allowed! Please set in operation.</value>
+  </data>
+  <data name="NoClose" xml:space="preserve">
+    <value>Can not be closed</value>
+  </data>
+  <data name="Index" xml:space="preserve">
+    <value>CRM Index</value>
+  </data>
+  <data name="InputCardNo" xml:space="preserve">
+    <value>Input Card No</value>
+  </data>
+  <data name="Url" xml:space="preserve">
+    <value>http://10.200.252.85</value>
+  </data>
+  <data name="Collect" xml:space="preserve">
+    <value>Collect</value>
+  </data>
+  <data name="Expiry" xml:space="preserve">
+    <value>&lt;font color=red style="font-size:14px;font-weight:bold;"&gt;Password has expired, if not change, tomorrow will not be able to login!&lt;/font&gt;</value>
+  </data>
+  <data name="RemainderDays1" xml:space="preserve">
+    <value>Password has&lt;font color=red style="font-size:14px;font-weight:bold;"&gt;</value>
+  </data>
+  <data name="RemainderDays2" xml:space="preserve">
+    <value>&lt;/font&gt;days left, please modify as soon as possible。</value>
+  </data>
+  <data name="Tips" xml:space="preserve">
+    <value>WARM PROMPT</value>
+  </data>
+  <data name="toDesktop" xml:space="preserve">
+    <value>ToDesktop</value>
+  </data>
+  <data name="ModifyPassword" xml:space="preserve">
+    <value>Modify Password</value>
+  </data>
+  <data name="RetrievePassword" xml:space="preserve">
+    <value>Retrieve Password</value>
+  </data>
+  <data name="LoginOut" xml:space="preserve">
+    <value>LoginOut You do not have permission to enter this page! \ \ n Please log in again or contact your administrator</value>
+  </data>
+  <data name="Skin" xml:space="preserve">
+    <value>Skin</value>
+  </data>
+  <data name="Guide" xml:space="preserve">
+    <value>Guide</value>
+  </data>
+  <data name="COU" xml:space="preserve">
+    <value>Rdp Management</value>
+  </data>
+  <data name="Administrator" xml:space="preserve">
+    <value>Administrator</value>
+  </data>
+  <data name="Information" xml:space="preserve">
+    <value>Information</value>
+  </data>
+  <data name="LookOverALLInformation" xml:space="preserve">
+    <value>Look Over ALL Information</value>
+  </data>
+  <data name="LookOverDetails" xml:space="preserve">
+    <value>Look Over Details</value>
+  </data>
+  <data name="OperatingInstructions" xml:space="preserve">
+    <value>Operating Instructions</value>
+  </data>
+  <data name="PasswordChanges" xml:space="preserve">
+    <value>ange Password</value>
+  </data>
+  <data name="RelatedQuestions" xml:space="preserve">
+    <value>Related questions</value>
+  </data>
+  <data name="UserRegistration" xml:space="preserve">
+    <value>User Registration</value>
+  </data>
+  <data name="WaitAcceptanceCoupon" xml:space="preserve">
+    <value>Wait Acceptance Coupon</value>
+  </data>
+  <data name="WaitforUpdate" xml:space="preserve">
+    <value>Wait for the update</value>
+  </data>
+  <data name="WarmTips" xml:space="preserve">
+    <value>Welcome to the Rdp management system, any operating system-related issues, please consult the following</value>
+  </data>
+  <data name="WorkOrder" xml:space="preserve">
+    <value>Work Order</value>
+  </data>
+  <data name="FooterInfo" xml:space="preserve">
+    <value>Just for study.</value>
+  </data>
+  <data name="Loading" xml:space="preserve">
+    <value>Loading, please wait......</value>
+  </data>
+  <data name="InputCouponNum" xml:space="preserve">
+    <value>Input the CouponNum</value>
+  </data>
+</root>

@@ -1,0 +1,146 @@
+﻿@using Resources
+
+@{
+    Page.Title = Model != null ? @ResOperate.Update : @ResOperate.Add;
+    Layout = "~/Views/RdpTemplate/Shared/_AdminLteWithEasyuiLayout.cshtml";
+}
+@using Rdp.Data.Entity
+@model ButtonAddModel
+
+<!-- Bootstrap-Iconpicker -->
+<link rel="stylesheet" href="/Content/bootstrap-iconpicker-master/bootstrap-iconpicker/css/bootstrap-iconpicker.min.css" />
+<!-- Bootstrap-Iconpicker Iconset for Font Awesome -->
+<script type="text/javascript" src="/Content/bootstrap-iconpicker-master/bootstrap-iconpicker/js/iconset/iconset-fontawesome-4.2.0.min.js"></script>
+<!-- Bootstrap-Iconpicker -->
+<script type="text/javascript" src="/Content/bootstrap-iconpicker-master/bootstrap-iconpicker/js/bootstrap-iconpicker.min.js"></script>
+
+<section class="content">
+    <div class="row" id="SearchForm">
+        <form class="form-horizontal" id="F_Search">
+            <div class="col-sm-12">
+                <div class="form-group col-sm-6">
+                    <label class="col-sm-3 control-label">@ResButton.ButtonName</label>
+                    <div class="col-sm-9">
+                        @Html.TextBoxFor(m => m.ButtonName, new { @class = "form-control", placeholder = @ResButton.ButtonName })
+                        @Html.ValidationMessageFor(m => m.ButtonName)
+                    </div>
+                </div>
+
+                <div class="form-group col-sm-6">
+                    <label class="col-sm-3 control-label">@ResButton.ButtonText</label>
+                    <div class="col-sm-9">
+                        @Html.TextBoxFor(m => m.ButtonText, new { @class = "form-control", placeholder = @ResButton.ButtonText })
+                        @Html.ValidationMessageFor(m => m.ButtonText)
+                    </div>
+                </div>
+
+                <div class="form-group col-sm-6">
+                    <label class="col-sm-3 control-label">@ResButton.ButtonClass</label>
+                    <div class="col-sm-9">
+                        @Html.TextBoxFor(m => m.ButtonClass, new { @class = "form-control", placeholder = @ResButton.ButtonClass })
+                        @Html.ValidationMessageFor(m => m.ButtonClass)
+                    </div>
+                </div>
+
+                <div class="form-group  col-sm-6">
+                    <label class="col-sm-3 control-label">@ResButton.ButtonIcon</label>
+                    <div class="col-sm-9">
+                        <div class="input-group">
+                            @Html.TextBoxFor(m => m.ButtonIcon, new { @class = "form-control", id = "ButtonIcon", placeholder = @ResButton.ButtonIcon })
+                            <div class="input-group-btn">
+                                <button class="btn btn-default" id="SelectIcon" data-cols="8" data-rows="6" role="iconpicker"></button>
+                            </div>
+                            @Html.ValidationMessageFor(m => m.ButtonIcon)
+                            </div>
+                     </div>
+                </div>
+
+
+                <div class="form-group col-sm-6">
+                    <label class="col-sm-3 control-label">@ResButton.ButtonScript</label>
+                    <div class="col-sm-9">
+                        @Html.TextBoxFor(m => m.ButtonScript, new { @class = "form-control", placeholder = @ResButton.ButtonScript })
+                        @Html.ValidationMessageFor(m => m.ButtonScript)
+                    </div>
+                </div>
+
+                <div class="form-group col-sm-6">
+                    <label class="col-sm-3 control-label">@ResButton.ButtonHref</label>
+                    <div class="col-sm-9">
+                        @Html.TextBoxFor(m => m.ButtonHref, new { @class = "form-control", placeholder = @ResButton.ButtonHref })
+                        @Html.ValidationMessageFor(m => m.ButtonHref)
+                    </div>
+                </div>
+
+                <div class="form-group col-sm-6">
+                    <label class="col-sm-3 control-label">@ResButton.Priority</label>
+                    <div class="col-sm-9">
+                        @Html.TextBoxFor(m => m.Priority, new { @class = "form-control", placeholder = @ResButton.Priority })
+                        @Html.ValidationMessageFor(m => m.Priority)
+                    </div>
+                </div>
+
+
+             
+
+                <div class="form-group col-sm-6">
+                    <label class="col-sm-3 control-label">@ResButton.StatusFlag</label>
+                    <div class="col-sm-9">
+                        @Html.DropDownListFor(
+                               m => m.StatusFlag,
+                               new DropDownListOption() { RefTable = "Status_Flag", OptionLabel = ResMessage.PleaseChoose },
+                               new Dictionary<string, object>(){
+                                   { "id", "StatusFlag"},
+                                   { "class", "form-control select2"},
+                                   { "data-placeholder",ResMessage.PleaseChoose}
+                               })
+                        
+                        @Html.ValidationMessageFor(m => m.StatusFlag)
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    @Html.HiddenFor(m => m.ButtonID)
+                    @Html.HiddenFor(m => m.ButtonDataOptions)
+                </div>
+
+            </div>
+            
+        </form>
+    </div>
+
+    <div class="row">
+        <div class="col-sm-12">
+            <div class="btn-group">
+                <a id="BtnSumbit"  class="btn btn-default"><i class="fa @(Model != null?"fa-edit":"fa-plus")"></i>
+                @(Model != null?@ResOperate.Update:@ResOperate.Add)
+                </a>
+            </div>
+        </div>
+    </div>
+</section>
+
+<script>
+    $(function () {
+        $("#BtnSumbit").click(function () {
+            com.mvcSubmit('Button', '@(Model==null?"Add":"Update")', 'F_Search', function(data) {
+                if (data.ErrorNo == 0 && @(Model==null?"true":"false")) {
+                    document.getElementById("F_Search").reset();
+                }
+            });
+        });
+
+        //下拉框绑定
+        $(".select2").select2({ allowClear: true});
+      
+        //图标选择器绑定
+        $('#SelectIcon').iconpicker({
+            arrowPrevIconClass: 'fa fa-arrow-left',
+            arrowNextIconClass: 'fa fa-arrow-right',
+            iconset: 'fontawesome'
+        }).on('change', function (e) {
+            $('#ButtonIcon').val(e.icon);
+        });
+    });
+
+</script>

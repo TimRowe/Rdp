@@ -1,0 +1,23 @@
+﻿@{
+    Page.Title = "在此处显示标题";
+    //Layout = "在此处显示布局页";
+}
+@using Rdp.Web.Framework.Models
+@model CommonComboModel
+
+@if (@Model != null)
+{
+    <select id="@Model.id"  name="@Model.name" 
+            class="easyui-combobox" 
+            data-options="editable:@(Model.editable?"true":"false"),multiple:@(Model.multiple?"true":"false"),required:@(Model.required?"true":"false"),disabled:@(Model.disabled?"true":"false"),value:'@Model.value'" 
+            style="width:150px" @(Model.@readonly? "readonly='readonly'":"")>
+        @foreach (CommonItemModel item in Model.optionList)
+        {
+             <option value='@item.id'>@item.text</option> 
+        }
+    </select>
+       <img onclick="$('#@Model.id').combobox('clear');" class="iconImg ext-trash" src="/Res/easyui-extend-1.1.1/themes/images/pixel.gif" title="清空">
+       
+}
+
+

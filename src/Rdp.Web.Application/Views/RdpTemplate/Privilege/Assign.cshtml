@@ -1,0 +1,203 @@
+﻿<!DOCTYPE html>
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+    <title>@ResOperate.Add@ResPrivilege.Privilege</title>
+    @ResVersion.Css
+    @ResVersion.Javascript
+    @ResVersion.MyDatePicker
+    <script type="text/javascript">
+        var grid;
+        var branchMemberData;
+        var privilegeID = "";
+        //获取branchMember的数据列表
+        $.ajax({
+            url: '/Branch/BranchMemberList',
+            async: false,
+            dataType: 'json',
+            type: 'get',
+            cache: true,
+            success: function (data) {
+                branchMemberData = data;
+            }
+        });
+        //获取插入的SQL
+        function getParams() {
+            var strSql = "";
+            var name;
+            var controlID;
+            var paramArray = {};
+            index = 0;
+
+            $(".privilegeCb").each(function () {
+                controlID = $(this).attr("id").replace("CB_", '');
+                name = $(this).attr("name");
+
+                if (typeof (name) != "undefined" || $(this).is(':checked')){
+                     paramArray["privilegeList[" + index + "].PrivilegeID"] = (typeof (name) != "undefined" ? name : "0");
+                    paramArray["privilegeList[" + index + "].PrivilegeMaster"] = "@Request["privilegeMaster"]";
+                    paramArray["privilegeList[" + index + "].PrivilegeValue"] = "@Request["privilegeValue"]";
+                    paramArray["privilegeList[" + index + "].AccessMaster"] = controlID.split("_")[1];
+                    paramArray["privilegeList[" + index + "].AccessValue"] = controlID.split("_")[0];
+                    paramArray["privilegeList[" + index + "].BranchMember"] = (typeof ($("#DDL_Branch_Member_" + controlID).val()) != 'undefined' ? $("#DDL_Branch_Member_" + controlID).val() : "0");
+                    paramArray["privilegeList[" + index + "].OperationID"] = $("#DDL_Operation_ID_" + controlID).val();
+                    paramArray["privilegeList[" + index + "].ValidFrom"] = $("#TB_From_" + controlID).val();
+                    paramArray["privilegeList[" + index + "].ValidUntil"] = $("#TB_Until_" + controlID).val();
+                    paramArray["privilegeList[" + index + "].IsIdentity"] = ($('#TB_Identity_' + controlID).length > 0 ? $('#TB_Identity_' + controlID).is(':checked') ? "2" : "1" : "0");
+                    paramArray["privilegeList[" + index + "].TranCode"] = $(this).is(':checked')? 1:2;
+                    ++index;
+                }
+            });
+
+            return paramArray;
+        }
+
+
+    function getChecked() {
+        $.ajax({
+            url: "/Privilege/Assign",
+            data: getParams(),
+            type:"POST",
+            dataType: 'json',
+            success: function (data) {
+                com.messagerAlert('@ResDisplay.Tips', data.ErrorMsg, function () {
+                    $("#F_Add").form('clear');
+                    grid.treegrid('load', com.serializeObject($('#F_Search')));
+                    });
+                }
+            });
+        };
+
+    $(function () {
+        grid = $("#Treegrid_Privilege").treegrid({
+            title: '@ResPrivilege.PrivilegeMaster:@Request["privilegeValue"]',
+            url: '/Privilege/GetTreeGrid?privilegeValue=' + "@Request["privilegeValue"]" + "&privilegeMaster=" + "@Request["privilegeMaster"]",
+            striped: true,
+            rownumbers: true,
+            pagination: true,
+            nowrap: true,
+            idField: 'Program_ID',
+            treeField: 'Program_Name',
+            toolbar: '#toolbar',
+            pageSize: 100,
+            pageList:[100,200],
+            frozenColumns: [[{
+                title: '@ResProgram.ProgramID',
+            field: 'Program_ID'
+        }, {
+            title: '@ResProgram.ProgramName',
+                field: 'Program_Name',
+                width: 180,
+                formatter: function (value, rowData, rowIndex) {
+                    if (rowData.Checked != null) {
+                        privilegeID += (privilegeID == "" ? "" : "，") + rowData.Checked;
+                    }
+                    return "<input type='checkbox' class='privilegeCb' id='CB_" + rowData.Program_ID + '_' + rowData.Access_Master + "' " + (rowData.Checked != null ? 'checked' + ' name="' + rowData.Checked + '"' : '') + "/>" + rowData.Program_Name;
+                }
+            }]],
+            columns: [[
+            {
+                title: '@ResPrivilege.AccessMaster',
+            field: 'Access_Master',
+            formatter: function (value) {
+                if (value == 1) {
+                    return "@ResProgram.Program";
+                    } else if ((value == 2)) {
+                        return "@ResButton.Button";
+                } else {
+                    return value;
+                }
+                }
+        }, {
+            title: '@ResOperation.OperationDesc',
+                field: 'Branch_Member',
+                formatter: function (value, rowData, rowIndex) {
+                    var htmlStr = '';
+                    if (rowData.Access_Master == 1) {
+                        htmlStr += '<select name="Branch_Member" id="DDL_Branch_Member_' + rowData.Program_ID + '_' + rowData.Access_Master + '">';
+                        for (var i = 0; i < branchMemberData.length; i++) {
+                            htmlStr += '<option value="' + branchMemberData[i].id + '" ' + (value == branchMemberData[i].id ? "selected" : "") + '>' + branchMemberData[i].text + '</option>';
+                        }
+                        htmlStr += '</select>';
+                    }
+                    return htmlStr;
+                }
+            }, {
+                title: '@ResOperation.OperationDesc',
+                field: 'Operation_ID',
+                formatter: function (value, rowData, rowIndex) {
+                    return '<select name="Operation_ID" id="DDL_Operation_ID_' + rowData.Program_ID + '_' + rowData.Access_Master + '"><option value="1" ' + (rowData.Operation_ID == 1 ? "selected" : "") + '>可操作</option><option value="2" ' + (rowData.Operation_ID == 2 ? "selected" : "") + '>只可见</option><option value="3" ' + (rowData.Operation_ID == 3 ? "selected" : "") + '>不可见</option></select>';
+                }
+            }, {
+                title: '@ResPrivilege.ValidFrom',
+                field: 'Valid_From',
+                formatter: function (value, rowData, rowIndex) {
+                    return '<input type="text" name="Valid_From" value="' + (rowData.Checked != null ? rowData.Valid_From : '1900-01-01') + '" id="TB_From_' + rowData.Program_ID + '_' + rowData.Access_Master + '" readonly="readonly" class="Wdate" onclick="WdatePicker({ maxDate: \'#F{$dp.$D(\\\'TB_Until_' + rowData.Program_ID + '_' + rowData.Access_Master + '\\\')}\' })"  />';
+                }
+            }, {
+                title: '@ResPrivilege.ValidUntil',
+                field: 'Valid_Until',
+                formatter: function (value, rowData, rowIndex) {
+                    return '<input type="text" name="Valid_Until" value="' + (rowData.Checked != null ? rowData.Valid_Until : '2099-12-31') + '" id="TB_Until_' + rowData.Program_ID + '_' + rowData.Access_Master + '" readonly="readonly" class="Wdate" onclick="WdatePicker({ minDate: \'#F{$dp.$D(\\\'TB_From_' + rowData.Program_ID + '_' + rowData.Access_Master + '\\\')}\' })"  />';
+                }
+            }, {
+                title: '@ResPrivilege.Identity',
+                field: 'Is_Identity',
+                formatter: function (value, rowData, rowIndex) {
+                    var htmlStr = '';
+                    if (rowData.Access_Master == 2 && value!=0) {
+                        htmlStr = "<input type='checkbox' id='TB_Identity_" + rowData.Program_ID + '_' + rowData.Access_Master + "' " + (value == 2 ? 'checked' : '') + ' />';
+                    }
+                    return htmlStr;
+                }
+            }]],
+            onBeforeLoad: function (row, param) {
+                return (param.length > 0);
+            }
+
+        });
+        //com.comboboxWithValues("DDL_ParentID", "tbCRM_Parent_Program", false, false, ['1'], undefined);
+        com.combobox("DDL_ParentID", "tbCRM_Parent_Program", false, false);
+        com.enterSubmit(0, 0);
+    });
+    </script>
+</head>
+<body class="easyui-layout" data-options="fit:true,border:false">
+    <div id="toolbar" style="display: none;">
+        <div>
+            <form id="F_Search">
+                <table class="table">
+                    <tr>
+                        <th>@ResProgram.ParentProgramName</th>
+                        <td>
+                            <input type="text" id="DDL_ParentID" name="parentId" />
+                        </td>
+                        <th>@ResProgram.ProgramName</th>
+                        <td>
+                            <input type="text" id="TB_ProgramName" name="Program_Name" />
+                        </td>
+                    </tr>
+                </table>
+            </form>
+        </div>
+        <div>
+            <table>
+                <tr>
+                    <td><a href="javascript:void(0);" class="easyui-linkbutton" data-options="iconCls:'ext-zoom',plain:true" onclick="grid.treegrid('load', com.serializeObject($('#F_Search')));">@ResOperate.Filter</a></td>
+                    <td>
+                        <div class="datagrid-btn-separator"></div>
+                    </td>
+                    <td><a href="javascript:void(0);" class="easyui-linkbutton" data-options="iconCls:'ext-undo',plain:true" onclick="$('#F_Search input').val('');grid.treegrid('load', com.serializeObject($('#F_Search')));">@ResOperate.ReFilter</a></td>
+                    <td>
+                        <div class="datagrid-btn-separator"></div>
+                    </td>
+                    <td><a href="javascript:void(0);" class="easyui-linkbutton" data-options="iconCls:'ext-undo',plain:true" onclick="getChecked();">@ResOperate.Assign </a></td>
+                </tr>
+            </table>
+        </div>
+    </div>
+    <div data-options="region:'center',fit:true,border:false">
+        <table id="Treegrid_Privilege" data-options="fit:true,border:false"></table>
+    </div>
+</body>
+</html>

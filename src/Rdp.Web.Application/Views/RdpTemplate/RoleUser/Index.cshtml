@@ -1,0 +1,141 @@
+﻿@{
+    Page.Title = "在此处显示标题";
+    //Layout = "在此处显示布局页";
+    Layout = "~/Views/RdpTemplate/Shared/_AdminLteWithEasyuiLayout.cshtml";
+}
+@using Resources
+@using Rdp.Service.Dto
+@model RoleUserSearchRequestDto
+<section class="content">
+    <div class="row" id="SearchForm">
+        <form class="form-horizontal" id="F_Search">
+            <div class="col-sm-12">
+                <div class="form-group col-sm-6">
+                    <label class="col-sm-3 control-label">@ResRoleUser.RoleID</label>
+                    <div class="col-sm-9">
+                        @Html.DropDownListFor(
+                               m => m.RoleID,
+                               new DropDownListOption() { RefTable = "tbLOG_Role_Master", OptionLabel = ResMessage.PleaseChoose },
+                               new Dictionary<string, object>(){
+                                   { "id", "RoleID"},
+                                   { "class", "form-control select2"},
+                                   { "data-placeholder",ResMessage.PleaseChoose}
+                               })
+                    </div>
+                </div>
+
+                <div class="form-group  col-sm-6">
+                    <label class="col-sm-3 control-label">@ResRoleUser.UserID</label>
+                    <div class="col-sm-9">
+                        @Html.TextBoxFor(m => m.UserID, new { @class = "form-control", placeholder = @ResRoleUser.UserID })
+                    </div>
+                </div>
+
+            </div>
+        </form>
+    </div>
+
+    <div class="row" id="GirdDiv">
+        <div class="col-sm-12">
+            <div class="btn-group">
+                 @*Html.Action("ProgramButton", "Privilege")*@ @await Component.InvokeAsync("ProgramButton", new { style = "EasyUI" }) 
+            </div>
+        </div>
+
+        <div data-options="region:'center',fit:true,border:false" class="col-sm-12" style="height:100%">
+            <table id="Datagrid_Program" data-options="fit:true,border:false"></table>
+        </div>
+    </div>
+</section>
+
+<script>
+
+    function assign() {
+        var row = grid.datagrid('getSelections');
+        if (row.length > 0) {
+            parent.showNewTab("Web/Privilege/AddPrivilege.aspx?Privilege_Value=" + row[0].Role_ID + "&Privilege_Master=1", "<%=Resources.ResRoleMaster.RoleMaster%><%=Resources.ResOperate.Assign%>", "ext-cog", true);
+        } else {
+            com.messagerAlert(ResDisplay.Result, '<%=Resources.ResMessage.SelectOne%>');
+        };
+    };
+    function add() {
+        com.modalDialog({
+            title: '@ResOperate.Add',
+            url: '/RoleUser/Add',
+            width: 900
+        });
+    }
+
+    function del() {
+        var row = grid.datagrid('getSelections');
+        if (row.length > 0) {
+            com.mvcSubmitWithData("RoleUser", "Delete", { id: row[0].UserRoleID }, null, false);
+        } else {
+            com.messagerAlert(ResDisplay.Result, '@ResMessage.SelectOne');
+        }
+    }
+
+    function update() {
+        var row = grid.datagrid('getSelections');
+        if (row.length > 0) {
+            com.modalDialog({
+                title: '@ResOperate.Update',
+                url: '/RoleUser/Update?id=' + row[0].UserRoleID,
+                width:900
+            });
+        } else {
+            com.messagerAlert(ResDisplay.Result, '@ResMessage.SelectOne');
+        };
+
+    }
+
+    $(function () {
+        $("#GirdDiv").css("height", $(window).outerHeight() - $("#SearchForm").outerHeight() - 50 + "px");
+
+        $(".select2").select2(
+          { allowClear: true }
+        );
+
+            grid = $("#Datagrid_Program").datagrid({
+                title: '',
+                url: '/RoleUser/Search',
+                striped: true,
+                rownumbers: true,
+                pagination: true,
+                singleSelect: true,
+                nowrap: true,
+                pageSize: 20,
+                sortOrder:"asc",
+                sortName:"UserRoleID",
+                frozenColumns: [[{
+                    title: '@ResRoleUser.UserRoleID',
+                    field: 'UserRoleID',
+                    width: '120',
+                    sortable: true
+                }, {
+                    title: '@ResUserMaster.UserID',
+                    width: '120',
+                    field: 'UserID'
+
+                },{
+                    title: '@ResUserMaster.UserName',
+                    field: 'UserName'
+
+                },{
+                    title: '@ResRoleMaster.RoleID',
+                    field: 'RoleID'
+
+                },{
+                    title: '@ResRoleMaster.RoleDesc',
+                    width: '120',
+                    field: 'RoleDesc'
+
+                }]],
+                onBeforeLoad: function (param) {
+                    return (param.length > 0);
+                }
+            });
+            com.enterSubmit(0, 0);
+        });
+
+</script>

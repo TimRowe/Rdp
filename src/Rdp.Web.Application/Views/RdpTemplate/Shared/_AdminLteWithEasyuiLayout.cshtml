@@ -1,0 +1,29 @@
+﻿<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    @{var Page = new { Title = "" };}
+    <title>@Page.Title</title>
+    <!-- Tell the browser to be responsive to screen width -->
+    <meta content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no" name="viewport">
+    <environment names="Development,Staging,Production">
+        <link rel="stylesheet" href="~/Content/site/css/admin_lte_default.min.css" asp-append-version="true" />
+        <link rel="stylesheet" href="~/Content/site/css/easyui_default.min.css" asp-append-version="true" />
+        <link rel="stylesheet" href="~/Content/site/css/default.css" asp-append-version="true" />
+        <script src="~/Content/site/js/admin_lte_default.min.js" asp-append-version="true"></script>
+        <script src="~/Content/site/js/easyui_default.min.js" asp-append-version="true"></script>
+    </environment>
+    <style>
+        body {background-color: #F4F4F4;font-family:"Microsoft YaHei";font-size:14px}
+        label{font-weight:400}
+    </style>
+</head>
+<body class="hold-transition skin-blue-light sidebar-mini">
+    <script>if (typeof (parent.$) != 'undefined' && typeof (parent.$.messager) != 'undefined') parent.$.messager.progress('close');</script>
+    @RenderBody()
+    <mini-profiler max-traces="5" />
+</body>
+</html>
+
+

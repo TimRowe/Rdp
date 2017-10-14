@@ -1,0 +1,178 @@
+﻿@{
+    Page.Title = "在此处显示标题";
+    //Layout = "在此处显示布局页";
+    Layout = "~/Views/RdpTemplate/Shared/_AdminLteWithEasyuiLayout.cshtml";
+}
+@using Resources
+<section class="content">
+    <div class="row" id="SearchForm">
+        <form class="form-horizontal" id="F_Search">
+            <div class="col-sm-12">
+                <div class="form-group col-sm-6">
+                    <label class="col-sm-3 control-label">@ResProgram.ProgramID</label>
+                    <div class="col-sm-9">
+                        <input class="form-control" name="ProgramID" type="text" placeholder="@ResProgram.ProgramID">
+                    </div>
+                </div>
+
+                <div class="form-group  col-sm-6">
+                    <label class="col-sm-3 control-label">@ResProgram.ProgramName</label>
+                    <div class="col-sm-9">
+                        <input class="form-control" id="ProgramName" name="ProgramName" type="text" placeholder="@ResProgram.ProgramName">
+                    </div>
+                </div>
+
+                <div class="form-group  col-sm-6">
+                    <label class="col-sm-3 control-label">@ResProgram.ParentProgramName</label>
+                    <div class="col-sm-9">
+                        @await Component.InvokeAsync("CommonCombo", new
+                                                                {
+                                                                    model = new CommonComboModel
+                                                                    {
+                                                                        id = "ParentID",
+                                                                        name = "ParentID",
+                                                                        refTable = "tbCRM_Parent_Program",
+                                                                        cls = "form-control select2",
+                                                                        comboType = ComboTypeEnum.ACE
+                                                                    },
+                                                                    way = FromWayEnum.FromCodeTable
+                                                                }) 
+
+                        @*Html.Action(
+                        "Create",
+                        "CommonCombo",
+                        new
+                        {
+                            model = new CommonComboModel
+                            {
+                                id = "ParentID",
+                                name = "ParentID",
+                                refTable = "tbCRM_Parent_Program",
+                                cls = "form-control select2",
+                                comboType = ComboTypeEnum.ACE
+                            },
+                            way = FromWayEnum.FromCodeTable
+                        })*@
+                    </div>
+                </div>
+            </div>
+        </form>
+    </div>
+
+    <div class="row" id="GirdDiv">
+        <div class="col-sm-12">
+            <div class="btn-group">
+                 @*Html.Action("ProgramButton", "Privilege")*@ @await Component.InvokeAsync("ProgramButton", new { style = "EasyUI" }) 
+            </div>
+        </div>
+
+        <div data-options="region:'center',fit:true,border:false" class="col-sm-12" style="height:100%">
+            <table id="Datagrid_Program" data-options="fit:true,border:false"></table>
+        </div>
+    </div>
+</section>
+
+
+
+<script>
+    function add() {
+        com.modalDialog({
+            title: '@ResOperate.Add',
+            url: '/Program/Add',
+            width: 900
+        });
+    }
+
+    function del() {
+        var row = grid.datagrid('getSelections');
+        if (row.length > 0) {
+            com.mvcSubmitWithData("Program", "Delete", { id: row[0].ProgramID }, null, false);
+        } else {
+            com.messagerAlert(ResDisplay.Result, '@ResMessage.SelectOne');
+        }
+    }
+
+    function update() {
+        var row = grid.datagrid('getSelections');
+        if (row.length > 0) {
+            com.modalDialog({
+                title: '@ResOperate.Update',
+                url: '/Program/Update?id=' + row[0].ProgramID,
+                width:900
+            });
+        } else {
+            com.messagerAlert(ResDisplay.Result, '@ResMessage.SelectOne');
+        };
+
+    }
+
+    $(function () {
+        $("#GirdDiv").css("height", $(window).outerHeight() - $("#SearchForm").outerHeight() - 50 + "px");
+
+        //区域联动
+        $("#ParentID").select2(
+          { allowClear: true }
+        );
+
+            grid = $("#Datagrid_Program").datagrid({
+                title: '',
+                url: '/Program/Search',
+                striped: true,
+                rownumbers: true,
+                pagination: true,
+                singleSelect: true,
+                nowrap: true,
+                pageSize: 20,
+                sortOrder:"asc",
+                sortName:"ProgramID",
+                frozenColumns: [[{
+                    title: '@ResProgram.ProgramID',
+                    field: 'ProgramID',
+                    width: '80',
+                    sortable: true
+                }, {
+                    title: '@ResProgram.ProgramName',
+                    field: 'ProgramName'
+                }]],
+                columns: [[{
+                    title: '@ResProgram.ParentProgramName',
+                    field: 'ParentName'
+                }, {
+                    title: '@ResProgram.Url',
+                    field: 'Url',
+                    width: '390'
+                }, {
+                    title: '@ResProgram.Icon',
+                    field: 'Icon'
+                }, {
+                    title: '@ResProgram.IsVisible',
+                    field: 'IsVisible',
+                    formatter: function (value) {
+                        if (value == 0) {
+                            return "@ResDisplay.True";
+                        } else {
+                            return "@ResDisplay.False";
+                        }
+                    }
+                }, {
+                    title: '@ResProgram.Priority',
+                    field: 'Priority'
+                }, {
+                    title: '@ResProgram.StatusFlag',
+                    field: 'StatusFlag',
+                    formatter: function (value) {
+                        if (value == 0) {
+                            return "@ResDisplay.True";
+                        } else {
+                            return "@ResDisplay.False";
+                        }
+                    }
+                }]],
+                onBeforeLoad: function (param) {
+                    return (param.length > 0);
+                }
+            });
+            com.enterSubmit(0, 0);
+        });
+
+</script>

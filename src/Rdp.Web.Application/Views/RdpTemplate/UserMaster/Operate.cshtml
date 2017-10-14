@@ -1,0 +1,185 @@
+﻿@{
+    Layout = "~/Views/RdpTemplate/Shared/_AdminLteWithEasyuiLayout.cshtml";
+    Page.Title = (Model != null ? @ResOperate.Update : @ResOperate.Add) + @ResUserMaster.UserMaster;
+}
+@{
+    Object readonlyAttribution = new { @readonly = "readonly", @class = "gray form-control", onkeyup = "this.value=this.value.toUpperCase();" };
+}
+    @using Resources
+
+<!-- Bootstrap time Picker -->
+@*<link rel="stylesheet" href="/Content/AdminLTE/plugins/datepicker/datepicker3.css">*@
+<!-- bootstrap datepicker -->
+@*<script src="/Content/AdminLTE/plugins/datepicker/bootstrap-datepicker.js"></script>*@
+
+<script type="text/javascript">
+    $(function () {
+        com.enterSubmit(0, 0);
+        //$('#datepicker').datepicker({
+        //    autoclose: true
+        //});
+
+        $("#StatusFlag").select2({ allowClear: true });
+        $("#RoleID").select2({ allowClear: true });
+    });
+    function add() {
+        //if (typeof ($("span[name='S_ErrorInfo']").html()) == 'undefined') {
+        //    com.mvcSubmit('UserMaster', 'Add', 'F_Operate');
+        //}
+        if (($("#UserIDTemplate").val() != "0" && $("#UserIDTemplate").val() != "") || $("#RoleID").val() != 0) {
+            com.mvcSubmit('UserMaster', 'Add', 'F_Operate'); 
+        }
+        else {
+            com.messagerAlert(ResDisplay.Tips, '@ResUserMaster.PlearsEnterEquelPrivilegeUserIDOrRoleID');
+        }
+    };
+    function update() {
+        com.mvcSubmit('UserMaster', 'Update', 'F_Operate');
+    };
+</script>
+<style type="text/css">
+    .gray {
+        color: #909090
+    }
+    </style>
+
+@model OperateUserMasterModel
+<section class="content">
+    <div class="row" id="OperateForm">
+        <form class="form-horizontal" id="F_Operate">
+            <div class="col-sm-6">
+                <div class="form-group">
+                    <label class="col-sm-3 control-label">@ResUserMaster.UserID</label>
+                    <div class="col-sm-9">
+                        @Html.TextBoxFor(m => m.UserID, Model !=null? readonlyAttribution : new { @class = "form-control", onkeyup = "this.value=this.value.toUpperCase();" })
+                        <img id="I_User_ID" class="tip_loading" style="display: none;" src="/images/wait.gif" />
+                        @Html.ValidationMessageFor(m => m.UserID)
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label class="col-sm-3 control-label">@ResUserMaster.BranchCode</label>
+                    <div class="col-sm-9">
+                        @Html.TextBoxFor(m => m.BranchCode, new { @class = "form-control" })
+                        @Html.ValidationMessageFor(m => m.BranchCode)
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label class="col-sm-3 control-label">@ResUserMaster.ReaderType</label>
+                    <div class="col-sm-9">
+                        @Html.TextBoxFor(m => m.ReaderType, new { @class = "form-control" })
+                        @Html.ValidationMessageFor(m => m.ReaderType)
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label class="col-sm-3 control-label">@ResUserMaster.IPAddress</label>
+                    <div class="col-sm-9">
+                        @Html.TextBoxFor(m => m.IPAddress, new { @class = "form-control" })
+                        @Html.ValidationMessageFor(m => m.IPAddress)
+                    </div>
+                </div>
+            </div>
+
+            <div class="col-sm-6">
+                <div class="form-group">
+                    <label class="col-sm-3 control-label">@ResUserMaster.UserName</label>
+                    <div class="col-sm-9">
+                        @Html.TextBoxFor(m => m.UserName, new { @class = "form-control" })
+                        @Html.ValidationMessageFor(m => m.UserName)
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label class="col-sm-3 control-label">@ResUserMaster.EmailAdd</label>
+                    <div class="col-sm-9">
+                        @Html.TextBoxFor(m => m.EmailAdd, new { @class = "form-control", onkeyup = "this.value=this.value.toLowerCase();" })
+                        @Html.ValidationMessageFor(m => m.EmailAdd)
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label class="col-sm-3 control-label">@ResUserMaster.StatusFlag</label>
+                    <div class="col-sm-9">
+                        @Html.DropDownListFor(
+                               m => m.StatusFlag,
+                               new DropDownListOption() { RefTable = "Status_Flag", OptionLabel = ResMessage.PleaseChoose },
+                               new Dictionary<string, object>(){
+                                   { "id", "StatusFlag"},
+                                   { "class", "form-control select2"},
+                                   { "data-placeholder",ResMessage.PleaseChoose}
+                               })
+                        @Html.ValidationMessageFor(m => m.StatusFlag)
+                    </div>
+                </div>
+            </div>
+            @if (Model != null)
+            {
+                <div class="col-sm-6">
+                    <div class="form-group date">
+                        <label class="col-sm-3 control-label">@ResUserMaster.PasswordExprityDate</label>
+                        <div class="col-sm-9">
+                            @Html.TextBoxFor(m => m.PasswordExprityDate, new { @class = "form-control", id = "datepicker" })
+                            @Html.ValidationMessageFor(m => m.PasswordExprityDate)
+                        </div>
+                    </div>
+                </div>
+                <div class="col-sm-6">
+                    <div class="form-group">
+                        <label class="col-sm-3 control-label">@ResUserMaster.Password</label>
+                        <div class="col-sm-9">
+                            @Html.TextBoxFor(m => m.Password, new { @class = "form-control" })
+                            @Html.ValidationMessageFor(m => m.Password)
+                        </div>
+                    </div>
+                </div>
+            }
+            else
+            {
+            <div class="form-group">
+                @Html.HiddenFor(m => m.Password,new { Value = "0"})
+            </div>
+            <div class="col-sm-6">
+                <div class="form-group">
+                    <label class="col-sm-3 control-label">@ResUserMaster.EquelPrivilegeUserID</label>
+                    <div class="col-sm-9">
+                        @Html.TextBoxFor(m => m.UserIDTemplate, new { @class = "form-control"@*, onkeyup = "this.value=this.value.toUpperCase();"*@ })
+                        @Html.ValidationMessageFor(m => m.UserIDTemplate)
+                    </div>
+                </div>
+            </div>
+            <div class="col-sm-6">
+                <div class="form-group">
+                    <label class="col-sm-3 control-label">@ResRoleMaster.RoleID</label>
+                    <div class="col-sm-9">
+                        @Html.DropDownListFor(
+                               m => m.RoleID,
+                               new DropDownListOption() { RefTable = "tbLOG_Role_Master", OptionLabel = ResMessage.PleaseChoose },
+                               new Dictionary<string, object>(){
+                                   { "id", "RoleID"},
+                                   { "class", "form-control select2"},
+                                   { "data-placeholder",ResMessage.PleaseChoose}
+                               })
+                        @Html.ValidationMessageFor(m => m.RoleID)
+                    </div>
+                </div>
+            </div>
+            }
+        </form>
+    </div>
+
+
+    <div class="row">
+        <div class="col-sm-12">
+            <div class="btn-group">
+                @if (Model != null)
+                {
+                    <a id="LB_Update" class="btn btn-default" onclick="update();"><i class="fa fa-edit"></i>@ResOperate.Update</a>
+                }
+                else
+                {
+                    <a id="LB_Add" class="btn btn-default" onclick="add();"><i class="fa fa-plus"></i>@ResOperate.Add</a>
+                        <a id="LB_Reset" class="btn btn-default" onclick="$('#F_Operate').form('clear');"><i class="fa fa-trash"></i>@ResOperate.Reset</a>
+                }
+            </div>
+        </div>
+    </div>
+
+</section>
+

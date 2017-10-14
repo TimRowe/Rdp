@@ -1,0 +1,204 @@
+﻿@{
+    Layout = "~/Views/RdpTemplate/Shared/_AdminLteWithEasyuiLayout.cshtml";
+}
+
+@using Resources
+
+
+<!-- Bootstrap time Picker //日期控件有问题-->
+@*<link rel="stylesheet" href="/Content/AdminLTE/plugins/datepicker/datepicker3.css">*@
+<!-- bootstrap datepicker -->
+@*<script src="/Content/AdminLTE/plugins/datepicker/bootstrap-datepicker.js"></script>*@
+
+@model UserMasterSearchModel
+
+<script>
+        function assign() {
+            var row = grid.datagrid('getSelections');
+            if (row.length > 0) {
+                parent.showNewTab("Web/Privilege/AddPrivilege.aspx?Privilege_Value=" + row[0].UserID + "&Privilege_Master=2", "@ResUserMaster.UserMaster@ResOperate.Assign", "ext-cog", true);
+            } else {
+                com.messagerAlert(ResDisplay.Result, '@ResMessage.SelectOne');
+            };
+        };
+        function add() {
+            com.modalDialog({
+                title: '@ResOperate.Add@ResUserMaster.UserMaster',
+                url: '/UserMaster/Add',
+                width: 900
+            });
+        };
+        function update() {
+            var row = grid.datagrid('getSelections');
+            if (row.length > 0) {
+                com.modalDialog({
+                    title: '@ResOperate.Update@ResUserMaster.UserMaster',
+                    url: '/UserMaster/Update?userId=' + row[0].UserID,
+                    width: 900
+                });
+            } else {
+                com.messagerAlert(ResDisplay.Result, '@ResMessage.SelectOne');
+            };
+        };
+        function query() {
+            var row = grid.datagrid('getSelections');
+            if (row.length > 0) {
+                com.modalDialog({
+                    title: '@ResOperate.Query@ResUserMaster.UserMaster',
+                    url: '/Web/UserMaster/QueryUserMaster.aspx?UserID=' + row[0].UserID
+                });
+            } else {
+                com.messagerAlert(ResDisplay.Result, '@ResMessage.SelectOne');
+            };
+        };
+        function batchExport() {
+            //todo完善
+            //com.batchExport('/Ajax/UserMaster/UserMaster.ashx');
+        };
+
+        function formatState(state) {
+            if (!state.id) { return state.text; }
+            var icon_class = "";
+            if (state.id == 0)
+                icon_class = "fa fa-user";
+            else if (state.id == 1)
+                icon_class = "fa fa-pencil-square-o";
+            else if (state.id == 3)
+                icon_class = "fa fa-credit-card";
+            var $state = $(
+                '<i class="' + icon_class+'" /> ' + state.text + '</i>'
+            );
+            return $state;
+        };
+        var grid;
+        $(function () {
+            $("#ReaderType").select2({ templateResult: formatState});
+
+            $("#GirdDiv").css("height", $(window).outerHeight() - $("#SearchForm").outerHeight() - 50 + "px");
+            //日期控件有问题
+            //$('#PasswordExprityDate,#PasswordExprityDateTo').datepicker({
+            //    autoclose: true
+            //});
+            grid = $("#Datagrid_UserMaster").datagrid({
+                title: '',
+                url: '/UserMaster/Search',
+                striped: true,
+                rownumbers: true,
+                pagination: true,
+                singleSelect: true,
+                idField: 'UserID',
+                sortName: 'UserID',
+                sortOrder: 'asc',
+                nowrap: true,
+                toolbar: '#toolbar',
+                frozenColumns: [[{
+                    title: '@ResUserMaster.UserID',
+                    field: 'UserID',
+                    width: '80',
+                    sortable: true
+                }, {
+                    title: '@ResUserMaster.UserName',
+                    field: 'UserName'
+                }]],
+                columns: [[{
+                    title: '@ResUserMaster.Password',
+                    field: 'Password'
+                }, {
+                    title: '@ResUserMaster.BranchCode',
+                    field: 'BranchCode'
+                }, {
+                    title: '@ResUserMaster.IPAddress',
+                    field: 'IPAddress'
+                }, {
+                    title: '@ResUserMaster.ReaderType',
+                    field: 'ReaderType'
+                }, {
+                    title: '@ResUserMaster.EmailAdd',
+			        field: 'EmailAdd'
+			    }, {
+			        title: '@ResUserMaster.PasswordExprityDate',
+				    field: 'PasswordExprityDate'
+				}, {
+				    title: '@ResUserMaster.StatusFlag',
+                    field: 'StatusFlag',
+                    formatter: function (value) {
+                        if (value == 0) {
+                            return "@ResDisplay.True";
+                        } else {
+                            return "@ResDisplay.False";
+                        }
+                    }
+				}]],
+                onBeforeLoad: function (param) {
+                    return (param.length > 0);
+                }
+            });
+
+            com.enterSubmit(0, 0);
+        });
+</script>
+<section class="content">
+    <div class="row" id="SearchForm">
+        <form class="form-horizontal" id="F_Search">
+            <div class="col-sm-12">
+                <div class="form-group col-sm-6">
+                    <label class="col-sm-3 control-label">@ResUserMaster.PasswordExprityDate</label>
+                    <div class="col-sm-9">
+                        @Html.TextBoxFor(m => m.PasswordExprityDate, new { @class = "form-control date" })
+                    </div>
+                </div>
+                <div class="form-group col-sm-6">
+                    <label class="col-sm-3 control-label">@ResDisplay.EndTo</label>
+                    <div class="col-sm-9">
+                        @Html.TextBoxFor(m => m.PasswordExprityDateTo, new { @class = "form-control date" })
+                    </div>
+                </div>
+                <div class="form-group col-sm-6">
+                    <label class="col-sm-3 control-label">@ResUserMaster.UserID</label>
+                    <div class="col-sm-9">
+                        @Html.TextBoxFor(m => m.UserID, new { @class = "form-control" })
+                    </div>
+                </div>
+                <div class="form-group col-sm-6">
+                    <label class="col-sm-3 control-label">@ResUserMaster.BranchCode</label>
+                    <div class="col-sm-9">
+                        @Html.TextBoxFor(m => m.BranchCode, new { @class = "form-control" })
+                    </div>
+                </div>
+                <div class="form-group col-sm-6">
+                    <label class="col-sm-3 control-label">@ResUserMaster.ReaderType</label>
+                    <div class="col-sm-9">
+                        @Html.DropDownListFor(
+                               m => m.ReaderType,
+                               new DropDownListOption() { RefTable = "Reader_Type", OptionLabel = ResMessage.PleaseChoose },
+                               new Dictionary<string, object>(){
+                                   { "id", "ReaderType"},
+                                   { "class", "form-control select2"},
+                                   { "data-placeholder",ResMessage.PleaseChoose}
+                               })
+                        
+                    </div>
+                </div>
+
+
+            </div>
+        </form>
+    </div>
+
+    <div class="row" id="GirdDiv">
+        <div class="col-sm-12">
+            @*<div class="btn-group">
+                <a onclick="com.filter();" class="btn btn-default"><i class="fa fa-search"></i> @ResOperate.Filter</a>
+                <a onclick="add();" class="btn btn-default"><i class="fa fa-plus"></i> @ResOperate.Add</a>
+                <a onclick="update();" class="btn btn-default"><i class="fa fa-edit"></i> @ResOperate.Update</a>
+            </div>*@
+            <div class="btn-group">
+                 @*Html.Action("ProgramButton", "Privilege")*@ @await Component.InvokeAsync("ProgramButton", new { style = "EasyUI" }) 
+            </div>
+        </div>
+
+        <div data-options="region:'center',fit:true,border:false" class="col-sm-12" style="height:100%">
+            <table id="Datagrid_UserMaster" data-options="fit:true,border:false"></table>
+        </div>
+    </div>
+</section>

@@ -1,0 +1,156 @@
+﻿@using Resources
+
+@{
+    Page.Title = Model != null ? @ResOperate.Update : @ResOperate.Add;
+    Layout = "~/Views/RdpTemplate/Shared/_AdminLteWithEasyuiLayout.cshtml";
+}
+@using Rdp.Data.Entity
+@model ProgramButtonAddModel
+
+<!-- Bootstrap-Iconpicker -->
+<link rel="stylesheet" href="/Content/bootstrap-iconpicker-master/bootstrap-iconpicker/css/bootstrap-iconpicker.min.css" />
+<!-- Bootstrap-Iconpicker Iconset for Font Awesome -->
+<script type="text/javascript" src="/Content/bootstrap-iconpicker-master/bootstrap-iconpicker/js/iconset/iconset-fontawesome-4.2.0.min.js"></script>
+<!-- Bootstrap-Iconpicker -->
+<script type="text/javascript" src="/Content/bootstrap-iconpicker-master/bootstrap-iconpicker/js/bootstrap-iconpicker.min.js"></script>
+
+<section class="content">
+    <div class="row" id="SearchForm">
+        <form class="form-horizontal" id="F_Search">
+            <div class="col-sm-12">
+                <div class="form-group col-sm-6">
+                    <label class="col-sm-4 control-label">@ResProgram.ParentID</label>
+                    <div class="col-sm-8">
+                        @Html.DropDownListFor(m =>m.ParentProgramID,
+                            new DropDownListOption() {
+                                RefTable = "tbCRM_Parent_Program",
+                                OptionLabel = ResMessage.PleaseChoose,
+                                SelectValue = Model != null? Model.ParentProgramID.ToString() : null
+                                },
+                        new Dictionary<string, object>(){
+                                   { "id", "ParentProgramID"},
+                                   {"name", "ParentProgramID" },
+                                   { "class", "form-control select2"},
+                                   { "data-placeholder",ResMessage.PleaseChoose}
+                        })
+                    </div>
+                </div>
+
+                <div class="form-group col-sm-6">
+                    <label class="col-sm-4 control-label">@ResProgramButton.ProgramID</label>
+                    <div class="col-sm-8">
+                        @{
+                            var list = new List<SelectListItem>(){};
+                            
+                         }
+                       @Html.DropDownListFor(
+                                m => m.ProgramID, list, 
+                                new Dictionary<string, object>(){
+                                            { "id", "ProgramID"},
+                                            { "class", "form-control select2"},
+                                            { "data-placeholder",ResMessage.PleaseChoose}
+                                    })
+                        @Html.ValidationMessageFor(m => m.ProgramID)
+                        
+                    </div>
+                </div>
+
+                <div class="form-group col-sm-6">
+                    <label class="col-sm-4 control-label">@ResProgramButton.ButtonID</label>
+                    <div class="col-sm-8">
+                        @Html.DropDownListFor(
+                               m => m.ButtonID,
+                               new DropDownListOption() { RefTable = "tbLOG_Button", OptionLabel = ResMessage.PleaseChoose },
+                               new Dictionary<string, object>(){
+                                   { "id", "ButtonID"},
+                                   { "class", "form-control select2"},
+                                   { "data-placeholder",ResMessage.PleaseChoose}
+                               })
+                        @Html.ValidationMessageFor(m => m.ButtonID)
+                    </div>
+                </div>
+
+                <div class="form-group col-sm-6">
+                    <label class="col-sm-4 control-label">@ResProgramButton.Url</label>
+                    <div class="col-sm-8">
+                        @Html.TextBoxFor(m => m.Url, new { @class = "form-control", placeholder = @ResProgramButton.Url })
+                        @Html.ValidationMessageFor(m => m.Url)
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    @Html.HiddenFor(m => m.ProgramButtonID)
+                </div>
+
+            </div>
+            
+        </form>
+    </div>
+
+    <div class="row">
+        <div class="col-sm-12">
+            <div class="btn-group">
+                <a id="BtnSumbit"  class="btn btn-default"><i class="fa @(Model != null?"fa-edit":"fa-plus")"></i>
+                @(Model != null?@ResOperate.Update:@ResOperate.Add)
+                </a>
+            </div>
+        </div>
+    </div>
+</section>
+
+<script>
+    $(function () {
+        $("#BtnSumbit").click(function () {
+            com.mvcSubmit('ProgramButton', '@(Model==null?"Add":"Update")', 'F_Search', function(data) {
+                if (data.ErrorNo == 0 && @Html.Raw(Model == null ? "true" : "false"))
+                {
+                    document.getElementById("F_Search").reset();
+                }
+            });
+        });
+    
+        var loadProgram = function () {
+            $.get('/Program/List',
+                { parentId: $("#ParentProgramID").select2('val') },
+                function (data) {
+                    var data1 = [];
+                    $.each(data, function (index, value, array) {
+                        data1.push({ id: value.ProgramID, text: value.ProgramName });
+                    });
+                    $("#ProgramID").select2("destroy");
+                    $("#ProgramID").html("<option><option>");
+                    $("#ProgramID").select2({ allowClear: true, data: data1, language: "zh-CN" });
+
+                     @if(Model != null)
+                    {
+                    <text>$('#ProgramID').val('@Model.ProgramID').trigger('change');</text>
+                    }
+                },
+                'json');
+        };
+
+
+        //下拉框绑定
+        $("#ParentProgramID").select2({ allowClear: true }).on('change', function (evt) {
+            loadProgram();
+        });
+
+        $("#ProgramID").select2({ allowClear: true });
+        $("#ButtonID").select2({ allowClear: true });
+
+         @if(Model != null)
+        {
+        <text>loadProgram();</text>
+        }
+
+        //图标选择器绑定
+        $('#SelectIcon').iconpicker({
+            arrowPrevIconClass: 'fa fa-arrow-left',
+            arrowNextIconClass: 'fa fa-arrow-right',
+            iconset: 'fontawesome'
+        }).on('change', function (e) {
+            $('#ButtonIcon').val(e.icon);
+        });
+    });
+
+</script>

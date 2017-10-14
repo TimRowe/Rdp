@@ -1,0 +1,88 @@
+﻿@using Resources
+
+@{
+    Page.Title = Model != null ? @ResOperate.Update : @ResOperate.Add;
+    Layout = "~/Views/RdpTemplate/Shared/_AdminLteWithEasyuiLayout.cshtml";
+}
+@using Rdp.Data.Entity
+@model RoleUserAddModel
+
+<!-- Bootstrap-Iconpicker -->
+<link rel="stylesheet" href="/Content/bootstrap-iconpicker-master/bootstrap-iconpicker/css/bootstrap-iconpicker.min.css" />
+<!-- Bootstrap-Iconpicker Iconset for Font Awesome -->
+<script type="text/javascript" src="/Content/bootstrap-iconpicker-master/bootstrap-iconpicker/js/iconset/iconset-fontawesome-4.2.0.min.js"></script>
+<!-- Bootstrap-Iconpicker -->
+<script type="text/javascript" src="/Content/bootstrap-iconpicker-master/bootstrap-iconpicker/js/bootstrap-iconpicker.min.js"></script>
+
+<section class="content">
+    <div class="row" id="SearchForm">
+        <form class="form-horizontal" id="F_Search">
+            <div class="col-sm-12">
+                
+                <div class="form-group col-sm-6">
+                    <label class="col-sm-3 control-label">@ResRoleUser.UserID</label>
+                    <div class="col-sm-9">
+                        @Html.TextBoxFor(m => m.UserID, new { @class = "form-control", placeholder = @ResRoleUser.UserID })
+                        @Html.ValidationMessageFor(m => m.UserID)
+                    </div>
+                </div>
+
+                <div class="form-group col-sm-6">
+                    <label class="col-sm-3 control-label">@ResRoleUser.RoleID</label>
+                    <div class="col-sm-9">
+                        @Html.DropDownListFor(
+                               m => m.RoleID,
+                               new DropDownListOption() { RefTable = "tbLOG_Role_Master" },
+                               new Dictionary<string, object>(){
+                                   { "class", "form-control select2"},
+                                   { "data-placeholder",ResMessage.PleaseChoose}
+                               })
+                        
+                        @Html.ValidationMessageFor(m => m.RoleID)
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    @Html.HiddenFor(m => m.UserRoleID)
+                </div>
+
+            </div>
+            
+        </form>
+    </div>
+
+    <div class="row">
+        <div class="col-sm-12">
+            <div class="btn-group">
+                <a id="BtnSumbit"  class="btn btn-default"><i class="fa @(Model != null?"fa-edit":"fa-plus")"></i>
+                @(Model != null?@ResOperate.Update:@ResOperate.Add)
+                </a>
+            </div>
+        </div>
+    </div>
+</section>
+
+<script>
+    $(function () {
+        $("#BtnSumbit").click(function () {
+            com.mvcSubmit('RoleUser', '@(Model==null?"Add":"Update")', 'F_Search', function(data) {
+                if (data.ErrorNo == 0 && @(Model==null?"true":"false")) {
+                    document.getElementById("F_Search").reset();
+                }
+            });
+        });
+
+        //下拉框绑定
+        $(".select2").select2({ allowClear: true});
+      
+        //图标选择器绑定
+        $('#SelectIcon').iconpicker({
+            arrowPrevIconClass: 'fa fa-arrow-left',
+            arrowNextIconClass: 'fa fa-arrow-right',
+            iconset: 'fontawesome'
+        }).on('change', function (e) {
+            $('#ButtonIcon').val(e.icon);
+        });
+    });
+
+</script>

@@ -1,0 +1,167 @@
+﻿@{
+    Page.Title = "在此处显示标题";
+    //Layout = "在此处显示布局页";
+    Layout = "~/Views/RdpTemplate/Shared/_AdminLteWithEasyuiLayout.cshtml";
+}
+@using Resources
+@using Rdp.Service.Dto
+@model ButtonSearchRequestDto
+<section class="content">
+    <div class="row" id="SearchForm">
+        <form class="form-horizontal" id="F_Search">
+            <div class="col-sm-12">
+                <div class="form-group col-sm-6">
+                    <label class="col-sm-3 control-label">@ResButton.ButtonID</label>
+                    <div class="col-sm-9">
+                        @Html.TextBoxFor(m=>m.ButtonID, new {@class= "form-control",placeholder= @ResButton.ButtonID })
+                    </div>
+                </div>
+
+                <div class="form-group  col-sm-6">
+                    <label class="col-sm-3 control-label">@ResButton.ButtonName</label>
+                    <div class="col-sm-9">
+                        @Html.TextBoxFor(m => m.ButtonName, new { @class = "form-control", placeholder = @ResButton.ButtonName })
+                    </div>
+                </div>
+
+                <div class="form-group  col-sm-6">
+                    <label class="col-sm-3 control-label">@ResButton.ButtonText</label>
+                    <div class="col-sm-9">
+                        @Html.TextBoxFor(m => m.ButtonText, new { @class = "form-control", placeholder = @ResButton.ButtonText })
+                    </div>
+                </div>
+
+                <div class="form-group  col-sm-6">
+                    <label class="col-sm-3 control-label">@ResButton.StatusFlag</label>
+                    <div class="col-sm-9">
+                        @Html.DropDownListFor(
+                               m => m.StatusFlag,
+                               new DropDownListOption() { RefTable = "Status_Flag", OptionLabel = ResMessage.PleaseChoose },
+                               new Dictionary<string, object>(){
+                                   { "id", "StatusFlag"},
+                                   { "class", "form-control select2"},
+                                   { "data-placeholder",ResMessage.PleaseChoose}
+                               })
+                    </div>
+                </div>
+            </div>
+        </form>
+    </div>
+
+    <div class="row" id="GirdDiv">
+        <div class="col-sm-12">
+              @*Html.Action("ProgramButton", "Privilege")*@ @await Component.InvokeAsync("ProgramButton", new { style = "EasyUI" }) 
+        </div>
+
+        <div data-options="region:'center',fit:true,border:false" class="col-sm-12" style="height:100%">
+            <table id="Datagrid_Program" data-options="fit:true,border:false"></table>
+        </div>
+    </div>
+</section>
+
+<script>
+    function add() {
+        com.modalDialog({
+            title: '@ResOperate.Add',
+            url: '/Button/Add',
+            width: 900
+        });
+    }
+
+    function del() {
+        var row = grid.datagrid('getSelections');
+        if (row.length > 0) {
+            com.mvcSubmitWithData("Button", "Delete", { id: row[0].ButtonID }, null, false);
+        } else {
+            com.messagerAlert(ResDisplay.Result, '@ResMessage.SelectOne');
+        }
+    }
+
+    function update() {
+        var row = grid.datagrid('getSelections');
+        if (row.length > 0) {
+            com.modalDialog({
+                title: '@ResOperate.Update',
+                url: '/Button/Update?id=' + row[0].ButtonID,
+                width:900
+            });
+        } else {
+            com.messagerAlert(ResDisplay.Result, '@ResMessage.SelectOne');
+        };
+
+    }
+
+    $(function () {
+        $("#GirdDiv").css("height", $(window).outerHeight() - $("#SearchForm").outerHeight() - 50 + "px");
+
+        $(".select2").select2(
+          { allowClear: true }
+        );
+
+            grid = $("#Datagrid_Program").datagrid({
+                title: '',
+                url: '/Button/Search',
+                striped: true,
+                rownumbers: true,
+                pagination: true,
+                singleSelect: true,
+                nowrap: true,
+                pageSize: 20,
+                sortOrder:"asc",
+                sortName:"ButtonID",
+                frozenColumns: [[{
+                    title: '@ResButton.ButtonID',
+                    field: 'ButtonID',
+                    width: '80',
+                    sortable: true
+                }, {
+                    title: '@ResButton.ButtonName',
+                    field: 'ButtonName'
+                }]],
+                columns: [[{
+                    title: '@ResButton.ButtonText',
+                    field: 'ButtonText'
+                }, {
+                    title: '@ResButton.ButtonClass',
+                    field: 'ButtonClass'
+                }, {
+                    title: '@ResButton.ButtonIcon',
+                    field: 'ButtonIcon',
+                    formatter: function (value) {
+                        //兼容easyui图标
+                        if (value.indexOf("ext") != -1) {
+                            return "<span class=\"l-btn-left l-btn-icon-left\"><span class=\"l-btn-text\"></span><span class=\"l-btn-icon " + value + "\"></span></span>" + value
+                        }
+                        else
+                            return "<div><i class=\"fa " + value+ "\"></i>" + value + "</div>";
+                    }
+                },
+                {
+                    title: '@ResButton.ButtonScript',
+                    field: 'ButtonScript'
+                },
+                {
+                    title: '@ResButton.ButtonHref',
+                    field: 'ButtonHref'
+                }, {
+                    title: '@ResButton.Priority',
+                    field: 'Priority'
+                }, {
+                    title: '@ResButton.StatusFlag',
+                    field: 'StatusFlag',
+                    formatter: function (value) {
+                        if (value == 0) {
+                            return "@ResDisplay.True";
+                        } else {
+                            return "@ResDisplay.False";
+                        }
+                    }
+                }]],
+                onBeforeLoad: function (param) {
+                    return (param.length > 0);
+                }
+            });
+            com.enterSubmit(0, 0);
+        });
+
+</script>

@@ -1,0 +1,170 @@
+﻿body {
+    background: #f5f5f5;
+  
+    font-family: "Microsoft YaHei";
+    font-size: 14px
+}
+
+.panel-body {
+    /*background: #f5f5f5;*/
+    font-weight: normal;
+    font-family: "Microsoft YaHei";
+}
+
+.panel-header .subNav a :hover {
+    font-size: 18px;
+    font-weight: bold;
+    color: #A7173B;
+}
+.table {
+    font-size: 13px;
+    margin: 10px;
+    width: 700px;
+    
+    font-family: "微软雅黑","Open Sans", "Helvetica Neue", helvetica, arial, verdana, sans-serif,Tahoma,Verdana;
+}
+    .table tr {
+        height:21px
+    }
+
+.table td {
+    text-align: left;
+    width: 250px;
+    
+}
+
+
+.table td .easyui-validatebox{
+    border: 1px solid #D6D6D6;
+    
+    
+}
+
+.textbox{
+    border-radius:0px 0px 0px 0px
+}
+
+.table .button {
+    text-align: center;
+    width:700px;
+}
+.table th {
+    /*background: #F8F8F8;*/
+    text-align: right;
+    font-weight: normal;
+    width: 150px;
+}
+
+
+.textArea {
+    overflow: auto;
+    width: 153px;
+    height: 50px;
+}
+
+
+.form input[type='checkbox'], .form input[type='radio'] {
+    width: 20px;
+}
+
+fieldset {
+    border: solid 1px #D7D5D6;
+    margin-top: 10px;
+}
+
+    fieldset legend {
+        font: 14px/1.8 Arial,Helvetica,sans-serif;
+        font-family: "黑体";
+    }
+
+
+.mbx {
+    height: 14px;
+    font-weight: bold;
+    color: #999;
+    border-bottom: 1px #999 dotted;
+    padding: 0px 0px 3px 0px;
+}
+
+.iconImg {
+    width: 15px;
+    height: 13px;
+    cursor: pointer;
+}
+
+.tip_loading {
+    height: 14px;
+    width: 14px;
+}
+/*大写转换*/
+.uppercase {
+    text-transform: uppercase;
+}
+/*小写转换*/
+.lowercase {
+    text-transform: lowercase;
+}
+
+/*蓝色边框, add by LT 2015-5-13*/
+.easyui-textbox,.easyui-numberbox, .numberbox-f{
+    border : 1px solid #95B8E7;
+    height:22px
+    
+}
+
+
+:not(.datagrid-cell,.fa) {
+    font-family: "微软雅黑","Open Sans", "Helvetica Neue", helvetica, arial, verdana, sans-serif,Tahoma,Verdana;
+}
+
+
+/*table td input{width: 150px}*/
+
+.datagrid-cell {
+    font-size: 13px;
+    font-family: "Microsoft YaHei";
+}
+.datagrid-header .datagrid-cell span {
+    font-size: 13px;
+    color:black;
+    
+    
+}
+
+
+/*细节表格*/
+.detailTable {
+    border-collapse: collapse;
+    border-spacing: 0;
+    font-size: 13px;
+}
+
+    .detailTable td input[type='text'], .detailTable td textarea {
+        border-width: 0px;
+        background-color: #FAFAFA;
+        color: black;
+    }
+
+    .detailTable th, .detailTable td {
+        border: 1px solid #8CACBB;
+        padding: 0.3em 0.7em;
+        text-align: left;
+        font-weight: normal;
+        position:static;
+    }
+
+.textbox{
+    height:23px
+}
+
+.tree-title {
+    font-size: 13px;
+}
+
+.combobox-item, .combobox-group, .combobox-stick{
+    font-size: 13px;
+}
+
+.l-btn-icon {
+    font-size: 12px;
+}

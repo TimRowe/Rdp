@@ -1,0 +1,147 @@
+﻿@{
+    Page.Title = "在此处显示标题";
+    //Layout = "在此处显示布局页";
+    Layout = "~/Views/RdpTemplate/Shared/_AdminLteWithEasyuiLayout.cshtml";
+}
+@using Resources
+@using Rdp.Service.Dto
+@model ProgramButtonSearchRequestDto
+<section class="content">
+    <div class="row" id="SearchForm">
+        <form class="form-horizontal" id="F_Search">
+            <div class="col-sm-12">
+
+                <div class="form-group  col-sm-6">
+                    <label class="col-sm-3 control-label">@ResProgramButton.ProgramButtonID</label>
+                    <div class="col-sm-9">
+                        @Html.TextBoxFor(m => m.ProgramButtonID, new { @class = "form-control", placeholder = @ResProgramButton.ProgramButtonID })
+                    </div>
+                </div>
+
+                <div class="form-group  col-sm-6">
+                    <label class="col-sm-3 control-label">@ResProgramButton.ProgramID</label>
+                    <div class="col-sm-9">
+                        @Html.DropDownListFor(
+                               m => m.ProgramID,
+                               new DropDownListOption() {
+                                   RefTable = "tbLOG_Program",
+                                   OptionLabel = ResMessage.PleaseChoose,                                   
+                               },
+                               new Dictionary<string, object>(){
+                                   { "class", "form-control select2"},
+                                   { "data-placeholder",ResMessage.PleaseChoose}
+                               })
+                    </div>
+                </div>
+
+                <div class="form-group  col-sm-6">
+                    <label class="col-sm-3 control-label">@ResProgramButton.ButtonID</label>
+                    <div class="col-sm-9">
+                        @Html.DropDownListFor(
+                               m => m.ButtonID,
+                               new DropDownListOption() { RefTable = "tbLOG_Button", OptionLabel = ResMessage.PleaseChoose },
+                               new Dictionary<string, object>(){
+                                   { "class", "form-control select2"},
+                                   { "data-placeholder",ResMessage.PleaseChoose}
+                               })
+                    </div>
+                </div>
+
+
+            </div>
+        </form>
+    </div>
+
+    <div class="row" id="GirdDiv">
+        <div class="col-sm-12">
+             @*Html.Action("ProgramButton", "Privilege")*@ @await Component.InvokeAsync("ProgramButton", new { style = "EasyUI" }) 
+        </div>
+
+        <div data-options="region:'center',fit:true,border:false" class="col-sm-12" style="height:100%">
+            <table id="Datagrid_Program" data-options="fit:true,border:false"></table>
+        </div>
+    </div>
+</section>
+
+<script>
+    function add() {
+        com.modalDialog({
+            title: '@ResOperate.Add',
+            url: '/ProgramButton/Add',
+            width: 900
+        });
+    }
+
+    function del() {
+        var row = grid.datagrid('getSelections');
+        if (row.length > 0) {
+            com.mvcSubmitWithData("ProgramButton", "Delete", { id: row[0].ProgramButtonID }, null, false);
+        } else {
+            com.messagerAlert(ResDisplay.Result, '@ResMessage.SelectOne');
+        }
+    }
+
+    function update() {
+        var row = grid.datagrid('getSelections');
+        if (row.length > 0) {
+            com.modalDialog({
+                title: '@ResOperate.Update',
+                url: '/ProgramButton/Update?id=' + row[0].ProgramButtonID,
+                width:900
+            });
+        } else {
+            com.messagerAlert(ResDisplay.Result, '@ResMessage.SelectOne');
+        };
+
+    }
+
+    $(function () {
+        $("#GirdDiv").css("height", $(window).outerHeight() - $("#SearchForm").outerHeight() - 50 + "px");
+
+        $(".select2").select2(
+          { allowClear: true }
+        );
+
+            grid = $("#Datagrid_Program").datagrid({
+                title: '',
+                url: '/ProgramButton/Search',
+                striped: true,
+                rownumbers: true,
+                pagination: true,
+                singleSelect: true,
+                nowrap: true,
+                pageSize: 20,
+                sortOrder:"asc",
+                sortName:"ProgramButtonID",
+                frozenColumns: [[{
+                    title: '@ResProgramButton.ProgramButtonID',
+                    field: 'ProgramButtonID',
+                    width: '150',
+                    sortable: true
+                }, {
+                    title: '@ResProgramButton.ProgramID',
+                    field: 'ProgramName',
+                    width: '200',
+                    formatter: function (value, row, index) {
+                        return "(" + row.ProgramID + ")" + value;
+                    }
+                }]],
+                columns: [[{
+                    title: '@ResProgramButton.ButtonID',
+                    width: '200',
+                    field: 'ButtonText',
+                    formatter: function (value, row, index) {
+                        return "(" + row.ButtonID + ")" + value;
+                    }
+                }, {
+                    title: '@ResProgramButton.Url',
+                    field: 'Url'
+                }]],
+                onBeforeLoad: function (param) {
+                    return (param.length > 0);
+                }
+            });
+            com.enterSubmit(0, 0);
+        });
+
+</script>

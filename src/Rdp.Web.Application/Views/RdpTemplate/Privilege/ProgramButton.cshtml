@@ -1,0 +1,24 @@
+﻿@using Rdp.Data.Entity
+@model List<Button>
+@if (ViewBag.style != null && ViewBag.style == "EasyUI")
+{
+    <table>
+        <tr>
+            @foreach (var item in Model)
+            {
+                <td><a href="@item.ButtonHref" class="@item.ButtonClass" id="@item.ButtonName" data-options="iconCls:'@item.ButtonIcon',plain:true" onclick="@item.ButtonScript">@item.ButtonText</a></td>
+                <td><div class="datagrid-btn-separator"></div></td>
+            }
+        </tr>
+    </table>
+}
+else
+{
+    <div class="btn-group">
+        @foreach (var item in Model)
+        {
+            <a onclick="@item.ButtonScript" class="btn btn-default"><i class="@item.ButtonIcon.Replace("ext","fa")"></i> @item.ButtonText</a>
+        }
+    </div>
+}
+

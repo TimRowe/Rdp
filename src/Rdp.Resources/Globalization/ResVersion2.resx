@@ -1,0 +1,240 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<root>
+  <!-- 
+    Microsoft ResX Schema 
+    
+    Version 2.0
+    
+    The primary goals of this format is to allow a simple XML format 
+    that is mostly human readable. The generation and parsing of the 
+    various data types are done through the TypeConverter classes 
+    associated with the data types.
+    
+    Example:
+    
+    ... ado.net/XML headers & schema ...
+    <resheader name="resmimetype">text/microsoft-resx</resheader>
+    <resheader name="version">2.0</resheader>
+    <resheader name="reader">System.Resources.ResXResourceReader, System.Windows.Forms, ...</resheader>
+    <resheader name="writer">System.Resources.ResXResourceWriter, System.Windows.Forms, ...</resheader>
+    <data name="Name1"><value>this is my long string</value><comment>this is a comment</comment></data>
+    <data name="Color1" type="System.Drawing.Color, System.Drawing">Blue</data>
+    <data name="Bitmap1" mimetype="application/x-microsoft.net.object.binary.base64">
+        <value>[base64 mime encoded serialized .NET Framework object]</value>
+    </data>
+    <data name="Icon1" type="System.Drawing.Icon, System.Drawing" mimetype="application/x-microsoft.net.object.bytearray.base64">
+        <value>[base64 mime encoded string representing a byte array form of the .NET Framework object]</value>
+        <comment>This is a comment</comment>
+    </data>
+                
+    There are any number of "resheader" rows that contain simple 
+    name/value pairs.
+    
+    Each data row contains a name, and value. The row also contains a 
+    type or mimetype. Type corresponds to a .NET class that support 
+    text/value conversion through the TypeConverter architecture. 
+    Classes that don't support this are serialized and stored with the 
+    mimetype set.
+    
+    The mimetype is used for serialized objects, and tells the 
+    ResXResourceReader how to depersist the object. This is currently not 
+    extensible. For a given mimetype the value must be set accordingly:
+    
+    Note - application/x-microsoft.net.object.binary.base64 is the format 
+    that the ResXResourceWriter will generate, however the reader can 
+    read any of the formats listed below.
+    
+    mimetype: application/x-microsoft.net.object.binary.base64
+    value   : The object must be serialized with 
+            : System.Runtime.Serialization.Formatters.Binary.BinaryFormatter
+            : and then encoded with base64 encoding.
+    
+    mimetype: application/x-microsoft.net.object.soap.base64
+    value   : The object must be serialized with 
+            : System.Runtime.Serialization.Formatters.Soap.SoapFormatter
+            : and then encoded with base64 encoding.
+
+    mimetype: application/x-microsoft.net.object.bytearray.base64
+    value   : The object must be serialized into a byte array 
+            : using a System.ComponentModel.TypeConverter
+            : and then encoded with base64 encoding.
+    -->
+  <xsd:schema id="root" xmlns="" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:msdata="urn:schemas-microsoft-com:xml-msdata">
+    <xsd:import namespace="http://www.w3.org/XML/1998/namespace" />
+    <xsd:element name="root" msdata:IsDataSet="true">
+      <xsd:complexType>
+        <xsd:choice maxOccurs="unbounded">
+          <xsd:element name="metadata">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" />
+              </xsd:sequence>
+              <xsd:attribute name="name" use="required" type="xsd:string" />
+              <xsd:attribute name="type" type="xsd:string" />
+              <xsd:attribute name="mimetype" type="xsd:string" />
+              <xsd:attribute ref="xml:space" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="assembly">
+            <xsd:complexType>
+              <xsd:attribute name="alias" type="xsd:string" />
+              <xsd:attribute name="name" type="xsd:string" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="data">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" msdata:Ordinal="1" />
+                <xsd:element name="comment" type="xsd:string" minOccurs="0" msdata:Ordinal="2" />
+              </xsd:sequence>
+              <xsd:attribute name="name" type="xsd:string" use="required" msdata:Ordinal="1" />
+              <xsd:attribute name="type" type="xsd:string" msdata:Ordinal="3" />
+              <xsd:attribute name="mimetype" type="xsd:string" msdata:Ordinal="4" />
+              <xsd:attribute ref="xml:space" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="resheader">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" msdata:Ordinal="1" />
+              </xsd:sequence>
+              <xsd:attribute name="name" type="xsd:string" use="required" />
+            </xsd:complexType>
+          </xsd:element>
+        </xsd:choice>
+      </xsd:complexType>
+    </xsd:element>
+  </xsd:schema>
+  <resheader name="resmimetype">
+    <value>text/microsoft-resx</value>
+  </resheader>
+  <resheader name="version">
+    <value>2.0</value>
+  </resheader>
+  <resheader name="reader">
+    <value>System.Resources.ResXResourceReader, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </resheader>
+  <resheader name="writer">
+    <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </resheader>
+  <data name="CPValidateExtendCss" xml:space="preserve">
+    <value>&lt;link rel="stylesheet" type="text/css" href="../../css/plugin/validate.extend.css" /&gt;</value>
+  </data>
+  <data name="Css" xml:space="preserve">
+    <value>&lt;link type="text/css" rel="stylesheet" href="/HttpCombiner.ashx?s=css&amp;t=text/css&amp;v=cou20123" /&gt;</value>
+  </data>
+  <data name="CssCss_all" xml:space="preserve">
+    <value>&lt;link rel="Stylesheet" type="text/css" href="../../css/css_all.css" /&gt;</value>
+  </data>
+  <data name="CssNormal" xml:space="preserve">
+    <value>&lt;link rel="Stylesheet" type="text/css" href="../../css/normal.css" /&gt;</value>
+  </data>
+  <data name="Javascript" xml:space="preserve">
+    <value>&lt;script type="text/javascript" src="/HttpCombiner.ashx?s=javascript&amp;t=type/javascript&amp;v=cou36066"&gt;&lt;/script&gt;</value>
+  </data>
+  <data name="JPJqueryJs" xml:space="preserve">
+    <value>&lt;script type="text/javascript" src="../../js/plugin/jquery.js"&gt;&lt;/script&gt;</value>
+  </data>
+  <data name="JPJqueryValidateJs" xml:space="preserve">
+    <value>&lt;script type="text/javascript" src="../../js/plugin/jquery.validate.js"&gt;&lt;/script&gt;</value>
+  </data>
+  <data name="JPValidateExtendJs" xml:space="preserve">
+    <value>&lt;script src="../../js/plugin/validate.extend-1.0.1.js" type="text/javascript"&gt;&lt;/script&gt;</value>
+  </data>
+  <data name="JsCommon" xml:space="preserve">
+    <value>&lt;script src="../../js/common.js"&gt;&lt;/script&gt;</value>
+  </data>
+  <data name="MyDatePicker" xml:space="preserve">
+    <value>&lt;script type="text/javascript" src="/Res/My97DatePicker/WdatePicker.js?t=123456783"&gt;&lt;/script&gt;</value>
+  </data>
+  <data name="ReadCard1" xml:space="preserve">
+    <value>&lt;object id="MIF" width="0" height="0" classid="CLSID:7BEC3845-30E9-11D6-BB52-00D0096A436E"&gt;
+        &lt;param name="COM" /&gt;
+        &lt;param name="SECTOR" value="1" /&gt;
+        &lt;param name="BLOCK" value="0" /&gt;
+    &lt;/object&gt;
+    &lt;script type="text/vbscript"&gt;
+    DIM s
+    s = 1
+    // readeropen()
+    Sub RC()
+        DIM a, b, s2, str
+        s2 = s
+        a = ""
+        b = ""
+        call MIF.MIFAREREADSERIAL()
+        s = MIF.CAPTION
+        //check if the same card is placed on the reader
+        If s = s2 Then
+            ID = settimeout("RC()",300)
+            Exit Sub
+        End If
+	  
+        Call MIF.MIFARELEDRED()
+        Call MIF.MIFAREREADCARD()
+        a=MIF.CAPTION
+	  
+        F_ReadCard.Staff_Code.VALUE = ""
+      
+        If a &lt;&gt; "R-1" and b &lt;&gt; "R-1" then
+            F_ReadCard.Staff_Code.VALUE = ucase(trim(mid(a,1,16)))
+            CALL MIF.MIFARELEDGREEN()
+            CALL MIF.MIFAREBEEP()
+            Call readerclose()
+        End If
+	  
+        ID = SetTimeOut("RC()",300)
+    End Sub
+
+    Sub readerclose()
+        cleartimeout ID
+        CALL mif.mifareledyellow()
+        CALL MIF.MIFARECLOSECOMM()
+    End Sub
+	
+    Sub readeropen()
+        Call MIF.MIFAREAUTOFIND()
+        MIF.COM=MIF.CAPTION
+        //MIF.COM=1
+        Call MIF.MIFAREOPENCOMM()
+  
+        //MIF.CAPTION = 5
+        //call MIF.MIFAREEXBEEP()
+        ID = SetTimeOut("RC()",300)
+    End Sub
+    Sub BT_ReadCard_OnClick
+     Call readeropen()
+    End Sub
+    &lt;/script&gt;</value>
+  </data>
+  <data name="ReadCard3" xml:space="preserve">
+    <value>&lt;object id="rd" codebase="/Bin/comRD800.dll" classid="clsid:638B238E-EB84-4933-B3C8-854B86140668" style="display: none;"&gt;&lt;/object&gt;</value>
+  </data>
+  <data name="JsJquery_172" xml:space="preserve">
+    <value>&lt;script type="text/javascript" src="../../js/jquery-1.7.2.js"&gt;&lt;/script&gt;</value>
+  </data>
+  <data name="JsPlace" xml:space="preserve">
+    <value>&lt;script type="text/javascript" src="../../js/Place.js"&gt;&lt;/script&gt;</value>
+  </data>
+  <data name="CssTable_blue" xml:space="preserve">
+    <value>&lt;link type="text/css" rel="stylesheet" href="../../css/table_blue.css" /&gt;</value>
+  </data>
+  <data name="CssCrmbase" xml:space="preserve">
+    <value>&lt;link href="../../Css/crmbase.css" rel="stylesheet" /&gt;</value>
+  </data>
+  <data name="JPQueryPageJs" xml:space="preserve">
+    <value>&lt;script type="text/javascript" src="../../js/plugin/QueryPage.js"&gt;&lt;/script&gt;</value>
+  </data>
+  <data name="JsCommonCardPrint" xml:space="preserve">
+    <value>&lt;script src="../../js/commonCardPrint.js" type="text/javascript"&gt;&lt;/script&gt;</value>
+  </data>
+  <data name="REValidateExtendJs" xml:space="preserve">
+    <value>&lt;script src="../../Res/easyui-extend-1.1.1/validate-extend.js"&gt;&lt;/script&gt;</value>
+  </data>
+  <data name="JavascriptWithEx" xml:space="preserve">
+    <value>/HttpCombiner.ashx?s=javascript&amp;t=type/javascript&amp;v=cou31569&amp;ex=</value>
+  </data>
+  <data name="ComboboxUrl" xml:space="preserve">
+    <value>/Ajax/CodeTable/GetCodeTable.ashx?v=2020&amp;tableName=</value>
+  </data>
+</root>

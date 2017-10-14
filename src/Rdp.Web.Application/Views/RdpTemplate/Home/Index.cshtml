@@ -1,0 +1,575 @@
+﻿@using Rdp.Data.Entity
+@model Rdp.Service.Dto.MenuTreeDto
+@{UserMaster user = ViewBag.user;}
+@{ Layout = "~/Views/RdpTemplate/Shared/_AdminLteWithEasyuiLayout.cshtml";}
+
+<environment names="Development,Staging,Production">
+    <link rel="stylesheet" href="~/Content/bootstrap-addtabs/css/bootstrap-addtabs.css" asp-append-version="true" />
+    <link rel="stylesheet" href="~/Content/AdminLTE/plugins/jQueryUI/jquery-ui.min.css" asp-append-version="true" />
+    <script src="~/Content/site/js/index_default.min.js" asp-append-version="true"></script>
+</environment>
+
+<style type="text/css">
+    a {
+        cursor: pointer;
+    }
+
+    .skin-blue-light .sidebar-menu > li > a {
+        font-family: "微软雅黑";
+        font-size: 15px;
+        font-weight: 100;
+    }
+
+    .content {
+        padding-top: 1px;
+    }
+
+    .nav > li > a {
+        color: black;
+    }
+</style>
+
+<div class="wrapper">
+    <header class="main-header">
+
+        <!-- Logo -->
+        <a href="/Home/Index" class="logo">
+            <span class="logo-mini"><b>@ResLogin.SystemName</b></span>
+            <!-- logo for regular state and mobile devices -->
+            <span class="logo-lg"><b>@ResLogin.SystemName</b></span>
+        </a>
+        <nav class="navbar navbar-static-top">
+            <!-- Sidebar toggle button-->
+            <a href="#" class="sidebar-toggle" data-toggle="offcanvas" role="button">
+                <span class="sr-only">Toggle navigation</span>
+            </a>
+            <div class="navbar-custom-menu">
+                <ul class="nav navbar-nav">
+                    <li class="dropdown notifications-menu" style="background-color: green;">
+                        <a href="#" class="dropdown-toggle" data-toggle="dropdown">
+                            <i class="fa fa-globe"></i>
+                        </a>
+                        <ul class="dropdown-menu">
+                            <li>
+                                <ul class="menu" style="width: 90%">
+                                    <li>
+                                        <a onclick="addLanguage('zh-CN');">
+                                            <i class="fa fa-cog text-aqua"></i>
+                                            简 体
+                                        </a>
+                                    </li>
+
+                                    <li>
+                                        <a onclick="addLanguage('zh-TW');">
+                                            <i class="fa fa-cog text-aqua"></i>
+                                            <span>繁 體</span>
+                                        </a>
+                                    </li>
+
+                                    <li>
+                                        <a onclick="addLanguage('en-US');">
+                                            <i class="fa fa-cog text-aqua"></i>
+                                            <span>English</span>
+                                        </a>
+                                    </li>
+                                </ul>
+                            </li>
+                        </ul>
+                    </li>
+                    <li class="dropdown notifications-menu" style="background-color: purple">
+
+                        <a data-toggle="dropdown" class="dropdown-toggle" href="#">
+                            <i class="fa fa-bell-o"></i>
+                            <span class="label label-warning">2</span>
+                        </a>
+                        <ul class="dropdown-menu">
+                            <li>
+                                <div class="nav-tabs-custom">
+                                    <ul class="nav nav-tabs nav-justified control-sidebar-tabs">
+                                        <li class="dropdown active">
+                                            <a href="#navbar-tasks" data-toggle="tab" aria-expanded="true" style="color: black">
+                                                @ResIndex.WorkOrder
+                                                <span class="label label-warning">1</span>
+                                            </a>
+
+                                        </li>
+                                        <li class="dropdown">
+                                            <a href="#navbar-messages" data-toggle="tab" aria-expanded="false" style="color: black">
+                                                <b>@ResIndex.Information</b>
+                                                <span class="label label-warning">1</span>
+                                            </a>
+                                        </li>
+                                    </ul>
+                                </div>
+                                <!-- Tab panes -->
+
+                                <div class="tab-content">
+                                    <!-- Home tab content -->
+                                    <div id="navbar-tasks" class="tab-pane active">
+                                        <div class="box no-border no-header">
+                                            <div class="box-body">
+                                                <a href="#">
+
+                                                    <span class="pull-left">@ResIndex.WaitAcceptanceCoupon</span>
+
+                                                </a>
+                                            </div>
+                                            <div class="box-footer" style="text-align: center">
+                                                <a href="#">
+                                                    @ResIndex.LookOverDetails
+                                                    <i class="fa fa-arrow-right"></i>
+                                                </a>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <!-- /.tab-pane -->
+
+                                    <div id="navbar-messages" class="tab-pane">
+                                        <div class="box no-border no-header">
+                                            <div class="box-body">
+                                                <a href="#">
+                                                    <div class="pull-left">
+                                                        <img src="" class="msg-photo" alt="Susan's Avatar" />
+                                                    </div>
+
+                                                    <small>
+                                                        @ResIndex.Administrator:
+                                                        @ResIndex.COU
+                                                    </small>
+                                                    <p>20 minutes ago</p>
+                                                </a>
+                                            </div>
+                                            <div class="box-footer" style="text-align: center">
+                                                <a href="inbox.html">
+                                                    @ResIndex.LookOverALLInformation
+                                                    <i class="fa fa-arrow-right"></i>
+                                                </a>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </li>
+                        </ul>
+                    </li>
+                    <li class="dropdown notifications-menu" style="background-color: #62A8D1">
+                        <a data-toggle="dropdown" href="#" class="dropdown-toggle">
+                            <!--<img class="nav-user-photo" src="Content/assets/avatars/avatar2.png" alt="Jason's Photo" />-->
+                            <span class="hidden-xs">@ResIndex.Welcome,<span id="L_UserID">@user.UserID</span>  </span>
+                            <i class="fa fa-caret-down"></i>
+                        </a>
+                        <ul class="dropdown-menu">
+                            <li class="header" style="text-align: center">
+                                <i class="fa fa-sitemap"></i>
+                                @ResBranch.Branch:@user.BranchCode
+                            </li>
+                            <li>
+                                <div class="slimScrollDiv" style="position: relative; overflow: hidden; width: auto; height: 200px;">
+                                    <ul class="menu" style="overflow: hidden; width: 100%; height: 200px;">
+                                        @{
+                                            var roleLists = (List<RoleMaster>)ViewBag.roleLists;
+                                            var roleUserList = (List<RoleUser>)ViewBag.roleUserList;
+                                            var roleUser = (RoleUser)ViewBag.roleUser;
+                                            foreach (var item in roleUserList)
+                                            {
+                                                <li>
+                                                    <a onclick='changeRole(@item.UserRoleID)'>
+                                                        @if (item.RoleID == roleUser.RoleID)
+                                                        {
+                                                            <i class='fa fa-user text-green'></i> @roleLists.Find(p => p.RoleID == item.RoleID).RoleDesc
+                                                        }
+                                                        else
+                                                        {
+                                                            <i class='fa fa-user'></i> @roleLists.Find(p => p.RoleID == item.RoleID).RoleDesc
+                                                        }
+                                                    </a>
+                                                </li>
+                                            }
+                                        }
+                                    </ul>
+                                    <div class="slimScrollBar" style="background: rgb(0, 0, 0) none repeat scroll 0% 0%; width: 3px; position: absolute; top: 0px; opacity: 0.4; display: none; border-radius: 7px; z-index: 99; right: 1px; height: 195.122px;"></div>
+                                    <div class="slimScrollRail" style="width: 3px; height: 100%; position: absolute; top: 0px; display: none; border-radius: 7px; background: rgb(51, 51, 51) none repeat scroll 0% 0%; opacity: 0.2; z-index: 90; right: 1px;"></div>
+                                </div>
+                            </li>
+                            <li class="footer">
+                                <button class="btn btn-block btn-warning btn-sm" onclick="Logout()">
+                                    <i class="fa fa-power-off"></i>
+                                    @ResIndex.Cancellation
+                                </button>
+                            </li>
+                        </ul>
+                    </li>
+                    <li style="background-color: olive">
+                        <a href="#" data-toggle="control-sidebar"><i class="fa fa-gears"></i></a>
+                    </li>
+
+                </ul>
+            </div>
+        </nav>
+    </header>
+
+    <aside class="main-sidebar">
+        <!-- sidebar: style can be found in sidebar.less -->
+        <section class="sidebar">
+            <!-- search form -->
+            <form method="get" class="sidebar-form">
+                <div class="input-group">
+                    <input id="txSearch" type="text" class="form-control" placeholder="@ResIndex.InputCouponNum">
+                    <span class="input-group-btn">
+                        <button type="button" name="search" id="search-btn" class="btn btn-flat">
+                            <i class="fa fa-search"></i>
+                        </button>
+                    </span>
+                </div>
+            </form>
+            <ul class="sidebar-menu">
+
+
+                @foreach (var item in Model.ChildMenus)
+                {
+                    <li class="treeview box-header with-border">
+                        <a href='#'>
+                            <i class='fa fa-bars fa-lg'></i>
+                            <span>@item.CurrentMenu.ProgramName</span>
+                            <span class="pull-right-container">
+                                <i class="fa fa-angle-left pull-right"></i>
+                            </span>
+                        </a>
+
+                        <ul class="treeview-menu">
+                            @foreach (var secondItem in item.ChildMenus)
+                            {
+                                <li style="padding: 5px"><a onclick='showNewTab("@secondItem.CurrentMenu.Url?PD=@Rdp.Core.Security.DesEncrypt.Encrypt(secondItem.CurrentMenu.ProgramID.ToString())", "@secondItem.CurrentMenu.ProgramName", "fa fa-gift", true)'><i class='fa fa-laptop'></i>@secondItem.CurrentMenu.ProgramName</a></li>
+
+                            }
+                        </ul>
+                    </li>
+                }
+            </ul>
+        </section>
+    </aside>
+    <div class="content-wrapper">
+        <section class="content">
+            <div class="modal fade " id="dialog-message" tabindex="-1" role="dialog" aria-hidden="true" style="position: absolute; top: 0; bottom: 0; right: 0; left: 0;">
+                <div class="modal-dialog  modal-sm" style="top: 300px">
+                    <div class="modal-content">
+                        <div class="modal-body">
+                            <button type="button" class="close" data-dismiss="modal" aria-hidden="true">x</button>
+                            <div id="progressbar"></div>
+                            <div style="text-align: center;">加载中......</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="modal fade" id="dialog-messagerAlert" tabindex="-1" role="dialog" aria-hidden="true" style="position: absolute; top: 0; bottom: 0; right: 0; left: 0;">
+                <div class="modal-dialog">
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <button type="button" class="close" data-dismiss="modal" aria-hidden="true">x</button>
+                            <h4 class="modal-title"></h4>
+                        </div>
+                        <div class="modal-body" style="overflow-x: auto;">
+                        </div>
+                        <div class="modal-footer">
+                            <button type="button" class="btn btn-primary pull-right" data-dismiss="modal">OK</button>
+                        </div>
+
+                    </div>
+                </div>
+            </div>
+
+            <div>
+                <div class="col-xs-12" style="padding: 0px">
+
+                    <div id="user-profile-2" class="user-profile">
+                        <div class="tabbable row" id="tabs">
+                            <ul class="nav nav-tabs col-md-12">
+                                <li class="active">
+                                    <a data-toggle="tab" href="#home" aria-expanded="true">
+                                        <i class="green fa fa-user bigger-120"></i>
+                                        @ResIndex.Index
+                                    </a>
+                                </li>
+                            </ul>
+
+                            <div class="tab-content no-border padding-2">
+                                <div id="home" class="tab-pane active">
+                                    <div class="page-content">
+
+                                        <div class="col-md-12">
+                                            <div id="faq-tab-1" class="tab-pane fade in active">
+                                                <h4>
+                                                    <i class="fa fa-check bigger-110"></i>
+                                                    @ResIndex.WarmTips
+                                                </h4>
+
+                                                <div class="space-8"></div>
+
+                                                <div id="faq-list-1" class="panel-group accordion-style1 accordion-style2">
+                                                    <div class="panel panel-default">
+                                                        <div class="panel-heading">
+                                                            <a href="#faq-1-1" data-parent="#faq-list-1" data-toggle="collapse" class="accordion-toggle collapsed" aria-expanded="false">
+                                                                <i class="pull-right fa fa-chevron-left" data-icon-hide="fa fa-chevron-down" data-icon-show="fa fa-chevron-left"></i>
+
+                                                                <i class="fa fa-user bigger-130"></i>
+                                                                &nbsp; @ResIndex.UserRegistration  & @ResIndex.PasswordChanges
+                                                            </a>
+                                                        </div>
+
+                                                        <div class="panel-collapse collapse" id="faq-1-1" aria-expanded="false" style="height: 0px;">
+                                                            <div class="panel-body">
+                                                                @ResIndex.WaitforUpdate
+                                                            </div>
+                                                        </div>
+                                                    </div>
+
+                                                    <div class="panel panel-default">
+                                                        <div class="panel-heading">
+                                                            <a href="#faq-1-2" data-parent="#faq-list-1" data-toggle="collapse" class="accordion-toggle collapsed" aria-expanded="false">
+                                                                <i class="pull-right fa fa-chevron-left" data-icon-hide="fa fa-chevron-down" data-icon-show="fa fa-chevron-left"></i>
+
+                                                                <i class="fa fa-sort-amount-desc"></i>
+                                                                &nbsp; @ResIndex.COU @ResIndex.RelatedQuestions
+                                                            </a>
+                                                        </div>
+
+                                                        <div class="panel-collapse collapse" id="faq-1-2" aria-expanded="false" style="height: 0px;">
+                                                            <div class="panel-body">
+                                                                @ResIndex.WaitforUpdate
+                                                            </div>
+                                                        </div>
+                                                    </div>
+
+                                                    <div class="panel panel-default">
+                                                        <div class="panel-heading">
+                                                            <a href="#faq-1-3" data-parent="#faq-list-1" data-toggle="collapse" class="accordion-toggle collapsed" aria-expanded="false">
+                                                                <i class="pull-right fa fa-chevron-left" data-icon-hide="fa fa-chevron-down" data-icon-show="fa fa-chevron-left"></i>
+
+                                                                <i class="fa fa-credit-card bigger-130"></i>
+                                                                &nbsp; @ResIndex.COU @ResIndex.OperatingInstructions
+                                                            </a>
+                                                        </div>
+
+                                                        <div class="panel-collapse collapse" id="faq-1-3" aria-expanded="false" style="height: 0px;">
+                                                            <div class="panel-body">
+                                                                @ResIndex.WaitforUpdate
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+
+                                        <div>
+                                        </div>
+                                        <!-- /#home -->
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <!-- PAGE CONTENT ENDS -->
+                    </div>
+                    <!-- /.col -->
+                    <!-- /.row -->
+                </div>
+                <!-- /.page-content -->
+            </div>
+        </section>
+    </div>
+    <footer class="main-footer" style="height: 40px">
+        <div class="text-center">
+            <!-- <div style="border-top: 3px double #E5E5E5; padding: 8px">-->
+            <strong>
+                <span style="color: #62A8D1">Rdp</span>
+                Your Company &copy; 2016-2017
+            </strong>
+            <!--  </div>-->
+        </div>
+    </footer>
+    <!-- Control Sidebar -->
+    <aside class="control-sidebar control-sidebar-dark">
+        <!-- Create the tabs -->
+        <ul class="nav nav-tabs nav-justified control-sidebar-tabs">
+            <li class=""><a href="#control-sidebar-theme-demo-options-tab" data-toggle="tab" aria-expanded="true"><i class="fa fa-wrench"></i></a></li>
+        </ul>
+        <!-- Tab panes -->
+        <div class="tab-content">
+            <!-- Home tab content -->
+
+            <div id="control-sidebar-theme-demo-options-tab" class="tab-pane active">
+                <div>
+                    <h4 class="control-sidebar-heading">Skins</h4>
+                    <ul class="list-unstyled clearfix">
+                        <li style="float: left; width: 33.33333%; padding: 5px;">
+                            <a href="javascript:void(0);" data-skin="skin-blue" style="display: block; box-shadow: 0 0 3px rgba(0,0,0,0.4)" class="clearfix full-opacity-hover">
+                                <div><span style="display: block; width: 20%; float: left; height: 7px; background: #367fa9;"></span><span class="bg-light-blue" style="display: block; width: 80%; float: left; height: 7px;"></span></div>
+                                <div><span style="display: block; width: 20%; float: left; height: 20px; background: #222d32;"></span><span style="display: block; width: 80%; float: left; height: 20px; background: #f4f5f7;"></span></div>
+                            </a>
+                            <p class="text-center no-margin">Blue</p>
+                        </li>
+                        <li style="float: left; width: 33.33333%; padding: 5px;">
+                            <a href="javascript:void(0);" data-skin="skin-black" style="display: block; box-shadow: 0 0 3px rgba(0,0,0,0.4)" class="clearfix full-opacity-hover">
+                                <div style="box-shadow: 0 0 2px rgba(0,0,0,0.1)" class="clearfix"><span style="display: block; width: 20%; float: left; height: 7px; background: #fefefe;"></span><span style="display: block; width: 80%; float: left; height: 7px; background: #fefefe;"></span></div>
+                                <div><span style="display: block; width: 20%; float: left; height: 20px; background: #222;"></span><span style="display: block; width: 80%; float: left; height: 20px; background: #f4f5f7;"></span></div>
+                            </a>
+                            <p class="text-center no-margin">Black</p>
+                        </li>
+                        <li style="float: left; width: 33.33333%; padding: 5px;">
+                            <a href="javascript:void(0);" data-skin="skin-purple" style="display: block; box-shadow: 0 0 3px rgba(0,0,0,0.4)" class="clearfix full-opacity-hover">
+                                <div><span style="display: block; width: 20%; float: left; height: 7px;" class="bg-purple-active"></span><span class="bg-purple" style="display: block; width: 80%; float: left; height: 7px;"></span></div>
+                                <div><span style="display: block; width: 20%; float: left; height: 20px; background: #222d32;"></span><span style="display: block; width: 80%; float: left; height: 20px; background: #f4f5f7;"></span></div>
+                            </a>
+                            <p class="text-center no-margin">Purple</p>
+                        </li>
+                        <li style="float: left; width: 33.33333%; padding: 5px;">
+                            <a href="javascript:void(0);" data-skin="skin-green" style="display: block; box-shadow: 0 0 3px rgba(0,0,0,0.4)" class="clearfix full-opacity-hover">
+                                <div><span style="display: block; width: 20%; float: left; height: 7px;" class="bg-green-active"></span><span class="bg-green" style="display: block; width: 80%; float: left; height: 7px;"></span></div>
+                                <div><span style="display: block; width: 20%; float: left; height: 20px; background: #222d32;"></span><span style="display: block; width: 80%; float: left; height: 20px; background: #f4f5f7;"></span></div>
+                            </a>
+                            <p class="text-center no-margin">Green</p>
+                        </li>
+                        <li style="float: left; width: 33.33333%; padding: 5px;">
+                            <a href="javascript:void(0);" data-skin="skin-red" style="display: block; box-shadow: 0 0 3px rgba(0,0,0,0.4)" class="clearfix full-opacity-hover">
+                                <div><span style="display: block; width: 20%; float: left; height: 7px;" class="bg-red-active"></span><span class="bg-red" style="display: block; width: 80%; float: left; height: 7px;"></span></div>
+                                <div><span style="display: block; width: 20%; float: left; height: 20px; background: #222d32;"></span><span style="display: block; width: 80%; float: left; height: 20px; background: #f4f5f7;"></span></div>
+                            </a>
+                            <p class="text-center no-margin">Red</p>
+                        </li>
+                        <li style="float: left; width: 33.33333%; padding: 5px;">
+                            <a href="javascript:void(0);" data-skin="skin-yellow" style="display: block; box-shadow: 0 0 3px rgba(0,0,0,0.4)" class="clearfix full-opacity-hover">
+                                <div><span style="display: block; width: 20%; float: left; height: 7px;" class="bg-yellow-active"></span><span class="bg-yellow" style="display: block; width: 80%; float: left; height: 7px;"></span></div>
+                                <div><span style="display: block; width: 20%; float: left; height: 20px; background: #222d32;"></span><span style="display: block; width: 80%; float: left; height: 20px; background: #f4f5f7;"></span></div>
+                            </a>
+                            <p class="text-center no-margin">Yellow</p>
+                        </li>
+                        <li style="float: left; width: 33.33333%; padding: 5px;">
+                            <a href="javascript:void(0);" data-skin="skin-blue-light" style="display: block; box-shadow: 0 0 3px rgba(0,0,0,0.4)" class="clearfix full-opacity-hover">
+                                <div><span style="display: block; width: 20%; float: left; height: 7px; background: #367fa9;"></span><span class="bg-light-blue" style="display: block; width: 80%; float: left; height: 7px;"></span></div>
+                                <div><span style="display: block; width: 20%; float: left; height: 20px; background: #f9fafc;"></span><span style="display: block; width: 80%; float: left; height: 20px; background: #f4f5f7;"></span></div>
+                            </a>
+                            <p class="text-center no-margin" style="font-size: 12px">Blue Light</p>
+                        </li>
+                        <li style="float: left; width: 33.33333%; padding: 5px;">
+                            <a href="javascript:void(0);" data-skin="skin-black-light" style="display: block; box-shadow: 0 0 3px rgba(0,0,0,0.4)" class="clearfix full-opacity-hover">
+                                <div style="box-shadow: 0 0 2px rgba(0,0,0,0.1)" class="clearfix"><span style="display: block; width: 20%; float: left; height: 7px; background: #fefefe;"></span><span style="display: block; width: 80%; float: left; height: 7px; background: #fefefe;"></span></div>
+                                <div><span style="display: block; width: 20%; float: left; height: 20px; background: #f9fafc;"></span><span style="display: block; width: 80%; float: left; height: 20px; background: #f4f5f7;"></span></div>
+                            </a>
+                            <p class="text-center no-margin" style="font-size: 12px">Black Light</p>
+                        </li>
+                        <li style="float: left; width: 33.33333%; padding: 5px;">
+                            <a href="javascript:void(0);" data-skin="skin-purple-light" style="display: block; box-shadow: 0 0 3px rgba(0,0,0,0.4)" class="clearfix full-opacity-hover">
+                                <div><span style="display: block; width: 20%; float: left; height: 7px;" class="bg-purple-active"></span><span class="bg-purple" style="display: block; width: 80%; float: left; height: 7px;"></span></div>
+                                <div><span style="display: block; width: 20%; float: left; height: 20px; background: #f9fafc;"></span><span style="display: block; width: 80%; float: left; height: 20px; background: #f4f5f7;"></span></div>
+                            </a>
+                            <p class="text-center no-margin" style="font-size: 12px">Purple Light</p>
+                        </li>
+                        <li style="float: left; width: 33.33333%; padding: 5px;">
+                            <a href="javascript:void(0);" data-skin="skin-green-light" style="display: block; box-shadow: 0 0 3px rgba(0,0,0,0.4)" class="clearfix full-opacity-hover">
+                                <div><span style="display: block; width: 20%; float: left; height: 7px;" class="bg-green-active"></span><span class="bg-green" style="display: block; width: 80%; float: left; height: 7px;"></span></div>
+                                <div><span style="display: block; width: 20%; float: left; height: 20px; background: #f9fafc;"></span><span style="display: block; width: 80%; float: left; height: 20px; background: #f4f5f7;"></span></div>
+                            </a>
+                            <p class="text-center no-margin" style="font-size: 12px">Green Light</p>
+                        </li>
+                        <li style="float: left; width: 33.33333%; padding: 5px;">
+                            <a href="javascript:void(0);" data-skin="skin-red-light" style="display: block; box-shadow: 0 0 3px rgba(0,0,0,0.4)" class="clearfix full-opacity-hover">
+                                <div><span style="display: block; width: 20%; float: left; height: 7px;" class="bg-red-active"></span><span class="bg-red" style="display: block; width: 80%; float: left; height: 7px;"></span></div>
+                                <div><span style="display: block; width: 20%; float: left; height: 20px; background: #f9fafc;"></span><span style="display: block; width: 80%; float: left; height: 20px; background: #f4f5f7;"></span></div>
+                            </a>
+                            <p class="text-center no-margin" style="font-size: 12px">Red Light</p>
+                        </li>
+                        <li style="float: left; width: 33.33333%; padding: 5px;">
+                            <a href="javascript:void(0);" data-skin="skin-yellow-light" style="display: block; box-shadow: 0 0 3px rgba(0,0,0,0.4)" class="clearfix full-opacity-hover">
+                                <div><span style="display: block; width: 20%; float: left; height: 7px;" class="bg-yellow-active"></span><span class="bg-yellow" style="display: block; width: 80%; float: left; height: 7px;"></span></div>
+                                <div><span style="display: block; width: 20%; float: left; height: 20px; background: #f9fafc;"></span><span style="display: block; width: 80%; float: left; height: 20px; background: #f4f5f7;"></span></div>
+                            </a>
+                            <p class="text-center no-margin" style="font-size: 12px;">Yellow Light</p>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+            <!-- /.tab-pane -->
+            <!-- Stats tab content -->
+
+        </div>
+    </aside>
+    <!-- /.control-sidebar -->
+    <!-- Add the sidebar's background. This div must be placed
+    immediately after the control sidebar -->
+    <div class="control-sidebar-bg" style="position: fixed; height: auto;"></div>
+</div>
+
+
+<!-- inline scripts related to this page -->
+<script type="text/javascript">
+        $.widget.bridge('uibutton', $.ui.button);
+        String.prototype.trim = function () {
+            return this.replace(/^\s\s*/, '').replace(/\s\s*$/, '');
+        }
+
+        function QuickSearch() {
+                    var value = $("#txSearch").val();
+                    var CouponCode = value.toUpperCase().substring(0, 2);
+                    var CouponNo = value.toUpperCase().substring(2, value.length);
+                    showNewTab('', 'fa fa-search ', true);
+        }
+        jQuery(function ($) {
+            $('#txSearch').keydown(function (event) {
+                if (event.keyCode == 13) {
+                    QuickSearch();
+                    $(this).val("");
+                    return false;
+                }
+
+            })
+            $("#search-btn").click(function () {
+                QuickSearch();
+                $("#txSearch").val("");
+            });
+
+            var messagerExtend = new Object();
+
+            messagerExtend.progress = function (a) {
+                // $(dialog).dialog('close');
+                $(dialog).modal('hide');
+            }
+
+
+            messagerExtend.alert = function (title, msg, icon, fn) {
+                //var enterEvent = document.onkeydown;
+                var messagerAlert = $("#dialog-messagerAlert");
+                messagerAlert.find('.modal-title').text(title);
+                messagerAlert.find('.modal-body').html(msg);
+                messagerAlert.modal('show');
+                messagerAlert.on('hide.bs.modal', function () {
+                    if (typeof (fn) != "undefined")
+                    { fn(); }
+                });
+            }
+
+            $.extend({
+                messager: messagerExtend
+            });
+
+            $("#progressbar").progressbar({
+                value: false
+            });
+
+            $('#tabs').addtabs({
+                monitor: '.topbar', ddd: "xxx", iframeHeightFun: function () {
+                    return document.documentElement.clientHeight - 120;
+                }
+            });
+
+            dialog = $("#dialog-message");
+
+            $("#id-btn-dialog1").on('click', function (e) {
+                e.preventDefault();
+                dialog = $("#dialog-message").removeClass('hide').dialog({
+                    modal: true,
+                    title_html: true
+                });
+            });
+
+        })
+</script>
+

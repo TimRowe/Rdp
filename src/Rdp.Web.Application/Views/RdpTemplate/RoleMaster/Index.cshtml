@@ -1,0 +1,117 @@
+﻿@{
+    Page.Title = @ResRoleMaster.RoleMaster;
+    Layout = "~/Views/RdpTemplate/Shared/_AdminLteWithEasyuiLayout.cshtml";
+}
+@using Resources
+@model RoleMasterModel
+
+<script type="text/javascript">
+
+        function assign() {
+            var row = grid.datagrid('getSelections');
+            if (row.length > 0) {
+                parent.showNewTab("/Privilege/Assign?privilegeValue=" + row[0].RoleID + "&privilegeMaster=1", "@ResRoleMaster.RoleMaster@ResOperate.Assign", "ext-cog", true);
+            } else {
+                com.messagerAlert(ResDisplay.Result, '@ResMessage.SelectOne');
+            };
+    };
+
+        function add() {
+            modalDialog = com.modalDialog({
+                title: '@ResOperate.Add@ResRoleMaster.RoleMaster',
+                url: '/RoleMaster/Add',
+                width: 900
+            });
+        };
+
+        function update() {
+            var row = grid.datagrid('getSelections');
+            if (row.length > 0) {
+                modalDialog = com.modalDialog({
+                    title: '@ResOperate.Update@ResRoleMaster.RoleMaster',
+                    url: '/RoleMaster/Update?roleId=' + row[0].RoleID,
+                    width: 900
+                });
+            } else {
+                com.messagerAlert(ResDisplay.Result, '@ResMessage.SelectOne');
+            };
+        };
+
+        
+        var grid;
+        $(function () {
+            $("#GirdDiv").css("height", $(window).outerHeight() - $("#SearchForm").outerHeight() - 50 + "px");
+            $("#RoleID").select2();
+            grid = $("#Datagrid_RoleMaster").datagrid({
+                title: '',
+                url: '/RoleMaster/Search',
+                striped: true,
+                rownumbers: true,
+                pagination: true,
+                singleSelect: true,
+                nowrap: true,
+                toolbar: '#toolbar',
+                frozenColumns: [[{
+                    title: '@ResRoleMaster.RoleID',
+                    field: 'RoleID',
+                    width: '80',
+                    sortable: true
+                }]],
+                columns: [[{
+                    title: '@ResRoleMaster.RoleDesc',
+                    field: 'RoleDesc'
+                }, {
+                    title: '@ResRoleMaster.StatusFlag',
+                    field: 'StatusFlag',
+                    formatter: function (value) {
+                        if (value == 0) {
+                            return "@ResDisplay.True";
+                        } else {
+                            return "@ResDisplay.False";
+                        }
+                    }
+                }
+                ]],
+                onBeforeLoad: function (param) {
+                    return (param.length > 0);
+                }
+            });
+            com.enterSubmit(0, 0);
+        });
+</script>
+
+<section class="content">
+    <div class="row" id="SearchForm">
+        <form class="form-horizontal" id="F_Search">
+            <div class="col-sm-12">
+                <div class="form-group col-sm-6">
+                    <label class="col-sm-3 control-label">@ResRoleMaster.RoleID</label>
+                    <div class="col-sm-9">
+                        @Html.DropDownListFor(
+                               m => m.RoleID,
+                               new DropDownListOption() { RefTable = "tbLOG_Role_Master", OptionLabel = ResMessage.PleaseChoose },
+                               new Dictionary<string, object>(){
+                                   { "id", "RoleID"},
+                                   { "class", "form-control select2"},
+                                   { "data-placeholder",ResMessage.PleaseChoose}
+                               })
+                        @Html.ValidationMessageFor(m => m.RoleID)
+                    </div>
+                </div>
+            </div>
+        </form>
+    </div>
+    <div class="row" id="GirdDiv">
+        <div class="col-sm-12">
+            <div class="btn-group">
+                 @*Html.Action("ProgramButton", "Privilege")*@ @await Component.InvokeAsync("ProgramButton", new { style = "EasyUI" }) 
+            </div>
+        </div>
+
+        <div data-options="region:'center',fit:true,border:false" class="col-sm-12" style="height:100%">
+            <table id="Datagrid_RoleMaster" data-options="fit:true,border:false"></table>
+        </div>
+    </div>
+</section>
+
+
