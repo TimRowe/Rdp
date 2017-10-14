@@ -14,7 +14,6 @@ To provide a implment of asp.net core mvc with use .net popular technology. It s
 
 5. Json.NET
 
-
 3. Jquery Easyui
 
 4. Bootstrap
