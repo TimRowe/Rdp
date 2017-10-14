@@ -151,7 +151,7 @@ namespace Rdp.Service
             {
                 query = query.Where(t => t.ReaderType == model.ReaderType);
             }
-            if (model.BranchCode>0)
+            if (model.BranchCode>=0)
             {
                 query = query.Where(t => t.BranchCode == model.BranchCode);
             }
