@@ -1,0 +1,12 @@
+I:\TMQ5\Git\src\Rdp.Data\bin\Debug\netstandard2.0\Rdp.Data.dll.config
+I:\TMQ5\Git\src\Rdp.Data\bin\Debug\netstandard2.0\Rdp.Data.deps.json
+I:\TMQ5\Git\src\Rdp.Data\bin\Debug\netstandard2.0\Rdp.Data.dll
+I:\TMQ5\Git\src\Rdp.Data\bin\Debug\netstandard2.0\Rdp.Data.pdb
+I:\TMQ5\Git\src\Rdp.Data\bin\Debug\netstandard2.0\Rdp.Core.dll
+I:\TMQ5\Git\src\Rdp.Data\bin\Debug\netstandard2.0\Rdp.Core.pdb
+I:\TMQ5\Git\src\Rdp.Data\obj\Debug\netstandard2.0\Rdp.Data.csprojResolveAssemblyReference.cache
+I:\TMQ5\Git\src\Rdp.Data\obj\Debug\netstandard2.0\Rdp.Data.csproj.CoreCompileInputs.cache
+I:\TMQ5\Git\src\Rdp.Data\obj\Debug\netstandard2.0\Rdp.Data.AssemblyInfoInputs.cache
+I:\TMQ5\Git\src\Rdp.Data\obj\Debug\netstandard2.0\Rdp.Data.AssemblyInfo.cs
+I:\TMQ5\Git\src\Rdp.Data\obj\Debug\netstandard2.0\Rdp.Data.dll
+I:\TMQ5\Git\src\Rdp.Data\obj\Debug\netstandard2.0\Rdp.Data.pdb
