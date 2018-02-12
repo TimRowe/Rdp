@@ -67,18 +67,32 @@ namespace Rdp.Service
         public List<CodeTableItemDto> GetCodeTable(CodeTableDto model)
         {
             var cacheKey = "CodeTable_" + model.TableName;
-            var strSql = "DECLARE @SQL NVARCHAR(2000) SELECT @SQL = Select_Sql FROM tbCOM_Code_Table WHERE Table_Name = @p0; ";
+            var strSql = "";
 
-            if (!string.IsNullOrEmpty(model.Where))
-                strSql += string.Format(" SELECT @SQL=N'SELECT * FROM ('+@SQL+N') AS temp WHERE  {0}' ", model.Where);
+            List<SqlParameter> parameters = new List<SqlParameter>(){  };
 
-            strSql += " EXEC(@SQL) ";
+            if(model.SqlParameters != null && model.SqlParameters.Count >= 0)
+            {
+                model.SqlParameters.ForEach(m => parameters.Add(m));
+                strSql = this.GetModel(m => m.TableName == model.TableName).SelectSql;
 
-            SqlParameter[] parameters = { new SqlParameter("@p0", model.TableName) };
+                if (!string.IsNullOrEmpty(model.Where))
+                    strSql = string.Format("SELECT * FROM ({0}) AS temp WHERE  {1} {2}", strSql, model.Where, model.Order);
+            }
+            else
+            {
+                strSql = "DECLARE @SQL NVARCHAR(2000) SELECT @SQL = Select_Sql FROM tbCOM_Code_Table WHERE Table_Name = @p1989; ";
+                parameters.Add(new SqlParameter("@p1989", model.TableName));
+
+                if (!string.IsNullOrEmpty(model.Where))
+                    strSql += string.Format(" SELECT @SQL=N'SELECT * FROM ('+@SQL+N') AS temp WHERE  {0}' " + model.Order, model.Where);
+
+                strSql += " EXEC(@SQL) ";
+            }
 
             Func<List<CodeTableItemDto>> loadFun = () =>
             {
-                var data = DbHelperSql.Query(DbHelperSql.CouQuery, strSql, parameters);
+                var data = DbHelperSql.Query(DbHelperSql.CouQuery, strSql, parameters.ToArray());
                 return data != null && data.Tables.Count > 0 ? Conversion.ConvertToList<CodeTableItemDto>(data.Tables[0]) : null;
             };
 
@@ -96,7 +110,7 @@ namespace Rdp.Service
 
         public List<CodeTableItemDto> GetGeneralTable(CodeTableDto model)
         {
-            string strSql = String.Format("SELECT CONVERT(NVARCHAR(100),{0}) id,{1} text FROM {2} WHERE 1=1 {3} ",
+            string strSql = String.Format("SELECT CONVERT(NVARCHAR(100),{0}) id,{1} text FROM {2} WHERE 1=1 {3} " + model.Order,
                model.ValueField, model.TextField, model.TableName, string.IsNullOrEmpty(model.Where) ? "" : " and " + model.Where);
             return _codeTableRepository.SqlQuery<CodeTableItemDto>(strSql);
         }

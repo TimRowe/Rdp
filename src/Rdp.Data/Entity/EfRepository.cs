@@ -1,4 +1,5 @@
 ﻿using Microsoft.EntityFrameworkCore;
+using Microsoft.EntityFrameworkCore.Storage;
 using Rdp.Core.Data;
 using System;
 using System.Collections.Generic;
@@ -54,6 +55,7 @@ namespace Rdp.Data.Entity
             }
         }
 
+
         #endregion
 
 
@@ -66,6 +68,7 @@ namespace Rdp.Data.Entity
         public EfRepository(DbContext context)
         {
             _context = context;
+            _context.ChangeTracker.AutoDetectChangesEnabled = false;
         }
         #endregion
 
@@ -157,7 +160,7 @@ namespace Rdp.Data.Entity
         {
             if (entity == null)
                 throw new ArgumentNullException("entity");
-            Entities.Add(entity);
+            AttachIfNoAttached(entity, EntityState.Added);
             SaveChanges();
         }
 
@@ -171,7 +174,7 @@ namespace Rdp.Data.Entity
                 throw new ArgumentNullException("entities");
 
             foreach (var entity in entities)
-                Entities.Add(entity);
+                AttachIfNoAttached(entity, EntityState.Added);
 
             SaveChanges();
         }
@@ -226,13 +229,13 @@ namespace Rdp.Data.Entity
             if (entities == null)
                 throw new ArgumentNullException("entities");
 
-            foreach (var entity in entities)
+           foreach (var entity in entities)
             {
                 AttachIfNoAttached(entity, EntityState.Deleted);
             }
 
-            foreach (var entity in entities)
-                Entities.Remove(entity);
+       //     foreach (var entity in entities)
+                //Entities.RemoveRange(entities);
 
             SaveChanges();
         }
@@ -263,6 +266,14 @@ namespace Rdp.Data.Entity
 
             foreach (var e in parameters)
             {
+                
+                if (e == null)
+                {
+                    i++;
+                    continue;
+                    
+                }
+
                 if (e is string)
                     sql = sql.Replace("@p" + (i++).ToString(), "N'" + e.ToString() + "'");
                 else
@@ -272,13 +283,36 @@ namespace Rdp.Data.Entity
 
 
             var dt = DbHelperSql.Query(DbHelperSql.DefaultQueryConn, sql).Tables[0];
+
+            if (dt.Rows.Count <= 0)
+                return null;
+
             return ConvertHelper<T1>.ConvertToModel(dt).ToList();
             
         }
 
 
-        
-     }
+        /// <summary>
+        /// 执行事务
+        /// </summary>
+        /// <param name="func"></param>
+        public void BeginTransaction(Action func)
+        {
+            using (var transaction = _context.Database.BeginTransaction())
+            {
+                try
+                {
+                    func();
+                    transaction.Commit();
+                }
+                catch (Exception e)
+                {
+                    transaction.Rollback();
+                    throw e;
+                }
+            }
+        }
+    }
 
 
 

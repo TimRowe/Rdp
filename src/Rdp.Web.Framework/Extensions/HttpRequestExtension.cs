@@ -20,7 +20,7 @@ namespace Rdp.Web.Framework.Extensions
         {
             get
             {
-                if (_httpRequest.Form[key].Count > 0)
+                if (_httpRequest.Method == "POST" && _httpRequest.Form[key].Count > 0)
                     return _httpRequest.Form[key].ToString();
 
                 var queryitem = _httpRequest.Query.FirstOrDefault(m => m.Key == key);

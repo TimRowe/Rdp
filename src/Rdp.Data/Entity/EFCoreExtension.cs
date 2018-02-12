@@ -15,6 +15,11 @@ namespace Rdp.Data.Entity
             return EntityFrameworkQueryableExtensions.ToListAsync(source);
         }
 
+        public static Task<TSource> FirstOrDefaultAsync<TSource>(this IQueryable<TSource> source)
+        {
+            return EntityFrameworkQueryableExtensions.FirstOrDefaultAsync(source);
+        }
+
 
         public static Task<int> CountAsync<TSource>(this IQueryable<TSource> source)
         {

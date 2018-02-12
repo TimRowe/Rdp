@@ -57,15 +57,15 @@ namespace Rdp.Web.Framework.Runtime
         /// <summary>
         /// 设置模型转换
         /// </summary>
-        public static void AutoMapperConfig()
+        public static void AutoMapperConfig(Action<IMapperConfigurationExpression> callBackConfig)
         {
 
             Func<GridParams, string> fun = (GridParams gridParams) =>
             {
                 var fieldList = "";
-                if (gridParams.Columns != null)
+                if (gridParams.Columns != null && gridParams.Columns.Count >= 1)
                 {
-                    gridParams.Columns.ForEach(p => fieldList += p.Field + ",");
+                    gridParams.Columns.ForEach(p => { if (p.Field != string.Empty) fieldList += p.Field + ","; });
                     fieldList = fieldList.Substring(0, fieldList.Length - 1);
                 }
                 else
@@ -73,6 +73,17 @@ namespace Rdp.Web.Framework.Runtime
                     fieldList = "*";
                 }
                 return fieldList;
+            };
+            Func<GridParams, string> orderFun = (GridParams gridParams) =>
+            {
+                var orderFieldList = gridParams.SortField.Split(',');
+                var orderDirList = gridParams.SortDirection.Split(',');
+                var order = "";
+                if (orderFieldList.Count() != orderDirList.Count())
+                    throw new Exception("排序字段与排序方向数量不一致，请检查");
+                for (var i = 0; i <= orderFieldList.Count() - 1; ++i)
+                    order += orderFieldList[i] + " " + orderDirList[i] + (i == orderFieldList.Count() - 1 ? "" : ",");
+                return order;
             };
 
             Mapper.Initialize(cfg =>
@@ -99,7 +110,9 @@ namespace Rdp.Web.Framework.Runtime
                 .ForMember(d => d.pageSize, opt => { opt.MapFrom(s => s.PageSize); })
                 .ForMember(d => d.pageIndex, opt => { opt.MapFrom(s => s.PageIndex); })
                 .ForMember(d => d.TotalCount, opt => { opt.MapFrom(s => s.TotalCount); })
-                .ForMember(d => d.Order, opt => { opt.MapFrom(s => s.SortField + " " + s.SortDirection); });
+                .ForMember(d => d.Order, opt => {opt.MapFrom(s => orderFun(s));});
+                if (callBackConfig != null)
+                    callBackConfig(cfg);
             });
             
         }

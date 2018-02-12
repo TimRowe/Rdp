@@ -22,12 +22,11 @@
     "sourceMap": false
   },
   {
-    "outputFileName": "wwwroot/Content/site/css/admin_lte_default.min.css",
+    "outputFileName": "wwwroot/css/rdp.adminlte.css",
     // An array of relative input file paths. Globbing patterns supported
     "inputFiles": [
       "wwwroot/Content/AdminLTE/bootstrap/css/bootstrap.min.css",
-      "wwwroot/Content/AdminLTE/bootstrap/css/bootstrap.min.css",
-      "wwwroot/Content/font-awesome/4.2.0/css/font-awesome.min.css",
+      "wwwroot/Content/font-awesome/4.7.0/css/font-awesome.min.css",
       "wwwroot/Content/AdminLTE/plugins/select2/select2.min.css",
       "wwwroot/Content/AdminLTE/dist/css/AdminLTE.min.css",
       "wwwroot/Content/AdminLTE/dist/css/skins/_all-skins.min.css"
@@ -38,7 +37,7 @@
     }
   },
   {
-    "outputFileName": "wwwroot/Content/site/js/admin_lte_default.min.js",
+    "outputFileName": "wwwroot/js/rdp.adminlte.js",
     // An array of relative input file paths. Globbing patterns supported
     "inputFiles": [
       "wwwroot/Content/AdminLTE/plugins/jQuery/jquery-2.2.3.min.js",
@@ -52,7 +51,7 @@
     }
   },
   {
-    "outputFileName": "wwwroot/Content/site/css/easyui_default.min.css",
+    "outputFileName": "wwwroot/css/rdp.easyui.css",
     // An array of relative input file paths. Globbing patterns supported
     "inputFiles": [
       "wwwroot/Content/jquery-easyui-1.4.5/themes/metro-blue/easyui.css",
@@ -62,7 +61,7 @@
     ]
   },
   {
-    "outputFileName": "wwwroot/Content/site/js/easyui_default.min.js",
+    "outputFileName": "wwwroot/js/rdp.easyui.js",
     // An array of relative input file paths. Globbing patterns supported
     "inputFiles": [
       "wwwroot/Scripts/jquery.validate.js", //< !--Bootstrap 3.3.6-- >
@@ -81,7 +80,7 @@
     }
   },
   {
-    "outputFileName": "wwwroot/Content/site/js/index_default.min.js",
+    "outputFileName": "wwwroot/js/rdp.index.js",
     // An array of relative input file paths. Globbing patterns supported
     "inputFiles": [
       "wwwroot/Scripts/Index_v2.js",

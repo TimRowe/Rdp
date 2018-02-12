@@ -7,7 +7,7 @@
         /// </summary>
         /// <typeparam name="T"></typeparam>
         /// <returns></returns>
-        T Resolve<T>();
+        T Resolve<T>(LifetimeScopeEnum scope);
     }
 
 }

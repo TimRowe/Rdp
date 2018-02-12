@@ -78,6 +78,22 @@ namespace Rdp.Service
             return false;
         }
 
+        public int GetVersion(string key)
+        {
+            ICacheManager cacheManager = IocObjectManager.GetInstance().Resolve<IHttpContextCacheManager>();
+            var result = cacheManager.Get("VersionList", 1, () =>
+            {
+                return UseRepository.Table.ToList();
+            });
+
+            var cacheItem = result.Find(t => t.Key == key);
+
+            if(cacheItem == null )
+                throw new ArgumentNullException(key + "未插入版本控制表(Version_Control)中");
+
+            return cacheItem.Version;
+        }
+
       
     }
 }

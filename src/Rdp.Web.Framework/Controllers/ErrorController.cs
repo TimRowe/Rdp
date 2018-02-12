@@ -6,6 +6,9 @@ using System;
 using Rdp.Web.Framework.Core;
 using Rdp.Core;
 using Rdp.Resources.Globalization;
+using Microsoft.AspNetCore.Diagnostics;
+using Rdp.Core.Data;
+using System.Linq;
 
 namespace Rdp.Web.Framework.Controllers
 {
@@ -54,8 +57,48 @@ namespace Rdp.Web.Framework.Controllers
             }
             model.ErrorMsg = string.IsNullOrEmpty(model.ErrorMsg) ? errorMsg : model.ErrorMsg;
             model.RedirectUrl = string.IsNullOrEmpty(model.RedirectUrl) ? redirectUrl : model.RedirectUrl;
-            return View(model);
+            return View("~/Views/RdpTemplate/Error/Detail.cshtml", model);
         }
+
+
+        public IActionResult Handle()
+        {
+            var feature = HttpContext.Features.Get<IExceptionHandlerFeature>();
+            var error = feature?.Error;
+
+            var maxErrorModel = _errorInfoService.UseRepository.Table.OrderByDescending(m => m.ErrorInfoID).FirstOrDefault();
+
+            var maxNo = maxErrorModel == null? 0 : maxErrorModel.ErrorInfoID + 1;
+
+         
+            var errorInfo = new ErrorInfo() {
+                ErrorInfoID = maxNo,
+                UserID = SessionManager.GetUserMaster().UserID,
+                ErrorCode = 500,
+                ErrorMSG = error.Message,
+                StackTrace = error.StackTrace,
+                Url = HttpContext.Request.Path,
+                RunningTime = System.DateTime.Now,
+                SolveBy = "0",
+                ExecSql = "0"
+            };
+
+            if (error.GetType().Name == "SysDbException")
+            {
+                SysDbException ex = (SysDbException)error;
+                errorInfo.ExecSql = ex.SqlInfo;
+            }
+
+            _errorInfoService.Add(errorInfo);
+
+            var errorResult = new ErrorModel() { ErrorNo = (ErrorTypeEnum)500, ErrorMsg = "错误ID:" + errorInfo.ErrorInfoID };
+
+            if (HttpContext.Request.Headers["X-Requested-With"] == "XMLHttpRequest")
+                return Json(errorResult);
+            else
+                return Detail(errorResult);
+        }
+
 
         /// <summary>
         /// 保存错误

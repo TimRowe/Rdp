@@ -9,7 +9,8 @@
         Greater,
         In,
         Less,
-        NotEqual
+        NotEqual,
+        None
     }
 
     public enum SqlDataType

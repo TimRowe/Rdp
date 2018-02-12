@@ -2,11 +2,11 @@
 using Rdp.Service;
 using Microsoft.AspNetCore.Mvc;
 using Rdp.Web.Framework.Models;
-using COU.Web.Filter;
 using AutoMapper;
 using Rdp.Data.Entity;
 using Rdp.Resources;
 using Rdp.Resources.Globalization;
+using Rdp.Web.Framework.Filters;
 
 namespace Rdp.Web.Framework.Controllers
 {

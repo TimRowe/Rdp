@@ -45,22 +45,41 @@ namespace Rdp.Web.Framework.Datatables
         {
             get
             {
-                return Columns != null && Columns.Any() && Order != null && Order.Any()
-                    ? Columns[Order[0].Column].Data
-                    : string.Empty;
+                //return Columns != null && Columns.Any() && Order != null && Order.Any()
+                //    ? Columns[Order[0].Column].Data
+                //    : string.Empty;
+
+                if (Columns != null && Columns.Any() && Order != null && Order.Any())
+                {
+                    var orderBy = "";
+                    Order.ForEach(m => { orderBy += Columns[m.Column].Data + (Order.IndexOf(m) != Order.Count - 1 ? "," : ""); });
+                    return orderBy;
+                }
+                else
+                    return string.Empty;
+
             }
         }
 
         /// <summary>
         ///     排序模式
         /// </summary>
-        public DataTablesOrderDir OrderDir
+        public string OrderDir
         {
             get
             {
-                return Order != null && Order.Any()
-                    ? Order[0].Dir
-                    : DataTablesOrderDir.Desc;
+                //return Order != null && Order.Any()
+                //    ? Order[0].Dir
+                //    : DataTablesOrderDir.Desc;
+
+                if (Order != null && Order.Any())
+                {
+                    var orderByDir = "";
+                    Order.ForEach(m => { orderByDir += m.Dir == DataTablesOrderDir.Asc ? "ASC" : "DESC" + (Order.IndexOf(m) != Order.Count - 1 ? "," : "");  });
+                    return orderByDir;
+                }
+                else
+                    return string.Empty;
             }
         }
     }

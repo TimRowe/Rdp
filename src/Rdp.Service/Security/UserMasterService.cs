@@ -147,11 +147,11 @@ namespace Rdp.Service
             {
                 query = query.Where(t => t.EmailAdd == model.EmailAdd);
             }
-            if (model.ReaderType >= 0)
+            if (model.ReaderType.HasValue)
             {
-                query = query.Where(t => t.ReaderType == model.ReaderType);
+                query = query.Where(t => t.ReaderType == model.ReaderType.Value);
             }
-            if (model.BranchCode>0)
+            if (model.BranchCode.HasValue)
             {
                 query = query.Where(t => t.BranchCode == model.BranchCode);
             }

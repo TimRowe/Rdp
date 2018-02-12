@@ -1,5 +1,7 @@
 ﻿using Rdp.Core.Dependency;
 using Microsoft.Extensions.DependencyInjection;
+using Rdp.Web.Framework.Core;
+
 namespace Rdp.Web.Framework.Runtime
 {
     /// <summary>
@@ -7,9 +9,9 @@ namespace Rdp.Web.Framework.Runtime
     /// </summary>
     public class IocLifetimeScope : IIocLifetimeScope
     {
-        public T Resolve<T>() 
+        public T Resolve<T>(LifetimeScopeEnum scope) 
         {
-            var container = IocContainerManager.GetInstance();
+            var container = scope == LifetimeScopeEnum.Request? HttpContextOld.Current.RequestServices : IocContainerManager.GetInstance();
             return container.GetService<T>();
         }
     }

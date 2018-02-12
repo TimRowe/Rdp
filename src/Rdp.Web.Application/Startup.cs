@@ -26,6 +26,9 @@ using Microsoft.Extensions.Options;
 using Rdp.Core.Security;
 using Microsoft.EntityFrameworkCore;
 
+using System.Text.Encodings.Web;
+using System.Text.Unicode;
+using Rdp.Service.Implement;
 
 namespace Rdp.Web.Application
 {
@@ -45,7 +48,10 @@ namespace Rdp.Web.Application
 
             services.AddLocalization();
 
+            services.AddScoped<Framework.Filters.PemissionAuthorizeAttribute>();
+
             services.AddMvc()
+        .AddSessionStateTempDataProvider()
                 .AddApplicationPart(typeof(Rdp.Web.Framework.Controllers.AccountController).GetTypeInfo().Assembly)
                 .AddControllersAsServices()
                 .ConfigureApplicationPartManager(manager => {
@@ -60,6 +66,10 @@ namespace Rdp.Web.Application
                     options.SerializerSettings.ContractResolver = new DefaultContractResolver();
                 });
 
+
+          
+
+            services.AddSingleton<HtmlEncoder>(HtmlEncoder.Create(allowedRanges: new[] { UnicodeRanges.BasicLatin, UnicodeRanges.CjkUnifiedIdeographs }));
             //增加调优工具
             services.AddMiniProfiler().AddEntityFramework(); 
 
@@ -75,6 +85,7 @@ namespace Rdp.Web.Application
             #region 业务系统接口注入
             services.AddScoped(typeof(IRepository<>), typeof(EfRepository<>));
             services.AddScoped(typeof(DbContext), typeof(RdpDbContext));
+            services.AddScoped(typeof(IService<>), typeof(DefaultService<>));
             services.AddScoped(typeof(IHttpContextCacheManager), typeof(HttpContextCacheManager));
             services.AddScoped(typeof(IHttpContextSessionManager), typeof(HttpContextSessionManager));
 
@@ -87,7 +98,7 @@ namespace Rdp.Web.Application
             {
                 foreach (var t in types)
                 {
-                    if (!t.IsInterface && t.GetInterfaces().Where(m => m.IsGenericType && m.GetGenericTypeDefinition() == typeof(IService<>)).Count() >= 1)
+                    if (!t.IsInterface && t.GetInterfaces().Where(m=> m.Name.Contains("IDependency")).Count() >= 1 && !t.Name.Contains("DefaultService"))
                         services.AddScoped(t.GetInterfaces()[0], t);
                 }
             }
@@ -98,7 +109,7 @@ namespace Rdp.Web.Application
             #endregion
 
             //配置AutoMapper映射对象
-            Rdp.Web.Framework.Runtime.Startup.AutoMapperConfig();
+            Rdp.Web.Framework.Runtime.Startup.AutoMapperConfig(null);
         }
 
 

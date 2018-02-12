@@ -1,14 +1,13 @@
-﻿/*using System.Threading;
-using Autofac;
+﻿using System.Threading;
 using Rdp.Core.Dependency;
-using System;
 using Rdp.Service;
+using Microsoft.AspNetCore.Mvc.Razor;
 
 namespace Rdp.Web.Framework.Core {
     /// <summary>
     /// WebViewPage 的摘要说明
     /// </summary>
-    public abstract class WebViewPage<TModel> : System.Web.Mvc.WebViewPage<TModel>
+    public abstract class WebViewPage<TModel> : RazorPage<TModel>
     {
         private IGlobalResourcesService _globalResourcesService;
 
@@ -23,4 +22,4 @@ namespace Rdp.Web.Framework.Core {
             return _globalResourcesService.GetValue(name, Thread.CurrentThread.CurrentUICulture.Name);
         }
     }
-}*/
+}

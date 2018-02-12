@@ -39,7 +39,7 @@
                     <div class="col-sm-9">
                         @Html.DropDownListFor(
                                m => m.IsVisible,
-                               new DropDownListOption(){ RefTable = "Status_Flag", OptionLabel = ResMessage.PleaseChoose },
+                               new DropDownListOption(){ RefTable = "Status_Flag", OptionLabel = ResMessage.PleaseChoose, UseCache = true },
                                new Dictionary<string, object>(){
                                    { "id", "IsVisible"},
                                    { "class", "form-control select2"},

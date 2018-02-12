@@ -24,8 +24,8 @@ namespace Rdp.Web.Framework.Datatables
             var gridParams = new GridParams();
             gridParams.Columns = new List<GridColumn>();
             gridParams.PageSize = dataTablesParams.Length;
-            gridParams.PageIndex = Math.Max(dataTablesParams.Start / dataTablesParams.Length + 1, 1);
-            gridParams.SortDirection = dataTablesParams.OrderDir == DataTablesOrderDir.Desc ? "Desc" : "Asc";
+            gridParams.PageIndex = Math.Max(dataTablesParams.Start / Math.Max(dataTablesParams.Length, 1) + 1, 1);
+            gridParams.SortDirection = dataTablesParams.OrderDir;
             gridParams.SortField = dataTablesParams.OrderBy;
 
             foreach(var e in dataTablesParams.Columns)

@@ -1408,17 +1408,22 @@ namespace Rdp.Core.Data
         /// </history>
         public static DataTable QueryByPage(ref PageParam pageParam)
         {
-            var execSql = string.Format(
+            var dt = new DataTable();
+
+            if (pageParam.pageSize != 0)
+            {
+                var execSql = string.Format(
                 "{0} SELECT {1} FROM {2} {3} {4} {5};",
                 pageParam.PreSql,
                 pageParam.FieldList,
                 pageParam.TableName,
-                string.IsNullOrEmpty(pageParam.Where)? "" : " WHERE " + pageParam.Where,
+                string.IsNullOrEmpty(pageParam.Where) ? "" : " WHERE " + pageParam.Where,
                 string.IsNullOrEmpty(pageParam.Order.Trim()) ? "" : " ORDER BY " + pageParam.Order,
                 string.IsNullOrEmpty(pageParam.Order.Trim()) ? "" : " OFFSET " + (pageParam.pageSize * (pageParam.pageIndex - 1)).ToString() + " ROWS  FETCH NEXT " + pageParam.pageSize.ToString() + " ROWS ONLY "
                 );
 
-            var dt = Query(DefaultQueryConn, execSql, pageParam.SqlParamList!=null? pageParam.SqlParamList.ToArray():null).Tables[0];
+                dt = Query(DefaultQueryConn, execSql, pageParam.SqlParamList != null ? pageParam.SqlParamList.ToArray() : null).Tables[0];
+            }
 
             if (pageParam.pageIndex == 1 && dt.Rows.Count < pageParam.pageSize)
             {

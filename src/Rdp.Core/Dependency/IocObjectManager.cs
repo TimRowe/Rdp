@@ -2,6 +2,13 @@
 
 namespace Rdp.Core.Dependency
 {
+    public enum LifetimeScopeEnum
+    {
+        Request = 0,
+        Application = 1
+    }
+
+
     public class IocObjectManager 
     {
         private IIocLifetimeScope _iocLifetimeScope;
@@ -39,9 +46,9 @@ namespace Rdp.Core.Dependency
         /// </summary>
         /// <typeparam name="T"></typeparam>
         /// <returns></returns>
-        public T Resolve<T>()
+        public T Resolve<T>(LifetimeScopeEnum scope = LifetimeScopeEnum.Request)
         {
-            return _iocLifetimeScope.Resolve<T>();
+            return _iocLifetimeScope.Resolve<T>(scope);
         }
 
         

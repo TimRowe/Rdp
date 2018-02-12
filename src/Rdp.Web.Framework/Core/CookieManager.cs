@@ -90,6 +90,32 @@ namespace Rdp.Web.Framework.Core
            var cookie = HttpContextOld.Current.Request.Cookies["Version"];
             return cookie;
         }
+
+        /// <summary>
+        /// 获取Cookie
+        /// </summary>
+        /// <param name="key">键</param>
+        /// <returns></returns>
+        public static string GetCookie(string key)
+        {
+            return HttpContextOld.Current.Request.Cookies[key];
+        }
+
+        /// <summary>
+        /// 设置Cookie
+        /// </summary>
+        /// <param name="key">键</param>
+        /// <param name="value">值</param>
+        public static void SetCookie(string key, string value)
+        {
+            HttpContextOld.Current.Response.Cookies.Append(
+                key,
+                value,
+               new CookieOptions() { Expires = DateTime.Now.AddDays(30) });
+        }
+
+
+
     }
 }
 

@@ -19161,6 +19161,93 @@ com.checkRight = function (fn) {
         }
     });
 };
+
+var rdp = rdp || {};
+rdp.com = rdp.com || {};
+
+/**
+  2017-03-10     罗梯     整合增加data参数用于非form提交
+ **/
+rdp.com.mvcSubmitWithData = function (controller, action, data, callBack, identityVerify) {
+    var mvcSubmitFun = function () {
+        //com.progress();
+        $.ajax({
+            url: "/" + controller + "/" + action,
+            data: data,
+            async: false,
+            dataType: 'json',
+            method: 'POST',
+            success: function (data) {
+               // $.messager.progress('close');
+
+                if (typeof (parent.grid) != 'undefined') {
+                    parent.grid.datagrid('reload', com.serializeObject(parent.$('#F_Search'), {
+                        "toUpperCase": false
+                    }));
+                } else if (typeof (grid) != 'undefined') {
+                    grid.datagrid('reload', com.serializeObject($('#F_Search'), {
+                        "toUpperCase": false
+                    }));
+                }
+
+                //弹出信息函数
+                var fnMessagerAlert = com.messagerAlert;
+                var needClose = false;
+
+                if (typeof (parent.modalDialog) != 'undefined') {
+                    //因为需要关闭本窗口，所以调用父类函数
+                    fnMessagerAlert = parent.com.messagerAlert;
+                    needClose = true;
+                }
+
+                message = data.res || data.ErrorMsg;
+
+                if (typeof (message) != "undefined") {
+                    fnMessagerAlert(ResDisplay.Result, message, function () {
+                        if (needClose) parent.modalDialog.dialog('close');
+                        else location.href = location.href.replace(/(\S)#/g, '$1');
+                    }, true);
+                }
+
+                if (typeof (callBack) != 'undefined') {
+                    callBack(data);
+                }
+            }
+        });
+    }
+
+    if (identityVerify) {
+        operateWithValidate(mvcSubmitFun);
+    }
+    else {
+        mvcSubmitFun()
+    }
+};
+
+
+/**
+  2016-04-11     罗梯     添加form到mvc
+  2016-09-12     罗梯     增加callBack
+ **/
+rdp.com.mvcSubmit = function (controller, action, formName, callBack) {
+
+    if (typeof (formName) == 'undefined' || formName == "") {
+        formName = "#F_Update";
+    } else {
+        formName = "#" + formName;
+    }
+    if ($(formName).valid()) {
+        rdp.com.mvcSubmitWithData(controller, action, com.serializeObject($(formName)), callBack, $("#H_StaffCode").length > 0);
+    }
+};
+
+
+//兼容旧版本
+if (typeof (com.mvcSubmitWithData) == "undefined") {
+    com.mvcSubmitWithData = rdp.com.mvcSubmitWithData;
+    com.mvcSubmit = rdp.com.mvcSubmit;
+} 
+
 if ($.fn.pagination){
 	$.fn.pagination.defaults.beforePageText = '第';
 	$.fn.pagination.defaults.afterPageText = '共{pages}页';

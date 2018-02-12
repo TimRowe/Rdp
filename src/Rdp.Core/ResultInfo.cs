@@ -22,6 +22,11 @@ namespace Rdp.Core
 
         public DataTable ErrorTable;
     }
+    public class OperateResult
+    {
+        public int Status { get; set; }
+        public string Message { get; set; }
+    }
 }
 
 

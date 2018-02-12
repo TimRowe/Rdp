@@ -11,7 +11,7 @@ namespace Rdp.Data.Entity
     public partial class Privilege: BaseEntity
     {
         
-		[Column("Privilege_ID",TypeName ="int")] [Required] [DatabaseGenerated(DatabaseGeneratedOption.None)]  
+		[Column("Privilege_ID",TypeName ="int")] [Required] [DatabaseGenerated(DatabaseGeneratedOption.Identity)]  
 		public int PrivilegeID { get; set; } // Privilege_ID (Primary key)
         
 		[Column("Valid_From",TypeName ="date")] [Required]   

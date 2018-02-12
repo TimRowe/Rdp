@@ -87,15 +87,19 @@ namespace Rdp.Core.Data
 
                 var objValue = p.GetValue(model, null);
 
+                //对于一些不是where里面的条件，参数必须传进去
+                if (attribute.CompareType == SqlCompareType.None && objValue == null)
+                    objValue = string.Empty;
+
                 //判断是否为null
-                if (objValue == null || (p.PropertyType == typeof(int) && (int)objValue == 0) || (p.PropertyType == typeof(decimal) && (decimal)objValue == 0)) continue;
+                if (objValue == null) continue;
 
                 var compareField = attribute.CompareField == null ? p.Name : attribute.CompareField;
 
                 //判断该参数之前是否已经设置值
-                if(sqlParamList.Find(m => m.ParameterName == "@" + p.Name) == null)
+                if(sqlParamList.Find(m => m.ParameterName == "@" + p.Name) == null && attribute.CompareType != SqlCompareType.In)
                 {
-                    sqlParamList.Add(new SqlParameter("@" + p.Name, Convert.ChangeType(objValue, p.PropertyType)));
+                    sqlParamList.Add(new SqlParameter("@" + p.Name, objValue));
                 }
                 
                 switch (attribute.CompareType)
@@ -113,7 +117,22 @@ namespace Rdp.Core.Data
                         where += " AND " + compareField + " > @" + p.Name;
                         break;
                     case SqlCompareType.In:
-                        where += " AND " + compareField + " IN (" + p.Name + ")" ;
+                        {
+                            var whereStr = "";
+                            var itemList = objValue.ToString().Split(',');
+
+                            for(var i = 0; i <= itemList.Length - 1; ++i)
+                            {
+                                whereStr += (i == 0?"":",") + "@" +p.Name + i.ToString();
+
+                                //判断该参数之前是否已经设置值
+                                if (sqlParamList.Find(m => m.ParameterName == "@" + p.Name + i.ToString()) == null)
+                                    sqlParamList.Add(new SqlParameter("@" + p.Name + i.ToString(), itemList[i]));
+                            }
+
+                            where += " AND " + compareField + " IN (" + whereStr + ")";
+                        }
+                       
                         break;
                     case SqlCompareType.Less:
                         where += " AND " + compareField + " < @" + p.Name;

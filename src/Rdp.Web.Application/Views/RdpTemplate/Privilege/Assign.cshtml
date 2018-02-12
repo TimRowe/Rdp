@@ -1,17 +1,14 @@
-﻿<!DOCTYPE html>
+﻿
+@{
+    Layout = "~/Views/RdpTemplate/Shared/_AdminLteWithEasyuiLayout.cshtml";
+}
 
-<html xmlns="http://www.w3.org/1999/xhtml">
-<head>
-    <title>@ResOperate.Add@ResPrivilege.Privilege</title>
-    @ResVersion.Css
-    @ResVersion.Javascript
-    @ResVersion.MyDatePicker
-    <script type="text/javascript">
+<script type="text/javascript">
         var grid;
         var branchMemberData;
         var privilegeID = "";
-        //获取branchMember的数据列表
-        $.ajax({
+        //获取branchMember的数据列表 todo
+        /*$.ajax({
             url: '/Branch/BranchMemberList',
             async: false,
             dataType: 'json',
@@ -20,7 +17,10 @@
             success: function (data) {
                 branchMemberData = data;
             }
-        });
+        });*/
+
+        branchMemberData = [{ id: "1", text: "(1)所有区域" }];
+
         //获取插入的SQL
         function getParams() {
             var strSql = "";
@@ -35,8 +35,8 @@
 
                 if (typeof (name) != "undefined" || $(this).is(':checked')){
                      paramArray["privilegeList[" + index + "].PrivilegeID"] = (typeof (name) != "undefined" ? name : "0");
-                    paramArray["privilegeList[" + index + "].PrivilegeMaster"] = "@Request["privilegeMaster"]";
-                    paramArray["privilegeList[" + index + "].PrivilegeValue"] = "@Request["privilegeValue"]";
+                    paramArray["privilegeList[" + index + "].PrivilegeMaster"] = "@ViewData["privilegeMaster"]";
+                    paramArray["privilegeList[" + index + "].PrivilegeValue"] = "@ViewData["privilegeValue"]";
                     paramArray["privilegeList[" + index + "].AccessMaster"] = controlID.split("_")[1];
                     paramArray["privilegeList[" + index + "].AccessValue"] = controlID.split("_")[0];
                     paramArray["privilegeList[" + index + "].BranchMember"] = (typeof ($("#DDL_Branch_Member_" + controlID).val()) != 'undefined' ? $("#DDL_Branch_Member_" + controlID).val() : "0");
@@ -68,10 +68,12 @@
             });
         };
 
-    $(function () {
+     $(function () {
+        $("#GirdDiv").css("height", $(window).outerHeight() - $("#SearchForm").outerHeight() - 50 + "px");
+
         grid = $("#Treegrid_Privilege").treegrid({
-            title: '@ResPrivilege.PrivilegeMaster:@Request["privilegeValue"]',
-            url: '/Privilege/GetTreeGrid?privilegeValue=' + "@Request["privilegeValue"]" + "&privilegeMaster=" + "@Request["privilegeMaster"]",
+            title: '@ResPrivilege.PrivilegeMaster:@ViewData["privilegeValue"]',
+            url: '/Privilege/GetTreeGrid?privilegeValue=' + "@ViewData["privilegeValue"]" + "&privilegeMaster=" + "@ViewData["privilegeMaster"]",
             striped: true,
             rownumbers: true,
             pagination: true,
@@ -109,7 +111,7 @@
                 }
                 }
         }, {
-            title: '@ResOperation.OperationDesc',
+            title: '@ResOperate.Operator',
                 field: 'Branch_Member',
                 formatter: function (value, rowData, rowIndex) {
                     var htmlStr = '';
@@ -123,7 +125,7 @@
                     return htmlStr;
                 }
             }, {
-                title: '@ResOperation.OperationDesc',
+                title: '@ResOperate.Operator',
                 field: 'Operation_ID',
                 formatter: function (value, rowData, rowIndex) {
                     return '<select name="Operation_ID" id="DDL_Operation_ID_' + rowData.Program_ID + '_' + rowData.Access_Master + '"><option value="1" ' + (rowData.Operation_ID == 1 ? "selected" : "") + '>可操作</option><option value="2" ' + (rowData.Operation_ID == 2 ? "selected" : "") + '>只可见</option><option value="3" ' + (rowData.Operation_ID == 3 ? "selected" : "") + '>不可见</option></select>';
@@ -159,28 +161,31 @@
         //com.comboboxWithValues("DDL_ParentID", "tbCRM_Parent_Program", false, false, ['1'], undefined);
         com.combobox("DDL_ParentID", "tbCRM_Parent_Program", false, false);
         com.enterSubmit(0, 0);
+
+      
     });
-    </script>
-</head>
-<body class="easyui-layout" data-options="fit:true,border:false">
-    <div id="toolbar" style="display: none;">
-        <div>
-            <form id="F_Search">
-                <table class="table">
-                    <tr>
-                        <th>@ResProgram.ParentProgramName</th>
-                        <td>
-                            <input type="text" id="DDL_ParentID" name="parentId" />
-                        </td>
-                        <th>@ResProgram.ProgramName</th>
-                        <td>
-                            <input type="text" id="TB_ProgramName" name="Program_Name" />
-                        </td>
-                    </tr>
-                </table>
-            </form>
-        </div>
-        <div>
+</script>
+
+
+<section class="content">
+    <div class="row" id="SearchForm">
+        <form class="form-horizontal" id="F_Search">
+            <table class="table">
+                <tr>
+                    <th>@ResProgram.ParentProgramName</th>
+                    <td>
+                        <input type="text" id="DDL_ParentID" name="parentId" />
+                    </td>
+                    <th>@ResProgram.ProgramName</th>
+                    <td>
+                        <input type="text" id="TB_ProgramName" name="Program_Name" />
+                    </td>
+                </tr>
+            </table>
+        </form>
+    </div>
+    <div class="row" id="GirdDiv">
+        <div  class="col-sm-12">
             <table>
                 <tr>
                     <td><a href="javascript:void(0);" class="easyui-linkbutton" data-options="iconCls:'ext-zoom',plain:true" onclick="grid.treegrid('load', com.serializeObject($('#F_Search')));">@ResOperate.Filter</a></td>
@@ -195,9 +200,10 @@
                 </tr>
             </table>
         </div>
-    </div>
-    <div data-options="region:'center',fit:true,border:false">
-        <table id="Treegrid_Privilege" data-options="fit:true,border:false"></table>
-    </div>
-</body>
-</html>
+
+        <div data-options="region:'center',fit:true,border:false" class="col-sm-12" style="height:100%">
+            <table id="Treegrid_Privilege" data-options="fit:true,border:false"></table>
+        </div>
+     </div>
+</section>
+    

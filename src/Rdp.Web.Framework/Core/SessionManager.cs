@@ -44,7 +44,7 @@ namespace Rdp.Web.Framework.Core
         {
             get
             {
-                HttpContext context = IocObjectManager.GetInstance().Resolve<IHttpContextAccessor>().HttpContext;
+                HttpContext context = IocObjectManager.GetInstance().Resolve<IHttpContextAccessor>(LifetimeScopeEnum.Application).HttpContext;
                 return context;
             }
         }
@@ -87,6 +87,24 @@ namespace Rdp.Web.Framework.Core
             {
                 context.Session.Set(item.SessionKey, value);
             }
+        }
+
+        /// <summary>
+        /// 获取Session项到集合
+        /// </summary>
+        /// <typeparam name="T"></typeparam>
+        /// <param name="item"></param>
+        /// <param name="value"></param>
+        /// <remarks></remarks>
+        public static T GetSessionItem<T>(string sessionKey)
+        {
+            HttpContext context = HttpContextOld.Current;
+            if ((context != null) && (context.Session != null))
+            {
+                return context.Session.Get<T>(sessionKey);
+            }
+
+            return default(T);
         }
 
         /// <summary>

@@ -49,8 +49,10 @@ namespace Rdp.Web.Framework.Controllers
         /// </summary>
         /// <returns></returns>
         [HttpGet]
-        public ViewResult Assign()
+        public ViewResult Assign(string privilegeMaster, string privilegeValue)
         {
+            ViewData["privilegeMaster"] = privilegeMaster;
+            ViewData["privilegeValue"] = privilegeValue;
             return View();
         }
 

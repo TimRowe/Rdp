@@ -11,7 +11,8 @@ using System.Text;
 using Rdp.Core.Util;
 using Rdp.Core.Data;
 using Rdp.Core.Dependency;
-
+using Rdp.Data.Entity;
+using System.Threading.Tasks;
 
 namespace Rdp.Service
 {
@@ -61,6 +62,11 @@ namespace Rdp.Service
         public static List<T> GetModels<T>(this IService<T> service, Expression<Func<T, bool>>  match) where T : BaseEntity
         {
             return service.UseRepository.Table.Where(match).ToList();
+        }
+
+        public static Task<List<T>> GetModelsAsync<T>(this IService<T> service, Expression<Func<T, bool>> match) where T : BaseEntity
+        {
+            return service.UseRepository.Table.Where(match).ToListAsync();
         }
 
         public static T GetCachedModel<T>(this IService<T> service, params object[] pkeyValues) where T : BaseEntity
@@ -177,6 +183,16 @@ namespace Rdp.Service
         /// <returns></returns>
         public static DataTable ToDataTable<T>(this IService<T> service, IList list) where T : BaseEntity
         {
+            return ToDataTable(list);
+        }
+
+        /// <summary>
+        /// 将集合类转换成DataTable
+        /// </summary>
+        /// <param name="list">集合</param>
+        /// <returns></returns>
+        public static DataTable ToDataTable(IList list) 
+        {
             DataTable result = new DataTable();
             if (list.Count > 0)
             {
@@ -261,6 +277,18 @@ namespace Rdp.Service
 
 
         /// <summary>
+        /// 将DataTable转换成List
+        /// </summary>
+        /// <typeparam name="T"></typeparam>
+        /// <param name="dt"></param>
+        /// <returns></returns>
+        public static IList<T> ToList<T>(DataTable dt)
+        {
+            return ConvertHelper<T>.ConvertToModel(dt);
+        }
+
+
+        /// <summary>
         /// 根据查询语句返回DataTable
         /// </summary>
         /// <param name="str">查询语句</param>
@@ -321,6 +349,12 @@ namespace Rdp.Service
             return DbHelperSql.RunProcedure(opt == DbOperation.Read ? DbHelperSql.DefaultQueryConn : DbHelperSql.DefaultUpdateConn,
                     storedProcName,
                     parameters, "tb1", timeout);
+        }
+
+
+        public static T FromIoc<T>()
+        {
+            return IocObjectManager.GetInstance().Resolve<T>();
         }
 
 

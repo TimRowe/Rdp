@@ -11,7 +11,7 @@ namespace Rdp.Data.Entity
     public partial class CodeTable: BaseEntity
     {
         
-		[Column("Table_ID",TypeName ="int")] [Required] [DatabaseGenerated(DatabaseGeneratedOption.None)]  
+		[Column("Table_ID",TypeName ="int")] [Required] [DatabaseGenerated(DatabaseGeneratedOption.Identity)]  
 		public int TableID { get; set; } // Table_ID (Primary key)
         
 		[Column("Table_Name",TypeName ="nvarchar(50)")] [Required]   

@@ -11,6 +11,7 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.AspNetCore.Mvc.ViewFeatures;
 using Microsoft.AspNetCore.Html;
+using System.Data.SqlClient;
 
 namespace Rdp.Web.Framework.Core
 {
@@ -23,6 +24,17 @@ namespace Rdp.Web.Framework.Core
         public string TextField { get; set; }
         public string ValueField { get; set; }
         public string SelectValue { get; set; }
+        public string Where { get; set; }
+        public string Order { get; set; }
+        public bool UseCache { get; set; }
+
+        public List<SqlParameter> SqlParameters { get; set; }
+
+        public DropDownListOption()
+        {
+            UseCache = true;
+            Where = string.Empty;
+        }
     }
 
 
@@ -42,16 +54,27 @@ namespace Rdp.Web.Framework.Core
             var codeTableService = IocObjectManager.GetInstance().Resolve<ICodeTableService>();
 
             var codeTableList = option.FromWay ==
-                FromWayEnum.FromGeneralTable ? codeTableService.GetGeneralTable(
+                FromWayEnum.FromGeneralTable ? 
+                codeTableService.GetGeneralTable(
                     new CodeTableDto()
                     {
                         TableName = option.RefTable,
                         TextField = option.TextField,
-                        ValueField = option.ValueField
+                        ValueField = option.ValueField,
+                        Where = option.Where,
+                        UseCache = option.UseCache,
+                        SqlParameters = option.SqlParameters
                     }
                 ):                
-                codeTableService.GetCodeTable(new CodeTableDto() { TableName = option.RefTable }) 
-                ;
+                codeTableService.GetCodeTable(
+                    new CodeTableDto()
+                    {
+                        TableName = option.RefTable,
+                        Where = option.Where,
+                        UseCache = option.UseCache,
+                        SqlParameters = option.SqlParameters
+                    }
+                ) ;
 
             var list = (from u in codeTableList
                         select new SelectListItem() { Text = u.text, Value = u.id, Selected = option.SelectValue == u.id ? true : false }).ToList();
@@ -61,28 +84,59 @@ namespace Rdp.Web.Framework.Core
 
         //todo
         public static IHtmlContent DropDownList<TModel>(
-            this HtmlHelper<TModel> htmlHelper,
+            this IHtmlHelper<TModel> htmlHelper,
             DropDownListOption option,
             IDictionary<string, object> htmlAttributes)
         {
             var codeTableService = IocObjectManager.GetInstance().Resolve<ICodeTableService>();
 
             var codeTableList = option.FromWay ==
-                FromWayEnum.FromGeneralTable ? codeTableService.GetGeneralTable(
+                FromWayEnum.FromGeneralTable ? 
+                codeTableService.GetGeneralTable(
                     new CodeTableDto()
                     {
                         TableName = option.RefTable,
                         TextField = option.TextField,
-                        ValueField = option.ValueField
+                        ValueField = option.ValueField,
+                        Where = option.Where,
+                        UseCache = option.UseCache,
+                        SqlParameters = option.SqlParameters
                     }
                 ) :
-                codeTableService.GetCodeTable(new CodeTableDto() { TableName = option.RefTable })
+                codeTableService.GetCodeTable(
+                    new CodeTableDto()
+                    {
+                        TableName = option.RefTable,
+                        Where = option.Where,
+                        UseCache = option.UseCache,
+                        SqlParameters = option.SqlParameters
+                    })
                 ;
 
             var list = (from u in codeTableList
                         select new SelectListItem() { Text = u.text, Value = u.id, Selected = option.SelectValue == u.id ? true : false }).ToList();
 
             return htmlHelper.DropDownList(htmlAttributes["name"].ToString(), list, option.OptionLabel, htmlAttributes);
+        }
+
+
+        /// <summary>
+        /// 字符串缩略，用于字符串较长的情况
+        /// </summary>
+        /// <param name="htmlHelper"></param>
+        /// <param name="content">文本内容</param>
+        /// <param name="maxLen">保留最大长度</param>
+        /// <param name="replace">省略符</param>
+        /// <returns></returns>
+        public static IHtmlContent Ellipsis(this IHtmlHelper htmlHelper, string content, int maxLen, string replace)
+        {
+            return new HtmlString(content.Length > maxLen? content.Substring(0, maxLen-1) + replace : content);
+        }
+
+
+        public static IHtmlContent CacheVersion(this IHtmlHelper htmlHelper, string key)
+        {
+            return new HtmlString(ServiceExtensions.FromIoc<IVersionControlService>().GetVersion(key).ToString());
         }
 
 
