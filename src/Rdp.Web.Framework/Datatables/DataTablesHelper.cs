@@ -30,7 +30,7 @@ namespace Rdp.Web.Framework.Datatables
 
             foreach(var e in dataTablesParams.Columns)
             {
-                gridParams.Columns.Add(new GridColumn { Field = e.Data, Title = e.Data });
+                gridParams.Columns.Add(new GridColumn { Field = e.Data, Title = e.Name });
             }
 
             return new Tuple<GridParams, DatatablesParameters>(gridParams, dataTablesParams); ;

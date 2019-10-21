@@ -477,7 +477,6 @@ namespace Rdp.Core.Util
                             newCell.SetCellValue(drValue);
                             break; // TODO: might not be correct. Was : Exit Select
 
-                            break;
                         case "System.DateTime":
                             //日期类型
                             DateTime dateV = default(DateTime);
@@ -488,7 +487,6 @@ namespace Rdp.Core.Util
                             //格式化显示
                             break; // TODO: might not be correct. Was : Exit Select
 
-                            break;
                         case "System.Boolean":
                             //布尔型
                             bool boolV = false;
@@ -496,7 +494,6 @@ namespace Rdp.Core.Util
                             newCell.SetCellValue(boolV);
                             break; // TODO: might not be correct. Was : Exit Select
 
-                            break;
                         //整型
                         case "System.Int16":
                         case "System.Int32":
@@ -507,7 +504,6 @@ namespace Rdp.Core.Util
                             newCell.SetCellValue(intV);
                             break; // TODO: might not be correct. Was : Exit Select
 
-                            break;
                         //浮点型
                         case "System.Decimal":
                         case "System.Double":
@@ -516,19 +512,15 @@ namespace Rdp.Core.Util
                             newCell.SetCellValue(doubV);
                             break; // TODO: might not be correct. Was : Exit Select
 
-                            break;
                         case "System.DBNull":
                             //空值处理
                             newCell.SetCellValue("");
                             break; // TODO: might not be correct. Was : Exit Select
 
-                            break;
                         default:
                             newCell.SetCellValue("");
                             break; // TODO: might not be correct. Was : Exit Select
 
-
-                            break;
                     }
                 }
                 //#End Region
@@ -771,7 +763,7 @@ namespace Rdp.Core.Util
 
             return dt;
 
-            dt.Dispose();
+            //dt.Dispose();
         }
         /// <summary>
         /// 

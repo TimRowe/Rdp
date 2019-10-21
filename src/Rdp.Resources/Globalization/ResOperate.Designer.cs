@@ -79,6 +79,11 @@ namespace Rdp.Resources.Globalization {
         }
         
         /// <summary>
+        public static string Agree {
+            get {
+                return ResourceManager.GetString("Agree", resourceCulture);
+            }
+        }
         ///   查找类似 申请 的本地化字符串。
         /// </summary>
         public static string Apply {
@@ -165,6 +170,11 @@ namespace Rdp.Resources.Globalization {
         public static string Choose {
             get {
                 return ResourceManager.GetString("Choose", resourceCulture);
+            }
+        }
+        public static string Chosen {
+            get {
+                return ResourceManager.GetString("Chosen", resourceCulture);
             }
         }
         
@@ -462,6 +472,15 @@ namespace Rdp.Resources.Globalization {
         public static string ReGet {
             get {
                 return ResourceManager.GetString("ReGet", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   查找类似 拒绝 的本地化字符串。
+        /// </summary>
+        public static string Reject {
+            get {
+                return ResourceManager.GetString("Reject", resourceCulture);
             }
         }
         

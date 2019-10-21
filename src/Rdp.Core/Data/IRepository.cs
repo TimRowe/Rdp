@@ -74,7 +74,7 @@ namespace Rdp.Core.Data
 
         T Find(params object[] keyValues);
 
-        List<T> SqlQuery(string sql, params object[] parameters);
+        //List<T> SqlQuery(string sql, params object[] parameters);
 
         /// <summary>
         /// 采用原生sql获取对象，sql select的字段必须与T1属性对应

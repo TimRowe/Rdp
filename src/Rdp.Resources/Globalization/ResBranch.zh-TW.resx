@@ -117,58 +117,136 @@
   <resheader name="writer">
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
-  <data name="BackToLogin" xml:space="preserve">
-    <value>返回登陆</value>
+  <data name="AgentCode" xml:space="preserve">
+    <value>分店所屬公司</value>
   </data>
-  <data name="ChooseBranch" xml:space="preserve">
-    <value>选择分行</value>
+  <data name="Area" xml:space="preserve">
+    <value>社區</value>
   </data>
-  <data name="Email" xml:space="preserve">
-    <value>邮箱</value>
+  <data name="AreaDescription" xml:space="preserve">
+    <value>社區描述</value>
   </data>
-  <data name="EnterEmail" xml:space="preserve">
-    <value>输入您的邮箱找回密码</value>
+  <data name="BoothType" xml:space="preserve">
+    <value>店鋪組成</value>
   </data>
-  <data name="EnterInfomation" xml:space="preserve">
-    <value>请输入您的账号信息</value>
+  <data name="Branch" xml:space="preserve">
+    <value>分店</value>
   </data>
-  <data name="EnterModifyPassword" xml:space="preserve">
-    <value>请输入需要修改的密码</value>
+  <data name="BranchCode" xml:space="preserve">
+    <value>分店編號</value>
   </data>
-  <data name="ForgetPasswd" xml:space="preserve">
-    <value>我忘记了密码</value>
+  <data name="BranchDescription" xml:space="preserve">
+    <value>分店名稱</value>
   </data>
-  <data name="IpLogin" xml:space="preserve">
-    <value>IP免登陆</value>
+  <data name="BranchGroup" xml:space="preserve">
+    <value>分店範圍</value>
   </data>
-  <data name="Login" xml:space="preserve">
-    <value>登录</value>
+  <data name="BranchGroupDesc" xml:space="preserve">
+    <value>分店範圍描述</value>
   </data>
-  <data name="Logining" xml:space="preserve">
-    <value>登录中...</value>
+  <data name="BranchLong" xml:space="preserve">
+    <value>單據顯示名稱</value>
   </data>
-  <data name="ModifyPassword" xml:space="preserve">
-    <value>修改密码</value>
+  <data name="BriefAddress" xml:space="preserve">
+    <value>單據顯示位址</value>
   </data>
-  <data name="PleaseEnterPassword" xml:space="preserve">
-    <value>请输入密码</value>
+  <data name="CBDCode" xml:space="preserve">
+    <value>所屬商圈</value>
   </data>
-  <data name="PleaseEnterUserId" xml:space="preserve">
-    <value>请输入账号</value>
+  <data name="City" xml:space="preserve">
+    <value>分店城市</value>
   </data>
-  <data name="RememberMe" xml:space="preserve">
-    <value>记住我</value>
+  <data name="CityDescription" xml:space="preserve">
+    <value>分店城市</value>
   </data>
-  <data name="RetrievePassword" xml:space="preserve">
-    <value>找回密码</value>
+  <data name="CityLevel" xml:space="preserve">
+    <value>城市等級</value>
   </data>
-  <data name="Send" xml:space="preserve">
-    <value>发送</value>
+  <data name="CityLevelDescription" xml:space="preserve">
+    <value>城市等級描述</value>
   </data>
-  <data name="SystemLogin" xml:space="preserve">
-    <value>系统登录</value>
+  <data name="CloseTime" xml:space="preserve">
+    <value>每日關店時間</value>
   </data>
-  <data name="SystemName" xml:space="preserve">
-    <value>Rdp管理系统V3</value>
+  <data name="CobolMergeCode" xml:space="preserve">
+    <value>POS店標示位</value>
+  </data>
+  <data name="CompanyCode" xml:space="preserve">
+    <value>所屬公司</value>
+  </data>
+  <data name="County" xml:space="preserve">
+    <value>縣</value>
+  </data>
+  <data name="CountyDescription" xml:space="preserve">
+    <value>縣描述</value>
+  </data>
+  <data name="District" xml:space="preserve">
+    <value>區域編號</value>
+  </data>
+  <data name="DistrictDesc" xml:space="preserve">
+    <value>分店區域</value>
+  </data>
+  <data name="EndDate" xml:space="preserve">
+    <value>結業日期</value>
+  </data>
+  <data name="IPAddress" xml:space="preserve">
+    <value>pos店的IP地址</value>
+  </data>
+  <data name="MiniArea" xml:space="preserve">
+    <value>微小區代碼</value>
+  </data>
+  <data name="MiniAreaDesc" xml:space="preserve">
+    <value>微小區描述</value>
+  </data>
+  <data name="PayModeDesc" xml:space="preserve">
+    <value>收款方式</value>
+  </data>
+  <data name="Province" xml:space="preserve">
+    <value>分店省份</value>
+  </data>
+  <data name="ProvinceDescription" xml:space="preserve">
+    <value>分店省份</value>
+  </data>
+  <data name="ReaderType" xml:space="preserve">
+    <value>是否打卡</value>
+  </data>
+  <data name="RefBranchCode" xml:space="preserve">
+    <value>源行號</value>
+  </data>
+  <data name="RefBranchDesc" xml:space="preserve">
+    <value>源行描述</value>
+  </data>
+  <data name="RefBranchEndDate" xml:space="preserve">
+    <value>源行結業時間</value>
+  </data>
+  <data name="RefBranchStartDate" xml:space="preserve">
+    <value>源行開業時間</value>
+  </data>
+  <data name="Shareholding" xml:space="preserve">
+    <value>控股比例</value>
+  </data>
+  <data name="ShopScale" xml:space="preserve">
+    <value>存貨級別</value>
+  </data>
+  <data name="ShopType" xml:space="preserve">
+    <value>分店性質</value>
+  </data>
+  <data name="SmallArea" xml:space="preserve">
+    <value>小社區代碼</value>
+  </data>
+  <data name="SmallAreaDesc" xml:space="preserve">
+    <value>小社區描述</value>
+  </data>
+  <data name="StartDate" xml:space="preserve">
+    <value>開業日期</value>
+  </data>
+  <data name="StoreGroup" xml:space="preserve">
+    <value>用於自動配貨分組</value>
+  </data>
+  <data name="TeamCode" xml:space="preserve">
+    <value>開票公司（批發環節）</value>
+  </data>
+  <data name="TelephoneNo" xml:space="preserve">
+    <value>電話號碼</value>
   </data>
 </root>

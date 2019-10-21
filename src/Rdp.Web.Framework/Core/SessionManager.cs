@@ -138,15 +138,30 @@ namespace Rdp.Web.Framework.Core
         public static  void AddRoleUser(RoleUser model)
         {
             if (model == null)
-            {
                 throw new ArgumentException("参数不能为NULL");
-            }
+
+            var roleUserList = new List<RoleUser>();
+            roleUserList.Add(model);
+            AddRoleUsers(roleUserList);
+        }
+
+        /// <summary>
+        /// 获取用户角色，支持多个
+        /// </summary>
+        /// <returns></returns>
+        public static void AddRoleUsers(List<RoleUser> roleUsers)
+        {
+            if (roleUsers == null || roleUsers.Count <= 0)
+                throw new ArgumentException("参数不能为NULL");
+
             HttpContext context = HttpContextOld.Current;
             if ((context != null) && (context.Session != null))
             {
-                context.Session.Set(RoleUser,model);
+                context.Session.Set(RoleUser, roleUsers);
             }
         }
+
+
         /// <summary>
         /// 删除RoleUser
         /// </summary>
@@ -159,6 +174,27 @@ namespace Rdp.Web.Framework.Core
                 context.Session.Remove(RoleUser);
             }
         }
+
+        /// <summary>
+        /// 获取用户角色，支持多个
+        /// </summary>
+        /// <returns></returns>
+        public static List<RoleUser> GetRoleUsers()
+        {
+            HttpContext context = HttpContextOld.Current;
+            if ((context != null) && (context.Session != null))
+            {
+                var roleUsers =  context.Session.Get<List<RoleUser>>(RoleUser);
+
+                if (roleUsers == null)
+                    return new List<RoleUser>();
+
+                return roleUsers;
+            }
+            return new List<RoleUser>();
+        }
+
+
         /// <summary>
         /// 得到RoleUser
         /// </summary>
@@ -166,12 +202,8 @@ namespace Rdp.Web.Framework.Core
         /// <remarks></remarks>
         public static RoleUser GetRoleUser()
         {
-            HttpContext context = HttpContextOld.Current;
-            if ((context != null) && (context.Session != null))
-            {
-                return context.Session.Get<RoleUser>(RoleUser);
-            }
-            return null;
+            var roleUsers = GetRoleUsers();
+            return roleUsers.Count > 0 ? roleUsers[0] : null;
         }
         /// <summary>
         /// 添加UserMaster

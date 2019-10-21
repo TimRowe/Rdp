@@ -32,7 +32,7 @@ namespace Rdp.Web.Framework.Models
             IsValidate = 0;
             StatusFlag = 0;
         }
-        public int RoleID { get; set; }
+        public short RoleID { get; set; }
         [Required(ErrorMessageResourceType = typeof(ResMessage),
            ErrorMessageResourceName = "Required")]
         public string RoleDesc { get; set; }

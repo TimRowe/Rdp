@@ -10,39 +10,42 @@ namespace Rdp.Core.Data
 
         public static List<T> ConvertToList<T>(DataTable dt) where T : new()
         {
+            var list = new List<T>(dt.Rows.Count);
+            var propertys = typeof(T).GetProperties();
 
-            dynamic list = new List<T>();
-            dynamic type = typeof(T);
             foreach (DataRow dr in dt.Rows)
             {
                 T item = new T();
-                dynamic propertys = item.GetType().GetProperties();
+
                 foreach (PropertyInfo pi in propertys)
                 {
-                    foreach (DataColumn column in dt.Columns)
+                    var index = -1;
+
+                    for (var i = 0; i < dt.Columns.Count; ++i)
                     {
-                        dynamic filedName = column.ColumnName.Replace("_", "");
-                        if (filedName.Contains(pi.Name))
+                        if (dt.Columns[i].ColumnName.Replace("_", "") == pi.Name)
                         {
-                            if (!pi.CanWrite)
-                            {
-                                continue;
-                            }
-
-                            if (!DBNull.Value.Equals(dr[column.ColumnName]))
-                            {
-                                pi.SetValue(item, Convert.ChangeType(dr[column.ColumnName], pi.PropertyType), null);
-                            }
-
-                            break; // TODO: might not be correct. Was : Exit For
+                            index = i;
+                            break;
                         }
                     }
+
+                    if (index == -1)
+                        continue;
+
+                    if (!pi.CanWrite)
+                        continue;
+
+                    if (dr[index] == null || DBNull.Value.Equals(dr[index]))
+                        continue;
+
+                    pi.SetValue(item, Convert.ChangeType(dr[index], pi.PropertyType), null);
                 }
+
                 list.Add(item);
             }
 
             return list;
-
         }
 
     }

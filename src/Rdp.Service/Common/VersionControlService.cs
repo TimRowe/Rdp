@@ -45,6 +45,7 @@ namespace Rdp.Service
             {
                 return UseRepository.Table.ToList();
             });
+
             if (versionList == null)
             {
                 versionList = result;
@@ -53,28 +54,30 @@ namespace Rdp.Service
 
             var cacheItem = result.Find(t => t.Key == key);
             var item = versionList.Find(t => t.Key == key);
-            if (cacheItem != null)
+
+            if(cacheItem == null)
             {
-                if (cacheItem.Version == -1)
+                UseRepository.Insert(new VersionControl()
                 {
-                    return true;
-                }
-                if (item == null || item.Version != cacheItem.Version)
-                {
-                    versionList = result;
-                    return true;
-                }
-            }
-            else
-            {
-                //UseRepository.Insert(new VersionControl()
-                //{
-                //    Key = key,
-                //    Version = 1
-                //});
+                    Key = key,
+                    Version = 1,
+                    UpdateDate = System.DateTime.Now
+                });
                 throw new ArgumentNullException(key + "未插入版本控制表(Version_Control)中");
             }
-          
+
+            if (item == null)
+            {
+                versionList.Add(cacheItem);
+                return true;
+            }
+
+            if (item.Version != cacheItem.Version)
+            {
+                versionList[versionList.IndexOf(item)].Version = cacheItem.Version;
+                return true;
+            }
+           
             return false;
         }
 

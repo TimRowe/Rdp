@@ -149,7 +149,7 @@ namespace Rdp.Service
             }
             if (model.ReaderType.HasValue)
             {
-                query = query.Where(t => t.ReaderType == model.ReaderType.Value);
+                query = query.Where(t => t.ReaderType == model.ReaderType);
             }
             if (model.BranchCode.HasValue)
             {

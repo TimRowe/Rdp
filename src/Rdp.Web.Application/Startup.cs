@@ -1,7 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Threading.Tasks;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.Configuration;
@@ -11,16 +10,13 @@ using System.Reflection;
 using Rdp.Core.Data;
 using Rdp.Data.Entity;
 using Rdp.Service;
-using Microsoft.AspNetCore.Mvc.Razor.Compilation;
 using Rdp.Web.Framework.Core;
 using Rdp.Web.Framework.Runtime;
 using Rdp.Core.Caching;
 using Rdp.Web.Framework.Caching;
 using Microsoft.AspNetCore.Http;
 using Rdp.Core.Dependency;
-using StackExchange.Profiling.Storage;
 using Microsoft.Extensions.Caching.Memory;
-using Newtonsoft.Json.Serialization;
 using System.Globalization;
 using Microsoft.Extensions.Options;
 using Rdp.Core.Security;
@@ -29,6 +25,8 @@ using Microsoft.EntityFrameworkCore;
 using System.Text.Encodings.Web;
 using System.Text.Unicode;
 using Rdp.Service.Implement;
+using Microsoft.Extensions.Hosting;
+using System.Text.Json;
 
 namespace Rdp.Web.Application
 {
@@ -50,24 +48,18 @@ namespace Rdp.Web.Application
 
             services.AddScoped<Framework.Filters.PemissionAuthorizeAttribute>();
 
-            services.AddMvc()
-        .AddSessionStateTempDataProvider()
+            services.AddControllersWithViews()
+                .AddSessionStateTempDataProvider()
                 .AddApplicationPart(typeof(Rdp.Web.Framework.Controllers.AccountController).GetTypeInfo().Assembly)
                 .AddControllersAsServices()
-                .ConfigureApplicationPartManager(manager => {
-                    var oldMetadataReferenceFeatureProvider = manager.FeatureProviders.First(f => f is MetadataReferenceFeatureProvider);
-                    manager.FeatureProviders.Remove(oldMetadataReferenceFeatureProvider);
-                    manager.FeatureProviders.Add(new ReferencesMetadataReferenceFeatureProvider());
-                })
-                .AddRazorOptions(options => {
+                .AddRazorOptions(options =>
+                {
                     options.ViewLocationExpanders.Add(new BetterViewEngine());
-                })
-                .AddJsonOptions(options => {
-                    options.SerializerSettings.ContractResolver = new DefaultContractResolver();
-                });
+                }).AddJsonOptions(options => {
+                    options.JsonSerializerOptions.PropertyNamingPolicy = null;
+                }); ;
+           
 
-
-          
 
             services.AddSingleton<HtmlEncoder>(HtmlEncoder.Create(allowedRanges: new[] { UnicodeRanges.BasicLatin, UnicodeRanges.CjkUnifiedIdeographs }));
             //增加调优工具
@@ -78,6 +70,8 @@ namespace Rdp.Web.Application
 
             //配置服务appsetting
             services.Configure<AppSettings>(Configuration.GetSection("AppSettings"));
+
+            services.AddControllersWithViews(); /*.AddNewtonsoftJson()*/
 
             //配置HttpContext注入服务
             services.AddSingleton<IHttpContextAccessor, HttpContextAccessor>();
@@ -114,7 +108,7 @@ namespace Rdp.Web.Application
 
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
-        public void Configure(IApplicationBuilder app, IHostingEnvironment env, ILoggerFactory loggerFactory, IMemoryCache cache, IOptions<AppSettings> appSettings)
+        public void Configure(IApplicationBuilder app, IWebHostEnvironment env, ILoggerFactory loggerFactory, IMemoryCache cache, IOptions<AppSettings> appSettings)
         {
 
             AppSettings.SetInstance(appSettings.Value);
@@ -162,13 +156,13 @@ namespace Rdp.Web.Application
                 SupportedUICultures = supportedCultures,
             });
 
-            app.UseMvc(routes =>
-            {
-            
+            app.UseRouting();
 
-                routes.MapRoute(
+            app.UseEndpoints(endpoints =>
+            {
+                endpoints.MapControllerRoute(
                     name: "default",
-                    template: "{controller=Home}/{action=Index}/{id?}"
+                    pattern: "{controller=Home}/{action=Index}/{id?}"
                     
                     );
             });

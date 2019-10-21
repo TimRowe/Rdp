@@ -11,7 +11,7 @@ namespace Rdp.Web.Framework.Runtime
     {
         public T Resolve<T>(LifetimeScopeEnum scope) 
         {
-            var container = scope == LifetimeScopeEnum.Request? HttpContextOld.Current.RequestServices : IocContainerManager.GetInstance();
+            var container = IocContainerManager.GetInstance();
             return container.GetService<T>();
         }
     }

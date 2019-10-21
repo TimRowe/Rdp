@@ -5,6 +5,8 @@ using Rdp.Web.Framework.Core;
 using Rdp.Service.Dto;
 using Microsoft.AspNetCore.Mvc.Filters;
 using Rdp.Core.Dependency;
+using System.Collections.Generic;
+using System.Linq;
 
 namespace Rdp.Web.Framework.Filters
 {
@@ -26,17 +28,22 @@ namespace Rdp.Web.Framework.Filters
 
             public override void OnActionExecuting(ActionExecutingContext context)
             {
-                if (SessionManager.GetRoleUser() == null && SessionManager.GetLock() == null)
+                var roleUserList = SessionManager.GetRoleUsers();
+
+                if (roleUserList.Count <= 0 && SessionManager.GetLock() == null)
                 {
                     context.Result = new RedirectResult("/Error/Detail?ErrorNo=1");
                     return;
                 }
 
+                var roleArray = roleUserList.Select(m=>m.RoleID).ToArray();
+                
+
                 //页面权限控制
-                var roleUser = SessionManager.GetRoleUser();
+
                 var path = context.HttpContext.Request.Path.ToString();
 
-                var privilegeList = _privilegeService.GetUrlPermissionItems(roleUser.UserID, roleUser.RoleID);
+                var privilegeList = _privilegeService.GetUrlPermissionItems(roleUserList[0].UserID, roleArray);
 
                 PrivilegeDto privilege = null;
 

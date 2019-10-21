@@ -354,7 +354,7 @@ namespace Rdp.Core.Data
                         sb7.Append(column.ColumnValue);
                         sb7.Append("')");
                     }
-                    catch (Exception ex)
+                    catch (Exception)
                     {
                         sb7.Append("<= '");
                         sb7.Append(column.ColumnValue);

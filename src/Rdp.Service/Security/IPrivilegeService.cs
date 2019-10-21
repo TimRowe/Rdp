@@ -38,6 +38,14 @@ namespace Rdp.Service
 
          List<PrivilegeDto> GetUrlPermissionItems(string userID, int roleID);
 
+        /// <summary>
+        /// 从多个角色组中
+        /// </summary>
+        /// <param name="userID"></param>
+        /// <param name="roleIDs"></param>
+        /// <returns></returns>
+         List<PrivilegeDto> GetUrlPermissionItems(string userID, short[] roleIDs);
+
          List<string> GetUrlIdentityItems(int privilegeMaster, string privilegeValue);
 
          /// <summary>

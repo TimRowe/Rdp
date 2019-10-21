@@ -20,6 +20,9 @@ namespace Rdp.Core.Collection
         /// <returns></returns>
         public static SortedList<KeyT, List<T>> ToSortedListWithMultipleKey<KeyT, T>(this List<T> list, Func<T, KeyT> keyFun, bool bSorted)
         {
+            if (list.Count <= 0)
+                return new SortedList<KeyT, List<T>>();
+
             if (!bSorted)
                 throw new NotImplementedException("请先进行排序");//todo
 
@@ -57,6 +60,9 @@ namespace Rdp.Core.Collection
         /// <returns></returns>
         public static Dictionary<KeyT, List<T>> ToDictionaryWithMultipleKey<KeyT, T>(this List<T> list, Func<T, KeyT> keyFun, bool bSorted)
         {
+            if (list.Count <= 0)
+                return new Dictionary<KeyT, List<T>>();
+
             if (!bSorted)
                 throw new NotImplementedException("请先进行排序"); //todo
 

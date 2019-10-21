@@ -357,4 +357,13 @@
   <data name="SalesOrderReprint" xml:space="preserve">
     <value>Reprint Sales Order </value>
   </data>
+  <data name="Agree" xml:space="preserve">
+    <value>Agree</value>
+  </data>
+  <data name="Reject" xml:space="preserve">
+    <value>Reject</value>
+  </data>
+  <data name="Chosen" xml:space="preserve">
+    <value>Chosen</value>
+  </data>
 </root>

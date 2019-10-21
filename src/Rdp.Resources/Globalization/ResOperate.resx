@@ -181,7 +181,7 @@
     <value>显示查询条件</value>
   </data>
   <data name="Search" xml:space="preserve">
-    <value>搜索</value>
+    <value>查询</value>
   </data>
   <data name="AddToPreview" xml:space="preserve">
     <value>添加到预览</value>
@@ -302,5 +302,14 @@
   </data>
   <data name="SalesOrderReprint" xml:space="preserve">
     <value>销售单重印</value>
+  </data>
+  <data name="Agree" xml:space="preserve">
+    <value>同意</value>
+  </data>
+  <data name="Reject" xml:space="preserve">
+    <value>拒绝</value>
+  </data>
+  <data name="Chosen" xml:space="preserve">
+    <value>选中</value>
   </data>
 </root>

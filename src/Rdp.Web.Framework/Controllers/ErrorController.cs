@@ -66,13 +66,8 @@ namespace Rdp.Web.Framework.Controllers
             var feature = HttpContext.Features.Get<IExceptionHandlerFeature>();
             var error = feature?.Error;
 
-            var maxErrorModel = _errorInfoService.UseRepository.Table.OrderByDescending(m => m.ErrorInfoID).FirstOrDefault();
-
-            var maxNo = maxErrorModel == null? 0 : maxErrorModel.ErrorInfoID + 1;
-
-         
             var errorInfo = new ErrorInfo() {
-                ErrorInfoID = maxNo,
+                ErrorInfoID = 0,
                 UserID = SessionManager.GetUserMaster().UserID,
                 ErrorCode = 500,
                 ErrorMSG = error.Message,

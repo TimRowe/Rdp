@@ -40,13 +40,13 @@ namespace Rdp.Web.Framework.Filters
             encodingsAccepted = encodingsAccepted.ToString().ToLowerInvariant();
             var response = filterContext.HttpContext.Response;
 
-            if (encodingsAccepted.Contains("deflate") && compressionType == CompressionTypeEnum.Deflate)
+            if (encodingsAccepted.Where(m=>m.Contains("deflate")).Count() >= 1 && compressionType == CompressionTypeEnum.Deflate)
             {
                 response.Headers.Add("Content-encoding", "deflate");
                 //todo112
                 //response.Filter = new DeflateStream(response.Filter, CompressionMode.Compress);
             }
-            else if (encodingsAccepted.Contains("gzip") && compressionType == CompressionTypeEnum.Gzip)
+            else if (encodingsAccepted.Where(m => m.Contains("gzip")).Count() >= 1 && compressionType == CompressionTypeEnum.Gzip)
             {
                 response.Headers.Add("Content-encoding", "gzip");
                 //response.Filter = new GZipStream(response.Filter, CompressionMode.Compress);

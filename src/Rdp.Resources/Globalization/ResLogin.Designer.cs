@@ -19,7 +19,7 @@ namespace Rdp.Resources.Globalization {
     // 类通过类似于 ResGen 或 Visual Studio 的工具自动生成的。
     // 若要添加或移除成员，请编辑 .ResX 文件，然后重新运行 ResGen
     // (以 /str 作为命令选项)，或重新生成 VS 项目。
-    [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Resources.Tools.StronglyTypedResourceBuilder", "15.0.0.0")]
+    [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Resources.Tools.StronglyTypedResourceBuilder", "16.0.0.0")]
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
     [global::System.Runtime.CompilerServices.CompilerGeneratedAttribute()]
     public class ResLogin {
@@ -47,7 +47,7 @@ namespace Rdp.Resources.Globalization {
         }
         
         /// <summary>
-        ///   使用此强类型资源类，为所有资源查找
+        ///   重写当前线程的 CurrentUICulture 属性
         ///   重写当前线程的 CurrentUICulture 属性。
         /// </summary>
         [global::System.ComponentModel.EditorBrowsableAttribute(global::System.ComponentModel.EditorBrowsableState.Advanced)]
@@ -133,11 +133,20 @@ namespace Rdp.Resources.Globalization {
         }
         
         /// <summary>
-        ///   查找类似 登陆 的本地化字符串。
+        ///   查找类似 登录 的本地化字符串。
         /// </summary>
         public static string Login {
             get {
                 return ResourceManager.GetString("Login", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   查找类似 登录中... 的本地化字符串。
+        /// </summary>
+        public static string Logining {
+            get {
+                return ResourceManager.GetString("Logining", resourceCulture);
             }
         }
         
@@ -147,6 +156,24 @@ namespace Rdp.Resources.Globalization {
         public static string ModifyPassword {
             get {
                 return ResourceManager.GetString("ModifyPassword", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   查找类似 请输入密码 的本地化字符串。
+        /// </summary>
+        public static string PleaseEnterPassword {
+            get {
+                return ResourceManager.GetString("PleaseEnterPassword", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   查找类似 请输入账号 的本地化字符串。
+        /// </summary>
+        public static string PleaseEnterUserId {
+            get {
+                return ResourceManager.GetString("PleaseEnterUserId", resourceCulture);
             }
         }
         

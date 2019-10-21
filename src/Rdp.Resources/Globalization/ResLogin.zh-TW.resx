@@ -142,10 +142,19 @@
     <value>IP免登陸</value>
   </data>
   <data name="Login" xml:space="preserve">
-    <value>登陸</value>
+    <value>登錄</value>
+  </data>
+  <data name="Logining" xml:space="preserve">
+    <value>登錄中...</value>
   </data>
   <data name="ModifyPassword" xml:space="preserve">
     <value>修改密碼</value>
+  </data>
+  <data name="PleaseEnterPassword" xml:space="preserve">
+    <value>請輸入密碼</value>
+  </data>
+  <data name="PleaseEnterUserId" xml:space="preserve">
+    <value>請輸入帳號</value>
   </data>
   <data name="RememberMe" xml:space="preserve">
     <value>記住我</value>

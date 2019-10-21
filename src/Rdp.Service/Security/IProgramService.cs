@@ -9,6 +9,7 @@ namespace Rdp.Service
     {
         MenuTreeDto GetNavigationItem(RoleUser user);
         MenuTreeDto GetNavigationItemV3(RoleUser user);
+        MenuTreeDto GetNavigationItemV3(List<RoleUser> roleUsers);
         List<ProgramSearchResultDto> Search(ProgramSearchRequestDto searchRequest, ref GridParams gridParams);
         bool Add(Program model);
     }

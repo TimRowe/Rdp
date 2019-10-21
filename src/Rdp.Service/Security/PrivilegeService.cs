@@ -213,6 +213,13 @@ namespace Rdp.Service
 
         public List<PrivilegeDto> GetUrlPermissionItems(string userID, int roleID)
         {
+            short[] roleIDs = new short[1];
+            roleIDs[0] = (short)roleID;
+            return GetUrlPermissionItems(userID, roleIDs);
+        }
+
+        public List<PrivilegeDto> GetUrlPermissionItems(string userID, short[] roleIDs)
+        {
             var sessionKey = "UrlPermission";
             ICacheManager _sessionManager = IocObjectManager.GetInstance().Resolve<IHttpContextSessionManager>();
             var result = _sessionManager.Get(sessionKey, 20, () =>
@@ -222,19 +229,19 @@ namespace Rdp.Service
                         on p.AccessValue equals u.ProgramID
                         where p.AccessMaster == 1 && p.OperationID == 1
                         //&& ((p.PrivilegeMaster == 1 && p.PrivilegeValue == roleID.ToString()) || (p.PrivilegeMaster == 2 && p.PrivilegeValue == userID)) && p.OperationID == 1
-                        select new PrivilegeDto{ PrivilegeID = p.PrivilegeID, ValidFrom = p.ValidFrom, ValidUntil = p.ValidUntil, PrivilegeMaster = p.PrivilegeMaster, PrivilegeValue = p.PrivilegeValue, AccessMaster = p.AccessMaster, AccessValue = p.AccessValue, BranchMember = p.BranchMember, OperationID = p.OperationID, IsIdentity = p.IsIdentity, Url = u.Url }).Union(
+                        select new PrivilegeDto { PrivilegeID = p.PrivilegeID, ValidFrom = p.ValidFrom, ValidUntil = p.ValidUntil, PrivilegeMaster = p.PrivilegeMaster, PrivilegeValue = p.PrivilegeValue, AccessMaster = p.AccessMaster, AccessValue = p.AccessValue, BranchMember = p.BranchMember, OperationID = p.OperationID, IsIdentity = p.IsIdentity, Url = u.Url }).Union(
                         from p in UseRepository.Table
                         join u in _programButtonRepository.Table
                         on p.AccessValue equals u.ProgramButtonID
                         where p.AccessMaster == 2 && p.OperationID == 1
                         //&& ((p.PrivilegeMaster == 1 && p.PrivilegeValue == roleID.ToString()) || (p.PrivilegeMaster == 2 && p.PrivilegeValue == userID)) && p.OperationID == 1
-                        select new PrivilegeDto{ PrivilegeID = p.PrivilegeID, ValidFrom = p.ValidFrom, ValidUntil = p.ValidUntil, PrivilegeMaster = p.PrivilegeMaster, PrivilegeValue = p.PrivilegeValue, AccessMaster = p.AccessMaster, AccessValue = p.AccessValue, BranchMember = p.BranchMember, OperationID = p.OperationID, IsIdentity = p.IsIdentity, Url = u.Url }
+                        select new PrivilegeDto { PrivilegeID = p.PrivilegeID, ValidFrom = p.ValidFrom, ValidUntil = p.ValidUntil, PrivilegeMaster = p.PrivilegeMaster, PrivilegeValue = p.PrivilegeValue, AccessMaster = p.AccessMaster, AccessValue = p.AccessValue, BranchMember = p.BranchMember, OperationID = p.OperationID, IsIdentity = p.IsIdentity, Url = u.Url }
                         ).ToList();
             }, () =>
             {
                 return _versionControlService.GetVersionFlag(sessionKey);
             });
-            var item = result.Where(p => (p.PrivilegeMaster == 1 && p.PrivilegeValue == roleID.ToString()) || (p.PrivilegeMaster == 2 && p.PrivilegeValue == userID));
+            var item = result.Where(p => (p.PrivilegeMaster == 1 && roleIDs.Contains(short.Parse(p.PrivilegeValue))) || (p.PrivilegeMaster == 2 && p.PrivilegeValue == userID));
             return item != null ? item.ToList() : null;
         }
 
@@ -316,7 +323,11 @@ namespace Rdp.Service
                 pageParam.PrimaryKey = "Program_ID";
             }
 
-            if (string.IsNullOrEmpty(pageParam.Order.Trim()))
+            if (string.IsNullOrEmpty(pageParam.Order))
+            {
+                pageParam.Order = " Rn, Program_ID ";
+            }
+            else if (string.IsNullOrEmpty(pageParam.Order.Trim()))
             {
                 pageParam.Order = " Rn, Program_ID ";
             }

@@ -77,7 +77,7 @@ namespace Rdp.Web.Framework.Controllers
 
             var userMasterModel = new UserMaster();
             var roleUserModel = new RoleUser();
-            var host = "";
+            var host = "crm3.chowtaifook.sz";
 
             if (addModel.UserIDTemplate != "0"&& addModel.UserIDTemplate != "")
             {

@@ -115,8 +115,8 @@ namespace Rdp.Web.Framework.Controllers
             }
             return PartialView(comboClass, model);
         }
+
         [WebCache]
-        [Compress]
         public string GetList(CommonComboModel model, FromWayEnum way = FromWayEnum.FromCodeTable)
         {
             var modelDto = new CodeTableDto()

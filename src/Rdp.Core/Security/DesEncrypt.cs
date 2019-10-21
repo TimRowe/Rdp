@@ -69,7 +69,7 @@ namespace Rdp.Core.Security
             {
                 return Decrypt(Text, "buyongji");
             }
-            catch (Exception ex)
+            catch (Exception)
             {
                 return null;
             }

@@ -220,7 +220,7 @@
     <value>返回</value>
   </data>
   <data name="Search" xml:space="preserve">
-    <value>搜索</value>
+    <value>查询</value>
   </data>
   <data name="SignIn" xml:space="preserve">
     <value>登    錄</value>
@@ -302,5 +302,14 @@
   </data>
   <data name="SalesOrderReprint" xml:space="preserve">
     <value>銷售單重印</value>
+  </data>
+  <data name="Agree" xml:space="preserve">
+    <value>同意</value>
+  </data>
+  <data name="Reject" xml:space="preserve">
+    <value>拒絕</value>
+  </data>
+  <data name="Chosen" xml:space="preserve">
+    <value>選中</value>
   </data>
 </root>

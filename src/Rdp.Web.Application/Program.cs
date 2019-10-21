@@ -33,7 +33,7 @@ namespace Rdp.Web.Application
             
             return WebHost.CreateDefaultBuilder(args)
                 .UseKestrel()
-                .UseLibuv()
+                //.UseLibuv()
                 .UseUrls("http://*:5000")
                 .UseConfiguration(config)
                 .UseStartup<Startup>()

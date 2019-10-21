@@ -130,15 +130,9 @@ namespace Rdp.Service
             var hs = new Hashtable();
             hs.Add(strInsertSql, parametersInsert);
             hs.Add(strDeleteSql, parametersDelete);
-            try
-			{
-                DbHelperSql.ExecuteSqlTran(DbHelperSql.DefaultUpdateConn, hs);
-            }
-            catch(Exception ex) 
-			{
-                return false;
-            }
 
+            DbHelperSql.ExecuteSqlTran(DbHelperSql.DefaultUpdateConn, hs);
+           
             return true;
         }
 
@@ -206,14 +200,7 @@ namespace Rdp.Service
             var hs = new Hashtable();
             hs.Add(strSql, parameters); 
 
-            try
-            {
-                DbHelperSql.ExecuteSqlTran(DbHelperSql.DefaultUpdateConn, hs);  
-            }
-            catch (Exception ex)
-            {
-                return false;
-            }
+            DbHelperSql.ExecuteSqlTran(DbHelperSql.DefaultUpdateConn, hs);  
 
             return true;
         }
@@ -239,18 +226,13 @@ namespace Rdp.Service
             parameters[1].Value = programID;
             parameters[2].Value = buttonID;
             parameters[3].Value = Url;
-            try
-            {
-                var resultCount = DbHelperSql.ExecuteSql(DbHelperSql.DefaultUpdateConn, strSql.ToString(), parameters);
-                if (resultCount == 0)
-                {
-                    return false;
-                }
-            }
-            catch (Exception ex)
+
+            var resultCount = DbHelperSql.ExecuteSql(DbHelperSql.DefaultUpdateConn, strSql.ToString(), parameters);
+            if (resultCount == 0)
             {
                 return false;
             }
+
             return true;
         }
         /// <summary>

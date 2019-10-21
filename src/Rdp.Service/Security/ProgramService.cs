@@ -72,19 +72,23 @@ namespace Rdp.Service
             public int Levels { get; set; }
         }
 
-
-        public MenuTreeDto GetNavigationItemV3(RoleUser user)
+        public MenuTreeDto GetNavigationItemV3(List<RoleUser> roleUsers)
         {
-                var list = _programRepository.SqlQuery<ProgramExDto>(@"WITH Tmp
+            var roleSql = string.Empty;
+
+            for (var i = 0; i < roleUsers.Count; ++i)
+                roleSql += "'" + roleUsers[i].RoleID.ToString() + "'" + (i == roleUsers.Count - 1 ? "" : ",");
+
+            var list = _programRepository.SqlQuery<ProgramExDto>(@"WITH Tmp
                   AS(SELECT DISTINCT
                                 PR.Access_Value AS Program_ID
                        FROM     dbo.tbLOG_Privilege PR
                        WHERE    Access_Master = 1
                                 AND((PR.Privilege_Master = 1
-                                        AND PR.Privilege_Value = @p0
+                                        AND PR.Privilege_Value IN (" + roleSql + @")
                                       )
                                       OR(PR.Privilege_Master = 2
-                                           AND PR.Privilege_Value = @p1
+                                           AND PR.Privilege_Value = @p0
                                          )
                                     )
                                 AND PR.Operation_ID <> 3
@@ -156,7 +160,7 @@ namespace Rdp.Service
                         Priority,
                         Url,
                         Levels
-                FROM Sd", user.RoleID.ToString(), user.UserID);
+                FROM Sd ORDER BY Levels,Priority,S3.ProgramID", roleUsers[0].UserID);
 
             var menu = new MenuTreeDto() { CurrentMenu = null, ChildMenus = new List<MenuTreeDto>() };
 
@@ -181,40 +185,40 @@ namespace Rdp.Service
                 {
                     if (e1.Levels != 2 || e1.ParentID != e.ProgramID) continue;
 
-                
-                        var threesecondMenuTree = new MenuTreeDto()
+
+                    var threesecondMenuTree = new MenuTreeDto()
+                    {
+                        CurrentMenu = new Program()
+                        {
+                            ProgramName = e1.ProgramName,
+                            ProgramID = e1.ProgramID,
+                            Icon = e1.Icon,
+                            ParentID = e1.ParentID,
+                            Url = e1.Url
+                        },
+                        ChildMenus = new List<MenuTreeDto>()
+                    };
+
+                    foreach (var e2 in list)
+                    {
+                        if (e2.Levels != 3 || e2.ParentID != e1.ProgramID) continue;
+
+                        threesecondMenuTree.ChildMenus.Add(new MenuTreeDto()
                         {
                             CurrentMenu = new Program()
                             {
-                                ProgramName = e1.ProgramName,
-                                ProgramID = e1.ProgramID,
-                                Icon = e1.Icon,
-                                ParentID = e1.ParentID,
-                                Url = e1.Url
+                                ProgramName = e2.ProgramName,
+                                ProgramID = e2.ProgramID,
+                                Icon = e2.Icon,
+                                ParentID = e2.ParentID,
+                                Url = e2.Url
                             },
-                            ChildMenus = new List<MenuTreeDto>()
-                        };
+                            ChildMenus = null
+                        });
+                    }
 
-                        foreach (var e2 in list)
-                        {
-                            if (e2.Levels != 3 || e2.ParentID != e1.ProgramID) continue;
+                    secondMenuTree.ChildMenus.Add(threesecondMenuTree);
 
-                            threesecondMenuTree.ChildMenus.Add(new MenuTreeDto()
-                            {
-                                CurrentMenu = new Program()
-                                {
-                                    ProgramName = e2.ProgramName,
-                                    ProgramID = e2.ProgramID,
-                                    Icon = e2.Icon,
-                                    ParentID = e2.ParentID,
-                                    Url = e2.Url
-                                },
-                                ChildMenus = null
-                            });
-                        }
-
-                        secondMenuTree.ChildMenus.Add(threesecondMenuTree);
-                    
                 }
 
                 menu.ChildMenus.Add(secondMenuTree);
@@ -222,6 +226,11 @@ namespace Rdp.Service
 
             return menu;
 
+        }
+
+        public MenuTreeDto GetNavigationItemV3(RoleUser user)
+        {
+            return GetNavigationItemV3(new List<RoleUser>() { user });
         }
 
 

@@ -12,43 +12,28 @@ using System.Collections.Generic;
 using Rdp.Web.Framework.Runtime;
 using Microsoft.AspNetCore.Mvc.Filters;
 using Rdp.Web.Framework.Extensions;
+using System.Threading;
 
 namespace Rdp.Web.Framework.Controllers
 {
     [CustomHandleError]
     public class BaseController : Controller
     {
-        /*protected virtual void LogInfo(string userId, string infoMsg)
+        /// <summary>
+        /// 获取多语言
+        /// </summary>
+        /// <param name="name"></param>
+        /// <returns></returns>
+        public string L(string name)
         {
-            var errorInfo = new ErrorInfo();
-            errorInfo.ErrorMSG = infoMsg;
-            errorInfo.RunningTime = System.DateTime.Now;
-            errorInfo.Url = request.Path.ToString();
-            _errorInfoService.Add(errorInfo);
-        }*/
-
-        /*TODO112
-         * protected override IAsyncResult BeginExecuteCore(AsyncCallback callback, object state)
-        {
-            //todo完善
-            //创建基于http request的scope用于显式的依赖注入,eg RespositoryFactory CouDbContext的构建
-            var container = IocContainerManager.GetInstance();
-            if (container string.empty)
-            {
-                var scope = container.BeginLifetimeScope();
-                HttpContext.Items["PerRequestScope"] = scope;
-            }
-
-            Utils.InitializeCulture();
-            return base.BeginExecuteCore(callback, state);
-        }*/
-
-        public override void OnActionExecuting(ActionExecutingContext context)
-        {
-           // Utils.InitializeCulture();
+            IGlobalResourcesService globalResourcesService = IocObjectManager.GetInstance().Resolve<IGlobalResourcesService>();
+            return globalResourcesService.GetValue(name, Thread.CurrentThread.CurrentUICulture.Name);
         }
-
-
+        
+        /// <summary>
+        /// 获取模型参数失败消息
+        /// </summary>
+        /// <returns></returns>
         public String GetModelInvalidMsg()
         {
             string strError = "";
@@ -64,7 +49,10 @@ namespace Rdp.Web.Framework.Controllers
             return strError;
         }
 
-
+        /// <summary>
+        /// 获取表格参数
+        /// </summary>
+        /// <returns></returns>
         public GridParams GetGridParams()
         {
             var grid = new GridParams();

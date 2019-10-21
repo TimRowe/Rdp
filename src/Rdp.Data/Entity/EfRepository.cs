@@ -255,10 +255,11 @@ namespace Rdp.Data.Entity
             return _context;
         }
 
-        public List<T> SqlQuery(string sql, params object[] parameters)
-        {
-            return Table.FromSql(sql, parameters).ToList();
-        }
+        //todo ef core 3.0
+        //public List<T> SqlQuery(string sql, params object[] parameters)
+        //{
+        //    return Table.FromSql(sql, parameters).ToList();
+        //}
 
         public List<T1> SqlQuery<T1>(string sql, params object[] parameters)
         {

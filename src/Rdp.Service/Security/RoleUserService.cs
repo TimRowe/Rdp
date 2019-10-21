@@ -113,15 +113,9 @@ namespace Rdp.Service
              new SqlParameter("@User_ID", SqlDbType.VarChar, 50)};
             parametersDelete[0].Value = userID.ToUpper();
             hs.Add(strDeleteSql, parametersDelete);
+            DbHelperSql.ExecuteSqlTran(DbHelperSql.DefaultUpdateConn, hs);
 
-            try{
-                DbHelperSql.ExecuteSqlTran(DbHelperSql.DefaultUpdateConn, hs);
-            }
-            catch(Exception ex)
-            {
-                return false;
-            }
-                return true;
+            return true;
          }
             
 

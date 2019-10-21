@@ -31,8 +31,7 @@ namespace Rdp.Web.Framework.Filters
         {
             UrlHelper _urlHelper = new UrlHelper(context);
 
-            if ((SessionManager.GetRoleUser() == null && SessionManager.GetLock() == null)
-                || !_privilegeService.IsPrivilege(SessionManager.GetRoleUser().UserID, SessionManager.GetRoleUser().RoleID))
+            if (SessionManager.GetRoleUsers().Count <= 0 && SessionManager.GetLock() == null)
             {
                 var redirectResult = string.IsNullOrEmpty(context.HttpContext.Request.Headers["Referer"].ToString()) ?
                     new RedirectResult("~/Account/Login") :
