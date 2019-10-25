@@ -30,6 +30,26 @@ using System.Text.Json;
 
 namespace Rdp.Web.Application
 {
+    /// <summary>
+    /// 具体的依赖注入实现提供容器
+    /// </summary>
+    public class DIProviderImpl : IDIProvider
+    {
+        private ServiceProvider _serviceProvider;
+
+        public DIProviderImpl(ServiceProvider serviceProvider)
+        {
+            _serviceProvider = serviceProvider;
+        }
+
+        public T Resolve<T>()
+        {
+            return _serviceProvider.GetService<T>();
+        }
+    }
+
+
+
     public class Startup
     {
         public Startup(IConfiguration configuration)
@@ -97,14 +117,15 @@ namespace Rdp.Web.Application
                 }
             }
 
-            IocContainerManager.SetInstance(services.BuildServiceProvider());
-            IocObjectManager.SetInstance(new IocObjectManager(new IocLifetimeScope()));
+            IocObjectManager.SetInstance(new IocObjectManager(new DIProviderImpl(services.BuildServiceProvider())));
 
             #endregion
 
             //配置AutoMapper映射对象
             Rdp.Web.Framework.Runtime.Startup.AutoMapperConfig(null);
         }
+
+        
 
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.

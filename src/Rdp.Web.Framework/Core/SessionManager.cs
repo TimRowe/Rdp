@@ -44,7 +44,7 @@ namespace Rdp.Web.Framework.Core
         {
             get
             {
-                HttpContext context = IocObjectManager.GetInstance().Resolve<IHttpContextAccessor>(LifetimeScopeEnum.Application).HttpContext;
+                HttpContext context = IocObjectManager.GetInstance().Resolve<IHttpContextAccessor>().HttpContext;
                 return context;
             }
         }

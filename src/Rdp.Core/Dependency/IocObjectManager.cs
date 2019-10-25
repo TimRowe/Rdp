@@ -11,16 +11,16 @@ namespace Rdp.Core.Dependency
 
     public class IocObjectManager 
     {
-        private IIocLifetimeScope _iocLifetimeScope;
+        private IDIProvider _diProvider;
         private static IocObjectManager _manage;
 
         /// <summary>
         /// 构造函数
         /// </summary>
         /// <param name="rdpLifetimeScope"></param>
-        public IocObjectManager(IIocLifetimeScope rdpLifetimeScope)
+        public IocObjectManager(IDIProvider diProvider)
         {
-            _iocLifetimeScope = rdpLifetimeScope;
+            _diProvider = diProvider;
         }
 
         /// <summary>
@@ -46,9 +46,9 @@ namespace Rdp.Core.Dependency
         /// </summary>
         /// <typeparam name="T"></typeparam>
         /// <returns></returns>
-        public T Resolve<T>(LifetimeScopeEnum scope = LifetimeScopeEnum.Request)
+        public T Resolve<T>()
         {
-            return _iocLifetimeScope.Resolve<T>(scope);
+            return _diProvider.Resolve<T>();
         }
 
         
